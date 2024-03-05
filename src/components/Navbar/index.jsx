@@ -31,13 +31,9 @@ const Navbar = () => {
   return (
     <div className="flex flex-row border-b border-slate-200/30 h-16 px-8 items-center justify-between">
       <div className="flex flex-row items-center gap-4">
-        <Image
-          src={`/icon/flight.svg`}
-          height={32}
-          width={32}
-          alt="icon"
-          className="opacity-70 mr-8"
-        />
+        <h2 className="font-semibold text-xl">
+          Nganterin
+        </h2>
         <Link
           href={`/flights`}
           className="hover:opacity-80 transition-all duration-500"
