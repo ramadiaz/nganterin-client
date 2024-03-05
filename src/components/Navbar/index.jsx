@@ -55,7 +55,7 @@ const Navbar = () => {
           <Popover className="relative">
             {({ open }) => (
               <>
-                <Popover.Button className="group inline-flex items-center rounded-md px-3 py-2 hover:opacity-80 transition-all duration-500">
+                <Popover.Button className="group inline-flex items-center rounded-md px-3 py-2 hover:opacity-80 transition-all duration-500 ring-0">
                   <span>Solutions</span>
                   <ChevronDownIcon
                     className="ml-2 h-5 w-5 transition-all duration-500 group-hover:opacity-80"
