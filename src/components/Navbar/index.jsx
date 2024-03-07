@@ -1,29 +1,65 @@
-import React from "react";
-import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Input, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Avatar} from "@nextui-org/react";
-import {AcmeLogo} from "./AcmeLogo.jsx";
-import {SearchIcon} from "./SearchIcon.jsx";
+'use client'
+
+import React, { useEffect, useRef, useState } from "react";
+import {
+  Navbar,
+  NavbarBrand,
+  NavbarContent,
+  NavbarItem,
+  Link,
+  Input,
+  DropdownItem,
+  DropdownTrigger,
+  Dropdown,
+  DropdownMenu,
+  Avatar,
+} from "@nextui-org/react";
 
 export default function NavbarComponent() {
+  const navbarRef = useRef(null);
+  const [isBlurred, setIsBlurred] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 0) {
+        setIsBlurred(true);
+      } else {
+        setIsBlurred(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
-    <Navbar isBordered>
+    <Navbar isBlurred={false} className={`bg-opacity-0 transition-all duration-500 ${isBlurred ? 'backdrop-blur-md bg-opacity-50 bg-blue-950/30' : ''}`}>
       <NavbarContent justify="start">
         <NavbarBrand className="mr-4">
-          <AcmeLogo />
-          <p className="hidden sm:block font-bold text-inherit">ACME</p>
+          <p className="hidden sm:block font-bold text-inherit text-2xl">
+            Nganterin
+          </p>
         </NavbarBrand>
+      </NavbarContent>
+
+      <NavbarContent justify="center">
         <NavbarContent className="hidden sm:flex gap-3">
           <NavbarItem>
-            <Link color="foreground" href="#">
+            <Link className="text-white" href="#">
               Features
             </Link>
           </NavbarItem>
           <NavbarItem isActive>
-            <Link href="#" aria-current="page" color="secondary">
+            <Link href="#" aria-current="page" className="text-white">
               Customers
             </Link>
           </NavbarItem>
           <NavbarItem>
-            <Link color="foreground" href="#">
+            <Link className="text-white" href="#">
               Integrations
             </Link>
           </NavbarItem>
@@ -31,18 +67,6 @@ export default function NavbarComponent() {
       </NavbarContent>
 
       <NavbarContent as="div" className="items-center" justify="end">
-        <Input
-          classNames={{
-            base: "max-w-full sm:max-w-[10rem] h-10",
-            mainWrapper: "h-full",
-            input: "text-small",
-            inputWrapper: "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
-          }}
-          placeholder="Type to search..."
-          size="sm"
-          startContent={<SearchIcon size={18} />}
-          type="search"
-        />
         <Dropdown placement="bottom-end">
           <DropdownTrigger>
             <Avatar
@@ -55,7 +79,7 @@ export default function NavbarComponent() {
               src="/avatar/default.png"
             />
           </DropdownTrigger>
-          <DropdownMenu aria-label="Profile Actions" variant="flat">
+          <DropdownMenu aria-label="Profile Actions" variant="flat" className="text-black">
             <DropdownItem key="profile" className="h-14 gap-2">
               <p className="font-semibold">Signed in as</p>
               <p className="font-semibold">zoey@example.com</p>
