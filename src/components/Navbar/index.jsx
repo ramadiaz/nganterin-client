@@ -1,70 +1,77 @@
-"use client";
+import React from "react";
+import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Input, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Avatar} from "@nextui-org/react";
+import {AcmeLogo} from "./AcmeLogo.jsx";
+import {SearchIcon} from "./SearchIcon.jsx";
 
-import { BellSimple } from "@phosphor-icons/react";
-import Image from "next/image";
-import Link from "next/link";
-
-const Navbar = () => {
+export default function NavbarComponent() {
   return (
-    <div className="flex flex-row h-32 px-28 items-center justify-between">
-      <div className="flex flex-row items-center gap-4">
-        <Link href={`/`} className="font-semibold text-3xl mr-4">
-          Nganterin
-        </Link>
-        <Link
-          href={`/##`}
-          className="hover:opacity-80 transition-all duration-500"
-        >
-          Flights
-        </Link>
-        <Link
-          href={`/##`}
-          className="hover:opacity-80 transition-all duration-500"
-        >
-          Hotels
-        </Link>
-      </div>
+    <Navbar isBordered>
+      <NavbarContent justify="start">
+        <NavbarBrand className="mr-4">
+          <AcmeLogo />
+          <p className="hidden sm:block font-bold text-inherit">ACME</p>
+        </NavbarBrand>
+        <NavbarContent className="hidden sm:flex gap-3">
+          <NavbarItem>
+            <Link color="foreground" href="#">
+              Features
+            </Link>
+          </NavbarItem>
+          <NavbarItem isActive>
+            <Link href="#" aria-current="page" color="secondary">
+              Customers
+            </Link>
+          </NavbarItem>
+          <NavbarItem>
+            <Link color="foreground" href="#">
+              Integrations
+            </Link>
+          </NavbarItem>
+        </NavbarContent>
+      </NavbarContent>
 
-      <div className="flex flex-row items-center gap-4">
-        <Link
-          href={`/##`}
-          className="hover:opacity-80 transition-all duration-500 text-lg"
-        >
-          Home
-        </Link>
-        <Link
-          href={`/##`}
-          className="hover:opacity-80 transition-all duration-500 text-lg"
-        >
-          Why Nganterin
-        </Link>
-        <Link
-          href={`/##`}
-          className="hover:opacity-80 transition-all duration-500 text-lg"
-        >
-          Contact
-        </Link>
-        <Link
-          href={`/##`}
-          className="hover:opacity-80 transition-all duration-500 text-lg"
-        >
-          FAQ
-        </Link>
-      </div>
-      <div className="flex flex-row items-center gap-6">
-        <Link href={`/##`} className="border-2 rounded-full px-4 py-2 text-sm">
-          List your reservations
-          </Link>
-        <BellSimple size={28} color="#fcfcfc" />
-        <Image
-          src={`/avatar/default.png`}
-          width={45}
-          height={45}
-          className="rounded-full ml-8"
+      <NavbarContent as="div" className="items-center" justify="end">
+        <Input
+          classNames={{
+            base: "max-w-full sm:max-w-[10rem] h-10",
+            mainWrapper: "h-full",
+            input: "text-small",
+            inputWrapper: "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
+          }}
+          placeholder="Type to search..."
+          size="sm"
+          startContent={<SearchIcon size={18} />}
+          type="search"
         />
-      </div>
-    </div>
+        <Dropdown placement="bottom-end">
+          <DropdownTrigger>
+            <Avatar
+              isBordered
+              as="button"
+              className="transition-transform"
+              color="secondary"
+              name="Jason Hughes"
+              size="sm"
+              src="/avatar/default.png"
+            />
+          </DropdownTrigger>
+          <DropdownMenu aria-label="Profile Actions" variant="flat">
+            <DropdownItem key="profile" className="h-14 gap-2">
+              <p className="font-semibold">Signed in as</p>
+              <p className="font-semibold">zoey@example.com</p>
+            </DropdownItem>
+            <DropdownItem key="settings">My Settings</DropdownItem>
+            <DropdownItem key="team_settings">Team Settings</DropdownItem>
+            <DropdownItem key="analytics">Analytics</DropdownItem>
+            <DropdownItem key="system">System</DropdownItem>
+            <DropdownItem key="configurations">Configurations</DropdownItem>
+            <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
+            <DropdownItem key="logout" color="danger">
+              Log Out
+            </DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
+      </NavbarContent>
+    </Navbar>
   );
-};
-
-export default Navbar;
+}
