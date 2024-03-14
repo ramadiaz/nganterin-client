@@ -17,7 +17,6 @@ import {
 import { usePathname } from "next/navigation";
 
 export default function NavbarComponent() {
-  const navbarRef = useRef(null);
   const [isBlurred, setIsBlurred] = useState(false);
   const pathName = usePathname()
 

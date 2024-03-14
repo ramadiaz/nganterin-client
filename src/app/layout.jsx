@@ -15,7 +15,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={`${inter.className}, text-white bg-sky-700 min-h-screen`}>
         <Providers>
-          <div className="sticky top-0 w-full">
+          <div className="sticky top-0 w-full z-50">
             <NavbarComponent />
           </div>
           {children}
