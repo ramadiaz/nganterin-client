@@ -2,21 +2,21 @@
 
 import React from "react";
 import { Typewriter } from "react-simple-typewriter";
+import { Card, Tabs, Tab, CardBody, Input } from "@nextui-org/react";
 import {
-  Card,
-  CardHeader,
-  Tabs,
-  Tab,
-  CardBody,
-  CardFooter,
-  Divider,
-  Link,
-  Image,
-  Input,
-} from "@nextui-org/react";
-import { CalendarCheck, CalendarX, MagnifyingGlass } from "@phosphor-icons/react";
+  CalendarCheck,
+  CalendarX,
+  MagnifyingGlass,
+} from "@phosphor-icons/react";
+import { DateRangePicker } from "react-date-range";
 
 export default function Home() {
+  const selectionRange = {
+    startDate: new Date(),
+    endDate: new Date(),
+    key: "selection",
+  };
+  
   return (
     <div className="">
       <div className="img -mt-16 h-[650px]">
@@ -40,7 +40,7 @@ export default function Home() {
           />
         </div>
       </div>
-      <div className="justify-center flex">
+      <div className="justify-center flex bg-orange-100">
         <Card className="w-[700px] -translate-y-28">
           <CardBody>
             <div className="flex w-full flex-col">
@@ -68,9 +68,7 @@ export default function Home() {
                         <Input
                           variant={"bordered"}
                           placeholder="Holiday Inn & Suites Jakarta Gajah Mada"
-                          startContent={
-                            <CalendarX size={32} color="#2e2e2e" />
-                          }
+                          startContent={<CalendarX size={32} color="#2e2e2e" />}
                           size="lg"
                         />
                       </div>

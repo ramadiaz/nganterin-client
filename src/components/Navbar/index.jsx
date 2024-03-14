@@ -14,10 +14,12 @@ import {
   DropdownMenu,
   Avatar,
 } from "@nextui-org/react";
+import { usePathname } from "next/navigation";
 
 export default function NavbarComponent() {
   const navbarRef = useRef(null);
   const [isBlurred, setIsBlurred] = useState(false);
+  const pathName = usePathname()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -48,19 +50,19 @@ export default function NavbarComponent() {
 
       <NavbarContent justify="center">
         <NavbarContent className="hidden sm:flex gap-3">
-          <NavbarItem>
-            <Link className="text-white" href="#">
-              Features
+          <NavbarItem isActive={pathName.endsWith("/")}>
+            <Link className="text-white" href="/">
+              Discover
             </Link>
           </NavbarItem>
-          <NavbarItem isActive>
-            <Link href="#" aria-current="page" className="text-white">
-              Customers
+          <NavbarItem isActive={pathName.endsWith("/about")}>
+            <Link href="/about" aria-current="page" className="text-white">
+              Why Nganterin
             </Link>
           </NavbarItem>
-          <NavbarItem>
-            <Link className="text-white" href="#">
-              Integrations
+          <NavbarItem isActive={pathName.endsWith("/faq")}>
+            <Link className="text-white" href="/faq">
+              FAQ
             </Link>
           </NavbarItem>
         </NavbarContent>
