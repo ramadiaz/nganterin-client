@@ -1,22 +1,25 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Typewriter } from "react-simple-typewriter";
-import { Card, Tabs, Tab, CardBody, Input } from "@nextui-org/react";
-import {
-  CalendarCheck,
-  CalendarX,
-  MagnifyingGlass,
-} from "@phosphor-icons/react";
-import { DateRangePicker } from "react-date-range";
+import { Card, Tabs, Tab, CardBody, Input, DateInput } from "@nextui-org/react";
+import { CalendarX, MagnifyingGlass } from "@phosphor-icons/react";
+
+import "react-date-range/dist/styles.css"; // main style file
+import "react-date-range/dist/theme/default.css"; // theme css file
+
+import {DateRangePicker} from "@nextui-org/react";
+import {parseDate, getLocalTimeZone} from "@internationalized/date";
+import {useDateFormatter} from "@react-aria/i18n";
 
 export default function Home() {
-  const selectionRange = {
-    startDate: new Date(),
-    endDate: new Date(),
-    key: "selection",
-  };
-  
+  const [value, setValue] = useState({
+    start: parseDate("2024-04-01"),
+    end: parseDate("2024-04-08"),
+  });
+
+  let formatter = useDateFormatter({dateStyle: "long"});
+
   return (
     <div className="">
       <div className="img -mt-16 h-[650px]">
@@ -57,19 +60,17 @@ export default function Home() {
                         size="lg"
                       />
                       <div className="flex flex-row mt-4">
-                        <Input
-                          variant={"bordered"}
-                          placeholder="Holiday Inn & Suites Jakarta Gajah Mada"
-                          startContent={
-                            <CalendarCheck size={32} color="#2e2e2e" />
-                          }
-                          size="lg"
-                        />
-                        <Input
-                          variant={"bordered"}
-                          placeholder="Holiday Inn & Suites Jakarta Gajah Mada"
-                          startContent={<CalendarX size={32} color="#2e2e2e" />}
-                          size="lg"
+                        <DateRangePicker
+                          label="Date range (controlled)"
+                          value={value}
+                          onChange={setValue}
+                          visibleMonths={2}
+                          variant="bordered"
+                          classNames={{ 
+                            base: [
+                              "border-gray-200"
+                            ]
+                           }}
                         />
                       </div>
                     </CardBody>
