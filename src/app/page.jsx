@@ -8,9 +8,10 @@ import { CalendarX, MagnifyingGlass } from "@phosphor-icons/react";
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
 
-import {DateRangePicker} from "@nextui-org/react";
-import {parseDate, getLocalTimeZone} from "@internationalized/date";
-import {useDateFormatter} from "@react-aria/i18n";
+import { DateRangePicker } from "@nextui-org/react";
+import { parseDate, getLocalTimeZone } from "@internationalized/date";
+import { useDateFormatter } from "@react-aria/i18n";
+import Image from "next/image";
 
 export default function Home() {
   const [value, setValue] = useState({
@@ -18,7 +19,7 @@ export default function Home() {
     end: parseDate("2024-04-08"),
   });
 
-  let formatter = useDateFormatter({dateStyle: "long"});
+  let formatter = useDateFormatter({ dateStyle: "long" });
 
   return (
     <div className="">
@@ -43,8 +44,8 @@ export default function Home() {
           />
         </div>
       </div>
-      <div className="justify-center flex bg-orange-100">
-        <Card className="w-[700px] -translate-y-28">
+      <div className="justify-center items-center flex flex-col gap-4 bg-orange-50 pb-24">
+        <Card className="w-[700px] -mt-28">
           <CardBody>
             <div className="flex w-full flex-col">
               <Tabs aria-label="Options" variant="underlined">
@@ -66,11 +67,9 @@ export default function Home() {
                           onChange={setValue}
                           visibleMonths={2}
                           variant="bordered"
-                          classNames={{ 
-                            base: [
-                              "border-gray-200"
-                            ]
-                           }}
+                          classNames={{
+                            base: ["border-gray-200"],
+                          }}
                         />
                       </div>
                     </CardBody>
@@ -100,6 +99,49 @@ export default function Home() {
             </div>
           </CardBody>
         </Card>
+        <div className="flex flex-col justify-center text-black">
+          <h1 className="text-center text-2xl my-4">
+            Top destinations in Indonesia
+          </h1>
+          <div className="flex flex-row justify-center gap-4">
+            <div className="flex flex-col justify-center items-center gap-3">
+              <Image
+                src={`/images/destinations/1_8691_02.jpg`}
+                width={300}
+                height={300}
+                alt="destination 1"
+              />
+              <div className="flex flex-col items-center">
+                <h3>Jakarta</h3>
+                <h4 className="text-xs opacity-80">32,920 acommodations</h4>
+              </div>
+            </div>
+            <div className="flex flex-col justify-center items-center gap-3">
+              <Image
+                src={`/images/destinations/1_17193_02.jpg`}
+                width={300}
+                height={300}
+                alt="destination 1"
+              />
+              <div className="flex flex-col items-center">
+                <h3>Bali</h3>
+                <h4 className="text-xs opacity-80">32,920 acommodations</h4>
+              </div>
+            </div>
+            <div className="flex flex-col justify-center items-center gap-3">
+              <Image
+                src={`/images/destinations/1_18943_02.jpg`}
+                width={300}
+                height={300}
+                alt="destination 1"
+              />
+              <div className="flex flex-col items-center">
+                <h3>Bandung</h3>
+                <h4 className="text-xs opacity-80">32,920 acommodations</h4>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
