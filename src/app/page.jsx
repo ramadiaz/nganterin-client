@@ -99,45 +99,47 @@ export default function Home() {
             </div>
           </CardBody>
         </Card>
-        <div className="flex flex-col justify-center text-black">
-          <h1 className="text-center text-2xl my-4">
-            Top destinations in Indonesia
-          </h1>
-          <div className="flex flex-row justify-center gap-4">
-            <div className="flex flex-col justify-center items-center gap-3">
-              <Image
-                src={`/images/destinations/1_8691_02.jpg`}
-                width={300}
-                height={300}
-                alt="destination 1"
-              />
-              <div className="flex flex-col items-center">
-                <h3>Jakarta</h3>
-                <h4 className="text-xs opacity-80">32,920 acommodations</h4>
+        <div className="max-w-[932px]">
+          <div className="flex flex-col justify-center text-black">
+            <h1 className="text-center text-2xl my-4">
+              Top destinations in Indonesia
+            </h1>
+            <div className="flex flex-row justify-center gap-4">
+              <div className="flex flex-col justify-center items-center gap-3">
+                <Image
+                  src={`/images/destinations/1_8691_02.jpg`}
+                  width={300}
+                  height={300}
+                  alt="destination 1"
+                />
+                <div className="flex flex-col items-center">
+                  <h3>Jakarta</h3>
+                  <h4 className="text-xs opacity-80">32,920 acommodations</h4>
+                </div>
               </div>
-            </div>
-            <div className="flex flex-col justify-center items-center gap-3">
-              <Image
-                src={`/images/destinations/1_17193_02.jpg`}
-                width={300}
-                height={300}
-                alt="destination 1"
-              />
-              <div className="flex flex-col items-center">
-                <h3>Bali</h3>
-                <h4 className="text-xs opacity-80">32,920 acommodations</h4>
+              <div className="flex flex-col justify-center items-center gap-3">
+                <Image
+                  src={`/images/destinations/1_17193_02.jpg`}
+                  width={300}
+                  height={300}
+                  alt="destination 1"
+                />
+                <div className="flex flex-col items-center">
+                  <h3>Bali</h3>
+                  <h4 className="text-xs opacity-80">32,920 acommodations</h4>
+                </div>
               </div>
-            </div>
-            <div className="flex flex-col justify-center items-center gap-3">
-              <Image
-                src={`/images/destinations/1_18943_02.jpg`}
-                width={300}
-                height={300}
-                alt="destination 1"
-              />
-              <div className="flex flex-col items-center">
-                <h3>Bandung</h3>
-                <h4 className="text-xs opacity-80">32,920 acommodations</h4>
+              <div className="flex flex-col justify-center items-center gap-3">
+                <Image
+                  src={`/images/destinations/1_18943_02.jpg`}
+                  width={300}
+                  height={300}
+                  alt="destination 1"
+                />
+                <div className="flex flex-col items-center">
+                  <h3>Bandung</h3>
+                  <h4 className="text-xs opacity-80">32,920 acommodations</h4>
+                </div>
               </div>
             </div>
           </div>
