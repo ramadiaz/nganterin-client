@@ -29,13 +29,9 @@ export default function Home() {
   const [activityKeyword, setActivityKeyword] = useState("");
   const [selectedTab, setSelectedTab] = useState("Hotels & Homes");
   const [departureAirport, setDepartureAirport] = useState("");
-
-  function formatDate(date) {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
-  }
+  const [arrivalAirport, setArrivalAirport] = useState("");
+  const [passenger, setPassenger] = useState(1);
+  const [flightDate, setFlightDate] = useState(parseDate("2024-04-04"));
 
   const today = new Date();
   const threeDaysLater = new Date(today);
@@ -49,12 +45,24 @@ export default function Home() {
     end: parseDate(endDate),
   });
 
-  const [flightDate, setFlightDate] = useState(parseDate("2024-04-04"));
+  function formatDate(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
 
   const handleHotelSearch = (e) => {
     e.preventDefault();
     router.push(
       `/hotel?search=${hotelKeyword}&dateStart=${hotelDate.start}&dateEnd=${hotelDate.end}`
+    );
+  };
+
+  const handleFlightSearch = (e) => {
+    e.preventDefault();
+    router.push(
+      `/flight?date=${flightDate}&departure=${departureAirport}&arrival=${arrivalAirport}`
     );
   };
 
@@ -72,8 +80,10 @@ export default function Home() {
   ];
 
   useEffect(() => {
-    console.log({ departureAirport });
-  }, [departureAirport]);
+    console.log({ passenger });
+  }, [passenger]);
+
+  const passangerTotal = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   return (
     <div className="">
@@ -165,9 +175,9 @@ export default function Home() {
                             <Autocomplete
                               label="Flying to"
                               variant="bordered"
-                              value={departureAirport}
-                              selectedKey={departureAirport}
-                              onSelectionChange={setDepartureAirport}
+                              value={arrivalAirport}
+                              selectedKey={arrivalAirport}
+                              onSelectionChange={setArrivalAirport}
                             >
                               {airport.map((ap) => {
                                 return (
@@ -190,12 +200,26 @@ export default function Home() {
                               variant="bordered"
                               onChange={setFlightDate}
                             />
-                            <Autocomplete label="Passenger" variant="bordered">
-                              {Array.from({ length: 10 }).map((_, index) => (
-                                <AutocompleteItem key={index} value={index + 1}>
-                                  {index + 1}
-                                </AutocompleteItem>
-                              ))}
+                            <Autocomplete
+                              label="Passenger"
+                              variant="bordered"
+                              value={passenger.toString()} // Convert to string
+                              selectedKey={passenger.toString()} // Convert to string
+                              onSelectionChange={(value) =>
+                                setPassenger(parseInt(value))
+                              } // Parse to integer
+                            >
+                              {passangerTotal.map((size) => {
+                                return (
+                                  <AutocompleteItem
+                                    className="text-black"
+                                    key={size}
+                                    value={size.toString()} // Convert to string
+                                  >
+                                    {size}
+                                  </AutocompleteItem>
+                                );
+                              })}
                             </Autocomplete>
                           </div>
                         </div>
@@ -242,6 +266,18 @@ export default function Home() {
                   <Button
                     size="lg"
                     className="bg-blue-500 text-white w-64 h-16 "
+                    onClick={handleFlightSearch}
+                  >
+                    Search
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <div className="h-8">
+                <div className="absolute right-1/2 translate-x-1/2 bottom-0 translate-y-1/2">
+                  <Button
+                    size="lg"
+                    className="bg-blue-500 text-white w-64 h-16 "
                     onClick={(e) => {
                       e.preventDefault();
                       alert("hai");
@@ -251,7 +287,7 @@ export default function Home() {
                   </Button>
                 </div>
               </div>
-            ) : null}
+            )}
           </form>
         </Card>
         <div className="max-w-[932px] mt-14">
