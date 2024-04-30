@@ -14,9 +14,11 @@ import {
   DatePicker,
 } from "@nextui-org/react";
 import { MagnifyingGlass, Path } from "@phosphor-icons/react";
+import { Carousel } from "react-responsive-carousel";
 
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 import { DateRangePicker } from "@nextui-org/react";
 import { parseDate } from "@internationalized/date";
@@ -77,6 +79,29 @@ export default function Home() {
     { name: "Bandara Internasional Sultan Aji Muhammad Sulaiman", code: "BPN" },
     { name: "Bandara Internasional El Tari", code: "KOE" },
     { name: "Bandara Internasional Minangkabau", code: "PDG" },
+  ];
+
+  const promotions = [
+    {
+      name: "1",
+      path: "/images/promotions/1.png",
+    },
+    {
+      name: "2",
+      path: "/images/promotions/2.png",
+    },
+    {
+      name: "3",
+      path: "/images/promotions/3.png",
+    },
+    {
+      name: "4",
+      path: "/images/promotions/4.png",
+    },
+    {
+      name: "5",
+      path: "/images/promotions/5.png",
+    },
   ];
 
   useEffect(() => {
@@ -290,7 +315,7 @@ export default function Home() {
             )}
           </form>
         </Card>
-        <div className="max-w-[932px] mt-14">
+        <div className="max-w-[932px] mt-14 flex flex-col gap-14">
           <div className="flex flex-col justify-center text-black">
             <h1 className="text-center text-2xl my-4">
               Top destinations in Indonesia
@@ -332,6 +357,22 @@ export default function Home() {
                   <h4 className="text-xs opacity-80">32,920 acommodations</h4>
                 </div>
               </div>
+            </div>
+          </div>
+          <div className="flex flex-col justify-center text-black">
+            <h1 className="text-center text-2xl my-4">
+              Acommodation Promotions
+            </h1>
+            <div className="w-max mx-auto">
+              <Carousel width={600} transitionTime={3} autoPlay interval={3000} showStatus={false} infiniteLoop>
+                {promotions.map((promo) => {
+                  return (
+                    <div>
+                      <Image src={promo.path} width={400} height={200} />
+                    </div>
+                  );
+                })}
+              </Carousel>
             </div>
           </div>
         </div>
