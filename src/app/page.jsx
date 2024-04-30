@@ -363,12 +363,12 @@ export default function Home() {
             <h1 className="text-center text-2xl my-4">
               Acommodation Promotions
             </h1>
-            <div className="w-max mx-auto">
+            <div className="w-max mx-auto rounded-xl overflow-hidden h-max shadow-md shadow-black/50">
               <Carousel width={600} transitionTime={3} autoPlay interval={3000} showStatus={false} infiniteLoop>
                 {promotions.map((promo) => {
                   return (
                     <div>
-                      <Image src={promo.path} width={400} height={200} />
+                      <Image src={promo.path} width={400} height={200} className="bg-cover" />
                     </div>
                   );
                 })}
