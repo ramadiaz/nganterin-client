@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import React, { useEffect, useRef, useState } from "react";
 import {
@@ -18,7 +18,7 @@ import { usePathname } from "next/navigation";
 
 export default function NavbarComponent() {
   const [isBlurred, setIsBlurred] = useState(false);
-  const pathName = usePathname()
+  const pathName = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -38,12 +38,19 @@ export default function NavbarComponent() {
   }, []);
 
   return (
-    <Navbar isBlurred={false} className={`bg-opacity-0 transition-all duration-500 ${isBlurred ? 'backdrop-blur-md bg-opacity-50 bg-blue-950/30' : ''}`}>
+    <Navbar
+      isBlurred={false}
+      className={`bg-opacity-0 transition-all duration-500 ${
+        isBlurred ? "backdrop-blur-md bg-opacity-50 bg-blue-950/30" : ""
+      }`}
+    >
       <NavbarContent justify="start">
         <NavbarBrand className="mr-4">
-          <p className="hidden sm:block font-bold text-inherit text-2xl">
-            Nganterin
-          </p>
+          <Link href="/">
+            <p className="hidden sm:block font-bold text-inherit text-2xl text-white">
+              Nganterin
+            </p>
+          </Link>
         </NavbarBrand>
       </NavbarContent>
 
@@ -80,7 +87,11 @@ export default function NavbarComponent() {
               src="/avatar/default.png"
             />
           </DropdownTrigger>
-          <DropdownMenu aria-label="Profile Actions" variant="flat" className="text-black">
+          <DropdownMenu
+            aria-label="Profile Actions"
+            variant="flat"
+            className="text-black"
+          >
             <DropdownItem key="profile" className="h-14 gap-2">
               <p className="font-semibold">Signed in as</p>
               <p className="font-semibold">zoey@example.com</p>

@@ -90,6 +90,9 @@ const Page = () => {
           </div>
         </div>
       </div>
+      <div className="h-24 bg-gradient-to-b from-orange-100 to-orange-50 from-10%">
+
+      </div>
     </div>
   );
 };
