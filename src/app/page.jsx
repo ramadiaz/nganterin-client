@@ -1,9 +1,19 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Typewriter } from "react-simple-typewriter";
-import { Card, Tabs, Tab, CardBody, Input, Button } from "@nextui-org/react";
-import { MagnifyingGlass } from "@phosphor-icons/react";
+import {
+  Card,
+  Tabs,
+  Tab,
+  CardBody,
+  Input,
+  Button,
+  Autocomplete,
+  AutocompleteItem,
+  DatePicker,
+} from "@nextui-org/react";
+import { MagnifyingGlass, Path } from "@phosphor-icons/react";
 
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
@@ -17,20 +27,36 @@ import { useRouter } from "next/navigation";
 export default function Home() {
   const router = useRouter();
   const [keyword, setKeyword] = useState("");
+  const [selectedTab, setSelectedTab] = useState("Hotels & Homes");
 
-  const [date, setDate] = useState({
+  const [hotelDate, setHotelDate] = useState({
     start: parseDate("2024-04-01"),
     end: parseDate("2024-04-08"),
   });
+
+  const [flightDate, setFlightDate] = useState(parseDate("2024-04-04"));
 
   let formatter = useDateFormatter({ dateStyle: "long" });
 
   const handleHotelSearch = (e) => {
     e.preventDefault();
     router.push(
-      `/hotel?search=${keyword}&dateStart=${date.start}&dateEnd=${date.end}`
+      `/hotel?search=${keyword}&dateStart=${hotelDate.start}&dateEnd=${hotelDate.end}`
     );
   };
+
+  const airport = [
+    { name: "Bandara Internasional Soekarno-Hatta", code: "CGK" },
+    { name: "Bandara Internasional Ngurah Rai", code: "DPS" },
+    { name: "Bandara Internasional Juanda", code: "SUB" },
+    { name: "Bandara Internasional Sultan Hasanuddin", code: "UPG" },
+    { name: "Bandara Internasional Adisutjipto", code: "JOG" },
+    { name: "Bandara Internasional Adi Soemarmo", code: "SOC" },
+    { name: "Bandara Internasional Kualanamu", code: "KNO" },
+    { name: "Bandara Internasional Sultan Aji Muhammad Sulaiman", code: "BPN" },
+    { name: "Bandara Internasional El Tari", code: "KOE" },
+    { name: "Bandara Internasional Minangkabau", code: "PDG" },
+  ];
 
   return (
     <div className="">
@@ -60,7 +86,12 @@ export default function Home() {
           <form className="relative">
             <CardBody>
               <div className="flex w-full flex-col">
-                <Tabs aria-label="Options" variant="underlined">
+                <Tabs
+                  aria-label="Options"
+                  variant="underlined"
+                  selectedKey={selectedTab}
+                  onSelectionChange={setSelectedTab}
+                >
                   <Tab key="Hotels & Homes" title="Hotels & Homes">
                     <Card>
                       <CardBody>
@@ -77,8 +108,8 @@ export default function Home() {
                         <div className="flex flex-row mt-4">
                           <DateRangePicker
                             label="Vacation Time"
-                            value={date}
-                            onChange={setDate}
+                            value={hotelDate}
+                            onChange={setHotelDate}
                             visibleMonths={2}
                             variant="bordered"
                             classNames={{
@@ -92,10 +123,44 @@ export default function Home() {
                   <Tab key="Flights" title="Flights">
                     <Card>
                       <CardBody>
-                        Ut enim ad minim veniam, quis nostrud exercitation
-                        ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                        Duis aute irure dolor in reprehenderit in voluptate
-                        velit esse cillum dolore eu fugiat nulla pariatur.
+                        <div className="flex flex-col gap-4">
+                          <div className="w-full h-10 flex flex-row justify-center items-center gap-3">
+                            <Autocomplete
+                              label="Flying from"
+                              variant="bordered"
+                            >
+                              {airport.map((ap, index) => {
+                                <AutocompleteItem key={index} value={ap.code}>
+                                  {ap.name}
+                                </AutocompleteItem>;
+                              })}
+                            </Autocomplete>
+                            <Path size={60} weight="bold" />
+                            <Autocomplete label="Flying to" variant="bordered">
+                              {airport.map((ap, index) => {
+                                <AutocompleteItem key={index} value={ap.code}>
+                                  {ap.name}
+                                </AutocompleteItem>;
+                              })}
+                            </Autocomplete>
+                          </div>
+                          <div className="flex flex-row gap-4">
+                            <DatePicker
+                              className=""
+                              label="Departure Date"
+                              value={flightDate}
+                              variant="bordered"
+                              onChange={setFlightDate}
+                            />
+                            <Autocomplete label="Passenger" variant="bordered">
+                              {Array.from({ length: 10 }).map((_, index) => (
+                                <AutocompleteItem key={index} value={index + 1}>
+                                  {index + 1}
+                                </AutocompleteItem>
+                              ))}
+                            </Autocomplete>
+                          </div>
+                        </div>
                       </CardBody>
                     </Card>
                   </Tab>
