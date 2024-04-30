@@ -2,14 +2,14 @@
 
 import React, { useState } from "react";
 import { Typewriter } from "react-simple-typewriter";
-import { Card, Tabs, Tab, CardBody, Input, DateInput } from "@nextui-org/react";
-import { CalendarX, MagnifyingGlass } from "@phosphor-icons/react";
+import { Card, Tabs, Tab, CardBody, Input } from "@nextui-org/react";
+import { MagnifyingGlass } from "@phosphor-icons/react";
 
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
 
 import { DateRangePicker } from "@nextui-org/react";
-import { parseDate, getLocalTimeZone } from "@internationalized/date";
+import { parseDate } from "@internationalized/date";
 import { useDateFormatter } from "@react-aria/i18n";
 import Image from "next/image";
 
@@ -62,7 +62,7 @@ export default function Home() {
                       />
                       <div className="flex flex-row mt-4">
                         <DateRangePicker
-                          label="Date range (controlled)"
+                          label="Vacation Time"
                           value={value}
                           onChange={setValue}
                           visibleMonths={2}
