@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { Typewriter } from "react-simple-typewriter";
-import { Card, Tabs, Tab, CardBody, Input } from "@nextui-org/react";
+import { Card, Tabs, Tab, CardBody, Input, Button } from "@nextui-org/react";
 import { MagnifyingGlass } from "@phosphor-icons/react";
 
 import "react-date-range/dist/styles.css"; // main style file
@@ -12,14 +12,25 @@ import { DateRangePicker } from "@nextui-org/react";
 import { parseDate } from "@internationalized/date";
 import { useDateFormatter } from "@react-aria/i18n";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
-  const [value, setValue] = useState({
+  const router = useRouter();
+  const [keyword, setKeyword] = useState("");
+
+  const [date, setDate] = useState({
     start: parseDate("2024-04-01"),
     end: parseDate("2024-04-08"),
   });
 
   let formatter = useDateFormatter({ dateStyle: "long" });
+
+  const handleHotelSearch = (e) => {
+    e.preventDefault();
+    router.push(
+      `/hotel?search=${keyword}&dateStart=${date.start}&dateEnd=${date.end}`
+    );
+  };
 
   return (
     <div className="">
@@ -45,61 +56,79 @@ export default function Home() {
         </div>
       </div>
       <div className="justify-center items-center flex flex-col gap-4 bg-orange-50 pb-24">
-        <Card className="w-[700px] -mt-28">
-          <CardBody>
-            <div className="flex w-full flex-col">
-              <Tabs aria-label="Options" variant="underlined">
-                <Tab key="Hotels & Homes" title="Hotels & Homes">
-                  <Card>
-                    <CardBody>
-                      <Input
-                        variant={"bordered"}
-                        placeholder="Holiday Inn & Suites Jakarta Gajah Mada"
-                        startContent={
-                          <MagnifyingGlass size={32} color="#2e2e2e" />
-                        }
-                        size="lg"
-                      />
-                      <div className="flex flex-row mt-4">
-                        <DateRangePicker
-                          label="Vacation Time"
-                          value={value}
-                          onChange={setValue}
-                          visibleMonths={2}
-                          variant="bordered"
-                          classNames={{
-                            base: ["border-gray-200"],
-                          }}
+        <Card className="w-[700px] -mt-28 overflow-visible">
+          <form className="relative">
+            <CardBody>
+              <div className="flex w-full flex-col">
+                <Tabs aria-label="Options" variant="underlined">
+                  <Tab key="Hotels & Homes" title="Hotels & Homes">
+                    <Card>
+                      <CardBody>
+                        <Input
+                          variant={"bordered"}
+                          placeholder="Holiday Inn & Suites Jakarta Gajah Mada"
+                          startContent={
+                            <MagnifyingGlass size={32} color="#2e2e2e" />
+                          }
+                          size="lg"
+                          value={keyword}
+                          onChange={(e) => setKeyword(e.target.value)}
                         />
-                      </div>
-                    </CardBody>
-                  </Card>
-                </Tab>
-                <Tab key="Flights" title="Flights">
-                  <Card>
-                    <CardBody>
-                      Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                      laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                      irure dolor in reprehenderit in voluptate velit esse
-                      cillum dolore eu fugiat nulla pariatur.
-                    </CardBody>
-                  </Card>
-                </Tab>
-                <Tab key="Activities" title="Activities">
-                  <Card>
-                    <CardBody>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                      sed do eiusmod tempor incididunt ut labore et dolore magna
-                      aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                      ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                    </CardBody>
-                  </Card>
-                </Tab>
-              </Tabs>
+                        <div className="flex flex-row mt-4">
+                          <DateRangePicker
+                            label="Vacation Time"
+                            value={date}
+                            onChange={setDate}
+                            visibleMonths={2}
+                            variant="bordered"
+                            classNames={{
+                              base: ["border-gray-200"],
+                            }}
+                          />
+                        </div>
+                      </CardBody>
+                    </Card>
+                  </Tab>
+                  <Tab key="Flights" title="Flights">
+                    <Card>
+                      <CardBody>
+                        Ut enim ad minim veniam, quis nostrud exercitation
+                        ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                        Duis aute irure dolor in reprehenderit in voluptate
+                        velit esse cillum dolore eu fugiat nulla pariatur.
+                      </CardBody>
+                    </Card>
+                  </Tab>
+                  <Tab key="Activities" title="Activities">
+                    <Card>
+                      <CardBody>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat.
+                      </CardBody>
+                    </Card>
+                  </Tab>
+                </Tabs>
+              </div>
+            </CardBody>
+
+            <div className="h-8">
+              <div className="absolute right-1/2 translate-x-1/2 bottom-0 translate-y-1/2">
+                <Button
+                  size="lg"
+                  type="submit"
+                  className="bg-blue-500 text-white w-64 h-16 "
+                  onClick={handleHotelSearch}
+                >
+                  Search
+                </Button>
+              </div>
             </div>
-          </CardBody>
+          </form>
         </Card>
-        <div className="max-w-[932px]">
+        <div className="max-w-[932px] mt-14">
           <div className="flex flex-col justify-center text-black">
             <h1 className="text-center text-2xl my-4">
               Top destinations in Indonesia
