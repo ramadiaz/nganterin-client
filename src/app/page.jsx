@@ -29,9 +29,23 @@ export default function Home() {
   const [keyword, setKeyword] = useState("");
   const [selectedTab, setSelectedTab] = useState("Hotels & Homes");
 
+  function formatDate(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
+
+  const today = new Date();
+  const threeDaysLater = new Date(today);
+  threeDaysLater.setDate(today.getDate() + 3);
+
+  const startDate = formatDate(today);
+  const endDate = formatDate(threeDaysLater);
+
   const [hotelDate, setHotelDate] = useState({
-    start: parseDate("2024-04-01"),
-    end: parseDate("2024-04-08"),
+    start: parseDate(startDate),
+    end: parseDate(endDate),
   });
 
   const [flightDate, setFlightDate] = useState(parseDate("2024-04-04"));
@@ -178,19 +192,35 @@ export default function Home() {
                 </Tabs>
               </div>
             </CardBody>
-
-            <div className="h-8">
-              <div className="absolute right-1/2 translate-x-1/2 bottom-0 translate-y-1/2">
-                <Button
-                  size="lg"
-                  type="submit"
-                  className="bg-blue-500 text-white w-64 h-16 "
-                  onClick={handleHotelSearch}
-                >
-                  Search
-                </Button>
+            {selectedTab === "Hotels & Homes" ? (
+              <div className="h-8">
+                <div className="absolute right-1/2 translate-x-1/2 bottom-0 translate-y-1/2">
+                  <Button
+                    size="lg"
+                    type="submit"
+                    className="bg-blue-500 text-white w-64 h-16 "
+                    onClick={handleHotelSearch}
+                  >
+                    Search
+                  </Button>
+                </div>
               </div>
-            </div>
+            ) : selectedTab === "Flights" ? (
+              <div className="h-8">
+                <div className="absolute right-1/2 translate-x-1/2 bottom-0 translate-y-1/2">
+                  <Button
+                    size="lg"
+                    className="bg-blue-500 text-white w-64 h-16 "
+                    onClick={(e) => {
+                      e.preventDefault();
+                      alert("hai");
+                    }}
+                  >
+                    Search
+                  </Button>
+                </div>
+              </div>
+            ) : null}
           </form>
         </Card>
         <div className="max-w-[932px] mt-14">
