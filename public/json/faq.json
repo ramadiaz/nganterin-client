@@ -1,0 +1,96 @@
+{
+    "data": [
+        {
+            "question": "How can I make a flight reservation?",
+            "answer": "To make a flight reservation, you can visit our website and use the search feature to find available flights. Once you've selected your desired flight, you can proceed with the booking process."
+        },
+        {
+            "question": "Can I cancel or modify my hotel reservation?",
+            "answer": "Yes, you can cancel or modify your hotel reservation depending on the hotel's cancellation policy. Please refer to the terms and conditions of your booking for more information."
+        },
+        {
+            "question": "What payment methods do you accept?",
+            "answer": "We accept various payment methods, including credit cards, debit cards, and online payment gateways. You can choose the payment method that is most convenient for you during the booking process."
+        },
+        {
+            "question": "Is there a fee for changing my flight reservation?",
+            "answer": "Yes, there may be a fee for changing your flight reservation, depending on the airline's policies and the type of ticket you purchased. Please check with the airline for more information."
+        },
+        {
+            "question": "How far in advance should I book my hotel room?",
+            "answer": "It's recommended to book your hotel room as far in advance as possible, especially during peak travel seasons or for popular destinations. This ensures you get the best availability and rates."
+        },
+        {
+            "question": "Can I request a specific seat on my flight?",
+            "answer": "Yes, you can request a specific seat on your flight, such as a window seat or an aisle seat. However, seat availability is subject to the airline's policies and may require an additional fee."
+        },
+        {
+            "question": "What should I do if I miss my flight?",
+            "answer": "If you miss your flight, you should contact the airline as soon as possible to see if you can be accommodated on a later flight. Keep in mind that there may be fees or fare differences for rebooking."
+        },
+        {
+            "question": "Do you offer travel insurance?",
+            "answer": "Yes, we offer travel insurance as an optional add-on to your reservation. Travel insurance can provide coverage for trip cancellations, medical emergencies, and other unforeseen events."
+        },
+        {
+            "question": "Can I make a reservation for someone else?",
+            "answer": "Yes, you can make a reservation for someone else. During the booking process, you'll have the option to enter the traveler's details and contact information."
+        },
+        {
+            "question": "What documents do I need to bring for my trip?",
+            "answer": "For international travel, you'll typically need a valid passport and any required visas. For domestic travel, a government-issued ID such as a driver's license or ID card is usually sufficient. It's also a good idea to check if you need any specific documents for your destination."
+        },
+        {
+            "question": "Can I earn loyalty points for my bookings?",
+            "answer": "Yes, you can earn loyalty points for your bookings, depending on the airline or hotel's loyalty program. Make sure to enter your loyalty program information during the booking process to ensure you receive your points."
+        },
+        {
+            "question": "What should I do if I have special requests or requirements?",
+            "answer": "If you have special requests or requirements, such as dietary restrictions, wheelchair assistance, or special accommodations, please contact us or the airline/hotel directly to make arrangements."
+        },
+        {
+            "question": "Are there any discounts available for group bookings?",
+            "answer": "Yes, we offer discounts for group bookings depending on the size of the group and the specific requirements. Please contact us for more information and to request a quote."
+        },
+        {
+            "question": "Can I add extra baggage to my flight reservation?",
+            "answer": "Yes, you can add extra baggage to your flight reservation, but additional fees may apply. It's recommended to add extra baggage at the time of booking or before your departure to avoid higher fees at the airport."
+        },
+        {
+            "question": "What is your cancellation policy?",
+            "answer": "Our cancellation policy varies depending on the airline, hotel, or other travel service providers. Please refer to the terms and conditions of your booking for specific cancellation policies and any applicable fees."
+        },
+        {
+            "question": "Do you offer airport transfer services?",
+            "answer": "Yes, we offer airport transfer services as an optional add-on to your reservation. Airport transfer services can provide convenient transportation between the airport and your hotel."
+        },
+        {
+            "question": "Can I book a one-way flight or hotel reservation?",
+            "answer": "Yes, you can book a one-way flight or hotel reservation. During the booking process, simply select 'one-way' instead of 'round-trip' for your travel itinerary."
+        },
+        {
+            "question": "Are there any travel restrictions or requirements I should be aware of?",
+            "answer": "Travel restrictions and requirements vary by destination and may include visa requirements, health screenings, or quarantine measures. It's important to check the latest travel advisories and requirements for your destination before you travel."
+        },
+        {
+            "question": "What should I do if my flight is delayed or canceled?",
+            "answer": "If your flight is delayed or canceled, you should contact the airline as soon as possible for rebooking or refund options. You may also be entitled to compensation depending on the circumstances."
+        },
+        {
+            "question": "Do you offer travel packages or bundled deals?",
+            "answer": "Yes, we offer travel packages and bundled deals that include flights, hotels, and other services. These packages can offer savings compared to booking each component separately."
+        },
+        {
+            "question": "Can I book a hotel room without a credit card?",
+            "answer": "Some hotels may allow you to book a room without a credit card, but you may be required to provide a deposit or other form of payment. It's best to check with the hotel directly for their booking policies."
+        },
+        {
+            "question": "How can I contact customer support?",
+            "answer": "You can contact our customer support team via email, phone, or live chat. Our customer support team is available to assist you with any questions or issues you may have regarding your reservation."
+        },
+        {
+            "question": "What should I do if I have a complaint or feedback?",
+            "answer": "If you have a complaint or feedback, please contact our customer support team or fill out our feedback form. We take customer feedback seriously and use it to improve our services."
+        }
+    ]
+}

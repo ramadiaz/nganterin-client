@@ -1,10 +1,13 @@
-'use client'
+"use client";
 
 import Image from "next/image";
+import faq from "/public/json/faq.json";
 
 import AOS from "aos";
 import "aos/dist/aos.css";
+
 import { useEffect } from "react";
+import { Accordion, AccordionItem } from "@nextui-org/react";
 
 const Page = () => {
   useEffect(() => {
@@ -12,8 +15,8 @@ const Page = () => {
   });
 
   return (
-    <div className="min-h-screen bg-orange-50">
-      <div className="w-3/4 mx-auto">
+    <div className="min-h-screen bg-orange-50 py-20">
+      <div className="w-1/2 mx-auto">
         <div
           className="flex flex-row justify-center items-center gap-4"
           data-aos="fade-up"
@@ -24,6 +27,58 @@ const Page = () => {
             <h3 className="text-sky-700">Frequently Asked Questions (?)</h3>
           </div>
         </div>
+        <Accordion
+          defaultExpandedKeys={["1"]}
+          motionProps={{
+            variants: {
+              enter: {
+                y: 0,
+                opacity: 1,
+                height: "auto",
+                transition: {
+                  height: {
+                    type: "spring",
+                    stiffness: 500,
+                    damping: 30,
+                    duration: 1,
+                  },
+                  opacity: {
+                    easings: "ease",
+                    duration: 1,
+                  },
+                },
+              },
+              exit: {
+                y: -10,
+                opacity: 0,
+                height: 0,
+                transition: {
+                  height: {
+                    easings: "ease",
+                    duration: 0.25,
+                  },
+                  opacity: {
+                    easings: "ease",
+                    duration: 0.3,
+                  },
+                },
+              },
+            },
+          }}
+        >
+          {faq.data.map((data, index) => {
+            return (
+              <AccordionItem
+                key={index}
+                aria-label={data.question}
+                title={data.question}
+                className="text-black"
+              >
+                {data.answer}
+              </AccordionItem>
+            );
+          })}
+        </Accordion>
       </div>
     </div>
   );
