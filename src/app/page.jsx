@@ -364,7 +364,7 @@ export default function Home() {
               Acommodation Promotions
             </h1>
             <div className="w-max mx-auto rounded-xl overflow-hidden h-max shadow-md shadow-black/50">
-              <Carousel width={600} transitionTime={3} autoPlay interval={3000} showStatus={false} infiniteLoop>
+              <Carousel width={600} transitionTime={3} autoPlay interval={3000} showStatus={false} infiniteLoop showThumbs={false}>
                 {promotions.map((promo) => {
                   return (
                     <div>

@@ -37,12 +37,20 @@ export default function NavbarComponent() {
     };
   }, []);
 
+  `bg-opacity-0 transition-all duration-500 ${
+    isBlurred ? "backdrop-blur-md bg-opacity-50 bg-blue-950/30" : ""
+  }`;
+
   return (
     <Navbar
       isBlurred={false}
-      className={`bg-opacity-0 transition-all duration-500 ${
-        isBlurred ? "backdrop-blur-md bg-opacity-50 bg-blue-950/30" : ""
-      }`}
+      className={
+        pathName.endsWith("/") || pathName.endsWith("/about")
+          ? `bg-opacity-0 transition-all duration-500 ${
+              isBlurred ? "backdrop-blur-md bg-opacity-50 bg-blue-950/30" : ""
+            }`
+          : `bg-sky-700`
+      }
     >
       <NavbarContent justify="start">
         <NavbarBrand className="mr-4">
