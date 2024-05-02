@@ -1,15 +1,15 @@
-'use client'
+"use client";
 
-import { useSearchParams } from "next/navigation"
+import { useSearchParams } from "next/navigation";
 
 const Page = () => {
-    const searchValue = useSearchParams().get('search')
-    console.log({searchValue})
+  const searchValue = useSearchParams().get("search");
+  const dateStart = useSearchParams().get("dateStart");
+  const dateEnd = useSearchParams().get("dateEnd");
 
-    return (
-        <></>
-    )
+  return (
+    <></>
+  )
+};
 
-}
-
-export default Page
+export default Page;
