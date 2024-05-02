@@ -20,6 +20,9 @@ import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
+import AOS from "aos";
+import "aos/dist/aos.css";
+
 import { DateRangePicker } from "@nextui-org/react";
 import { parseDate } from "@internationalized/date";
 import Image from "next/image";
@@ -108,13 +111,17 @@ export default function Home() {
     console.log({ passenger });
   }, [passenger]);
 
+  useEffect(() => {
+    AOS.init({ duration: 1200 });
+  });
+
   const passangerTotal = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   return (
     <div className="">
       <div className="img -mt-16 h-[650px]">
-        <h4 className="text-center pt-32">It's time to vacation 🚀</h4>
-        <div className="text-center mt-12 text-6xl md:text-7xl lg:text-8xl font-bold">
+        <h4 className="text-center pt-32" data-aos="fade-up">It's time to vacation 🚀</h4>
+        <div className="text-center mt-12 text-6xl md:text-7xl lg:text-8xl font-bold" data-aos="fade-up">
           <h1 className="mb-4">Discover the World's</h1>
           Most{" "}
           <Typewriter
