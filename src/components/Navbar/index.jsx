@@ -12,11 +12,14 @@ import {
   Dropdown,
   DropdownMenu,
   Avatar,
+  Button,
 } from "@nextui-org/react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import Cookies from "js-cookie";
 
 export default function NavbarComponent() {
+  const token = Cookies.get("token");
   const [isBlurred, setIsBlurred] = useState(false);
   const pathName = usePathname();
 
@@ -85,32 +88,65 @@ export default function NavbarComponent() {
       <NavbarContent as="div" className="items-center" justify="end">
         <Dropdown placement="bottom-end">
           <DropdownTrigger>
-            <Avatar
-              isBordered
-              as="button"
-              className="transition-transform"
-              color="secondary"
-              name="Jason Hughes"
-              size="sm"
-              src="/avatar/default.png"
-            />
+            {token ? (
+              <Avatar
+                isBordered
+                as="button"
+                className="transition-transform"
+                color="secondary"
+                name="Jason Hughes"
+                size="sm"
+                src="/avatar/default.png"
+              />
+            ) : (
+              <Button variant="flat" className="bg-white text-sky-700">
+                Sign in
+              </Button>
+            )}
           </DropdownTrigger>
-          <DropdownMenu
-            aria-label="Profile Actions"
-            variant="flat"
-            className="text-black"
-          >
-            <DropdownItem key="profile" className="h-14 gap-2" disabled >
-              <p className="font-semibold">Signed in as</p>
-              <p className="font-semibold">zoey@example.com</p>
-            </DropdownItem>
-            <DropdownItem key="settings" as={Link} href="/profile">My Profile</DropdownItem>
-            <DropdownItem key="team_settings">Order History</DropdownItem>
-            <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
-            <DropdownItem key="logout" color="danger">
-              Log Out
-            </DropdownItem>
-          </DropdownMenu>
+          {token ? (
+            <DropdownMenu
+              aria-label="Profile Actions"
+              variant="flat"
+              className="text-black"
+            >
+              <DropdownItem key="profile" className="h-14 gap-2" disabled>
+                <p className="font-semibold">Signed in as</p>
+                <p className="font-semibold">zoey@example.com</p>
+              </DropdownItem>
+              <DropdownItem key="settings" as={Link} href="/profile">
+                My Profile
+              </DropdownItem>
+              <DropdownItem key="team_settings">Order History</DropdownItem>
+              <DropdownItem key="help_and_feedback">
+                Help & Feedback
+              </DropdownItem>
+              <DropdownItem key="logout" color="danger">
+                Log Out
+              </DropdownItem>
+            </DropdownMenu>
+          ) : (
+            <DropdownMenu
+              aria-label="Profile Actions"
+              variant="flat"
+              className="text-black"
+            >
+              <DropdownItem key="profile" className="h-14 gap-2" disabled>
+                <p className="font-semibold">Signed in as</p>
+                <p className="font-semibold">zoey@example.com</p>
+              </DropdownItem>
+              <DropdownItem key="settings" as={Link} href="/profile">
+                My Profile
+              </DropdownItem>
+              <DropdownItem key="team_settings">Order History</DropdownItem>
+              <DropdownItem key="help_and_feedback">
+                Help & Feedback
+              </DropdownItem>
+              <DropdownItem key="logout" color="danger">
+                Log Out
+              </DropdownItem>
+            </DropdownMenu>
+          )}
         </Dropdown>
       </NavbarContent>
     </Navbar>
