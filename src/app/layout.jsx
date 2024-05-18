@@ -21,7 +21,7 @@ export default function RootLayout({ children }) {
           <div className="sticky top-0 w-full z-50">
             <NavbarComponent />
           </div>
-          {children}
+          <div className="min-h-screen">{children}</div>
           <Footer />
         </Providers>
       </body>
