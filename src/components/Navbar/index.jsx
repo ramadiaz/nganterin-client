@@ -1,12 +1,11 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Navbar,
   NavbarBrand,
   NavbarContent,
   NavbarItem,
-  Input,
   DropdownItem,
   DropdownTrigger,
   Dropdown,
@@ -19,7 +18,7 @@ import Link from "next/link";
 import Cookies from "js-cookie";
 
 export default function NavbarComponent() {
-  const token = Cookies.get("token");
+  const [token, setToken] = useState();
   const [isBlurred, setIsBlurred] = useState(false);
   const pathName = usePathname();
 
@@ -40,9 +39,20 @@ export default function NavbarComponent() {
     };
   }, []);
 
-  `bg-opacity-0 transition-all duration-500 ${
-    isBlurred ? "backdrop-blur-md bg-opacity-50 bg-blue-950/30" : ""
-  }`;
+  const getCookies = () => {
+    try {
+      const token = Cookies.get("token");
+      if (token) {
+        setToken(token);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    getCookies();
+  }, []);
 
   return (
     <Navbar
@@ -131,19 +141,11 @@ export default function NavbarComponent() {
               variant="flat"
               className="text-black"
             >
-              <DropdownItem key="profile" className="h-14 gap-2" disabled>
-                <p className="font-semibold">Signed in as</p>
-                <p className="font-semibold">zoey@example.com</p>
+              <DropdownItem key="settings" as={Link} href="/" className="font-semibold">
+                Sign in with Google
               </DropdownItem>
-              <DropdownItem key="settings" as={Link} href="/profile">
-                My Profile
-              </DropdownItem>
-              <DropdownItem key="team_settings">Order History</DropdownItem>
               <DropdownItem key="help_and_feedback">
                 Help & Feedback
-              </DropdownItem>
-              <DropdownItem key="logout" color="danger">
-                Log Out
               </DropdownItem>
             </DropdownMenu>
           )}
