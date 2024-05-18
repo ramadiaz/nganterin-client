@@ -6,7 +6,6 @@ import {
   NavbarBrand,
   NavbarContent,
   NavbarItem,
-  Link,
   Input,
   DropdownItem,
   DropdownTrigger,
@@ -15,6 +14,7 @@ import {
   Avatar,
 } from "@nextui-org/react";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 export default function NavbarComponent() {
   const [isBlurred, setIsBlurred] = useState(false);
@@ -100,15 +100,12 @@ export default function NavbarComponent() {
             variant="flat"
             className="text-black"
           >
-            <DropdownItem key="profile" className="h-14 gap-2">
+            <DropdownItem key="profile" className="h-14 gap-2" disabled >
               <p className="font-semibold">Signed in as</p>
               <p className="font-semibold">zoey@example.com</p>
             </DropdownItem>
-            <DropdownItem key="settings">My Settings</DropdownItem>
-            <DropdownItem key="team_settings">Team Settings</DropdownItem>
-            <DropdownItem key="analytics">Analytics</DropdownItem>
-            <DropdownItem key="system">System</DropdownItem>
-            <DropdownItem key="configurations">Configurations</DropdownItem>
+            <DropdownItem key="settings" as={Link} href="/profile">My Profile</DropdownItem>
+            <DropdownItem key="team_settings">Order History</DropdownItem>
             <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
             <DropdownItem key="logout" color="danger">
               Log Out
