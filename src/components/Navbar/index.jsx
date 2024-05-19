@@ -16,9 +16,10 @@ import {
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Cookies from "js-cookie";
+import { signIn, signOut, useSession } from "next-auth/react"
 
 export default function NavbarComponent() {
-  const [token, setToken] = useState();
+  const { data: session } = useSession();
   const [isBlurred, setIsBlurred] = useState(false);
   const pathName = usePathname();
 
@@ -39,20 +40,20 @@ export default function NavbarComponent() {
     };
   }, []);
 
-  const getCookies = () => {
-    try {
-      const token = Cookies.get("token");
-      if (token) {
-        setToken(token);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  // const getCookies = () => {
+  //   try {
+  //     const token = Cookies.get("token");
+  //     if (token) {
+  //       setToken(token);
+  //     }
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
 
-  useEffect(() => {
-    getCookies();
-  }, []);
+  // useEffect(() => {
+  //   getCookies();
+  // }, []);
 
   return (
     <Navbar
@@ -98,7 +99,7 @@ export default function NavbarComponent() {
       <NavbarContent as="div" className="items-center" justify="end">
         <Dropdown placement="bottom-end">
           <DropdownTrigger>
-            {token ? (
+            {session && session.user ? (
               <Avatar
                 isBordered
                 as="button"
@@ -114,7 +115,7 @@ export default function NavbarComponent() {
               </Button>
             )}
           </DropdownTrigger>
-          {token ? (
+          {session && session.user ? (
             <DropdownMenu
               aria-label="Profile Actions"
               variant="flat"
@@ -131,7 +132,7 @@ export default function NavbarComponent() {
               <DropdownItem key="help_and_feedback">
                 Help & Feedback
               </DropdownItem>
-              <DropdownItem key="logout" color="danger">
+              <DropdownItem key="logout" color="danger" as={Button} onClick={() => signOut()}>
                 Log Out
               </DropdownItem>
             </DropdownMenu>
@@ -141,7 +142,12 @@ export default function NavbarComponent() {
               variant="flat"
               className="text-black"
             >
-              <DropdownItem key="settings" as={Link} href="/" className="font-semibold">
+              <DropdownItem
+                key="settings"
+                as={Button}
+                onClick={() => signIn("google")}
+                className="font-semibold"
+              >
                 Sign in with Google
               </DropdownItem>
               <DropdownItem key="help_and_feedback">

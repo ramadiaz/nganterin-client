@@ -3,6 +3,7 @@ import "./globals.css";
 import { Providers } from "./providers";
 import NavbarComponent from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import AuthProviders from "@/components/AuthProviders";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,13 +18,15 @@ export default function RootLayout({ children }) {
       <body
         className={`${inter.className}, text-white bg-orange-50 min-h-screen`}
       >
-        <Providers>
-          <div className="sticky top-0 w-full z-50">
-            <NavbarComponent />
-          </div>
-          <div className="min-h-screen">{children}</div>
-          <Footer />
-        </Providers>
+        <AuthProviders>
+          <Providers>
+            <div className="sticky top-0 w-full z-50">
+              <NavbarComponent />
+            </div>
+            <div className="min-h-screen">{children}</div>
+            <Footer />
+          </Providers>
+        </AuthProviders>
       </body>
     </html>
   );
