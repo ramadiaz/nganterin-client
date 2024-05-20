@@ -20,6 +20,7 @@ import { signIn, signOut, useSession } from "next-auth/react"
 
 export default function NavbarComponent() {
   const { data: session } = useSession();
+  console.log({session})
   const [isBlurred, setIsBlurred] = useState(false);
   const pathName = usePathname();
 
@@ -107,7 +108,7 @@ export default function NavbarComponent() {
                 color="secondary"
                 name="Jason Hughes"
                 size="sm"
-                src="/avatar/default.png"
+                src={session.user.image}
               />
             ) : (
               <Button variant="flat" className="bg-white text-sky-700">
@@ -123,13 +124,13 @@ export default function NavbarComponent() {
             >
               <DropdownItem key="profile" className="h-14 gap-2" disabled>
                 <p className="font-semibold">Signed in as</p>
-                <p className="font-semibold">zoey@example.com</p>
+                <p className="font-semibold">{session.user.email}</p>
               </DropdownItem>
               <DropdownItem key="settings" as={Link} href="/profile">
                 My Profile
               </DropdownItem>
               <DropdownItem key="team_settings">Order History</DropdownItem>
-              <DropdownItem key="help_and_feedback">
+              <DropdownItem key="help_and_feedback" as={Link} href="/help">
                 Help & Feedback
               </DropdownItem>
               <DropdownItem key="logout" color="danger" as={Button} onClick={() => signOut()}>
@@ -150,7 +151,7 @@ export default function NavbarComponent() {
               >
                 Sign in with Google
               </DropdownItem>
-              <DropdownItem key="help_and_feedback">
+              <DropdownItem key="help_and_feedback" as={Link} href="/help">
                 Help & Feedback
               </DropdownItem>
             </DropdownMenu>
