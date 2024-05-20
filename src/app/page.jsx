@@ -122,10 +122,6 @@ export default function Home() {
   ];
 
   useEffect(() => {
-    console.log({ passenger });
-  }, [passenger]);
-
-  useEffect(() => {
     AOS.init({ duration: 1200 });
   });
 
@@ -407,6 +403,7 @@ export default function Home() {
                         width={400}
                         height={200}
                         className="bg-cover"
+                        alt="promotion"
                       />
                     </div>
                   );
