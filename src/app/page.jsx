@@ -53,16 +53,15 @@ export default function Home() {
   useEffect(() => {
     const script = document.createElement("script");
     script.async = true;
-    script.src = 'https://embed.tawk.to/664b0af59a809f19fb32efc5/1huai5kp5';
-    script.charset = 'UTF-8';
-    script.setAttribute('crossorigin', '*');
+    script.src = "https://embed.tawk.to/664b0af59a809f19fb32efc5/1huai5kp5";
+    script.charset = "UTF-8";
+    script.setAttribute("crossorigin", "*");
     document.body.appendChild(script);
 
     return () => {
       document.body.removeChild(script);
     };
   }, []);
-
 
   function formatDate(date) {
     const year = date.getFullYear();
@@ -343,37 +342,46 @@ export default function Home() {
               Top destinations in Indonesia
             </h1>
             <div className="flex flex-row justify-center gap-4">
-              <div className="flex flex-col justify-center items-center gap-3">
-                <Image
-                  src={`/images/destinations/1_8691_02.jpg`}
-                  width={300}
-                  height={300}
-                  alt="destination 1"
-                />
+              <div className="flex flex-col justify-center items-center gap-3 ">
+                <div className="overflow-hidden ">
+                  <Image
+                    src={`/images/destinations/1_8691_02.jpg`}
+                    width={300}
+                    height={300}
+                    alt="destination 1"
+                    className="hover:scale-125 transition-all duration-500"
+                  />
+                </div>
                 <div className="flex flex-col items-center">
                   <h3>Jakarta</h3>
                   <h4 className="text-xs opacity-80">32,920 acommodations</h4>
                 </div>
               </div>
-              <div className="flex flex-col justify-center items-center gap-3">
-                <Image
-                  src={`/images/destinations/1_17193_02.jpg`}
-                  width={300}
-                  height={300}
-                  alt="destination 1"
-                />
+              <div className="flex flex-col justify-center items-center gap-3 ">
+                <div className="overflow-hidden ">
+                  <Image
+                    src={`/images/destinations/1_17193_02.jpg`}
+                    width={300}
+                    height={300}
+                    alt="destination 1"
+                    className="hover:scale-125 transition-all duration-500"
+                  />
+                </div>
                 <div className="flex flex-col items-center">
                   <h3>Bali</h3>
                   <h4 className="text-xs opacity-80">32,920 acommodations</h4>
                 </div>
               </div>
-              <div className="flex flex-col justify-center items-center gap-3">
-                <Image
-                  src={`/images/destinations/1_18943_02.jpg`}
-                  width={300}
-                  height={300}
-                  alt="destination 1"
-                />
+              <div className="flex flex-col justify-center items-center gap-3 ">
+                <div className="overflow-hidden ">
+                  <Image
+                    src={`/images/destinations/1_18943_02.jpg`}
+                    width={300}
+                    height={300}
+                    alt="destination 1"
+                    className="hover:scale-125 transition-all duration-500"
+                  />
+                </div>
                 <div className="flex flex-col items-center">
                   <h3>Bandung</h3>
                   <h4 className="text-xs opacity-80">32,920 acommodations</h4>

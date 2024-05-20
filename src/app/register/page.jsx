@@ -5,7 +5,9 @@ import { useEffect, useState } from "react";
 
 import AOS from "aos";
 import "aos/dist/aos.css";
+
 import { CompassRose } from "@phosphor-icons/react";
+
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 
@@ -24,10 +26,6 @@ const Page = () => {
   });
 
   const user_token = Cookies.get("user_token");
-
-  useEffect(() => {
-    AOS.init({ duration: 1200 });
-  }, []);
 
   const { push } = useRouter();
 
@@ -76,7 +74,7 @@ const Page = () => {
       if (response && response2) {
         console.log("send data success", await response.json());
         console.log("send data success", await response2.json());
-        push("/")
+        push("/");
       } else {
         console.log("send data error", await response.json());
         console.log("send data error", await response2.json());
@@ -89,6 +87,10 @@ const Page = () => {
   useEffect(() => {
     console.log({ inputData });
   }, [inputData]);
+
+  useEffect(() => {
+    AOS.init({ duration: 1200 });
+  }, []);
 
   return (
     <div className="text-neutral-700 pt-12">
