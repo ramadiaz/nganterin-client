@@ -16,11 +16,11 @@ import {
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Cookies from "js-cookie";
-import { signIn, signOut, useSession } from "next-auth/react"
+import { signIn, signOut, useSession } from "next-auth/react";
+import { useGoogleLogin } from "@react-oauth/google";
 
 export default function NavbarComponent() {
-  const { data: session } = useSession();
-  console.log({session})
+  const session = "dsdfs";
   const [isBlurred, setIsBlurred] = useState(false);
   const pathName = usePathname();
 
@@ -40,6 +40,27 @@ export default function NavbarComponent() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  const googleLogin = useGoogleLogin({
+    flow: "implicit",
+    onSuccess: async (tokenResponse) => {
+      const userInfo = await fetch(
+        "https://www.googleapis.com/oauth2/v3/userinfo",
+        {
+          headers: {
+            Authorization: `Bearer ${tokenResponse.access_token}`,
+          },
+        }
+      )
+        .then(async (res) => {
+          const data = await res.json()
+          console.log({data})
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+  });
 
   // const getCookies = () => {
   //   try {
@@ -133,7 +154,12 @@ export default function NavbarComponent() {
               <DropdownItem key="help_and_feedback" as={Link} href="/help">
                 Help & Feedback
               </DropdownItem>
-              <DropdownItem key="logout" color="danger" as={Button} onClick={() => signOut()}>
+              <DropdownItem
+                key="logout"
+                color="danger"
+                as={Button}
+                onClick={() => signOut()}
+              >
                 Log Out
               </DropdownItem>
             </DropdownMenu>
@@ -146,7 +172,7 @@ export default function NavbarComponent() {
               <DropdownItem
                 key="settings"
                 as={Button}
-                onClick={() => signIn("google")}
+                onClick={() => googleLogin()}
                 className="font-semibold"
               >
                 Sign in with Google

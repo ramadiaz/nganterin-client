@@ -50,6 +50,20 @@ export default function Home() {
     end: parseDate(endDate),
   });
 
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.async = true;
+    script.src = 'https://embed.tawk.to/664b0af59a809f19fb32efc5/1huai5kp5';
+    script.charset = 'UTF-8';
+    script.setAttribute('crossorigin', '*');
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
+
   function formatDate(date) {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0");
