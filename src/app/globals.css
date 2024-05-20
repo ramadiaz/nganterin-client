@@ -197,3 +197,17 @@ body {
     inset: 0 35px 35px 0;
   }
 }
+
+.rotating-item {
+  animation: rotate 6s linear infinite;
+  -webkit-animation: rotate 6s linear infinite;
+}
+
+@keyframes rotate {
+  from {
+      transform: rotate(0deg);
+  }
+  to {
+      transform: rotate(360deg);
+  }
+}

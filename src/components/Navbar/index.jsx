@@ -17,7 +17,7 @@ import {
   ModalBody,
   ModalHeader,
 } from "@nextui-org/react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import Cookies from "js-cookie";
 import { useGoogleLogin } from "@react-oauth/google";
@@ -29,11 +29,12 @@ const BASE_API = process.env.NEXT_PUBLIC_BASE_API;
 const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
 
 export default function NavbarComponent() {
-  const session = "dsdfs";
   const [isBlurred, setIsBlurred] = useState(false);
   const pathName = usePathname();
   const [isAuthenticating, setIsAuthenticating] = useState(false);
   const [userData, setUserData] = useState("");
+
+  const { push } = useRouter();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -76,7 +77,7 @@ export default function NavbarComponent() {
           console.log("JWT:", token);
 
           pushLogin(userInfo);
-          getCookies()
+          getCookies();
         }
       } catch (err) {
         console.error(err);
@@ -111,6 +112,25 @@ export default function NavbarComponent() {
 
         Cookies.remove("user_partner_id");
         Cookies.set("user_partner_id", data.data.partner_id, { expires: 3 });
+
+          const response = await fetch(`${BASE_API}/profile`, {
+            headers: {
+              "X-Authorization": API_KEY,
+              Authorization: `Bearer ${data.token}`,
+            },
+          });
+          const user_data = await response.json();
+          if (
+            !user_data.data.gender ||
+            !user_data.data.phone_number ||
+            !user_data.data.country ||
+            !user_data.data.province ||
+            !user_data.data.city ||
+            !user_data.data.zip_code ||
+            !user_data.data.complete_address
+          ) {
+            push("/register")
+          }
       }
     } catch (err) {
       console.error(err);
@@ -123,7 +143,9 @@ export default function NavbarComponent() {
     Cookies.remove("user_token");
     Cookies.remove("user_partner_id");
 
-    setUserData("")
+    setUserData("");
+
+    push("/")
   };
 
   const getCookies = () => {
@@ -143,8 +165,8 @@ export default function NavbarComponent() {
   }, []);
 
   useEffect(() => {
-    console.log({userData})
-  }, [userData])
+    console.log({ userData });
+  }, [userData]);
 
   return (
     <>
