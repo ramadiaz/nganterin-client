@@ -119,9 +119,14 @@ export default function Home() {
 
   return (
     <div className="">
-      <div className="img -mt-16 h-[650px]">
-        <h4 className="text-center pt-32" data-aos="fade-up">It's time to vacation 🚀</h4>
-        <div className="text-center mt-12 text-6xl md:text-7xl lg:text-8xl font-bold" data-aos="fade-up">
+      <div className="img -mt-16 h-[650px] selector">
+        <h4 className="text-center pt-32" data-aos="fade-up">
+          It's time to vacation 🚀
+        </h4>
+        <div
+          className="text-center mt-12 text-6xl md:text-7xl lg:text-8xl font-bold"
+          data-aos="fade-up"
+        >
           <h1 className="mb-4">Discover the World's</h1>
           Most{" "}
           <Typewriter
@@ -371,11 +376,24 @@ export default function Home() {
               Acommodation Promotions
             </h1>
             <div className="w-max mx-auto rounded-xl overflow-hidden h-max shadow-md shadow-black/50">
-              <Carousel width={600} transitionTime={3} autoPlay interval={3000} showStatus={false} infiniteLoop showThumbs={false}>
-                {promotions.map((promo) => {
+              <Carousel
+                width={600}
+                transitionTime={3}
+                autoPlay
+                interval={3000}
+                showStatus={false}
+                infiniteLoop
+                showThumbs={false}
+              >
+                {promotions.map((promo, index) => {
                   return (
-                    <div>
-                      <Image src={promo.path} width={400} height={200} className="bg-cover" />
+                    <div key={index}>
+                      <Image
+                        src={promo.path}
+                        width={400}
+                        height={200}
+                        className="bg-cover"
+                      />
                     </div>
                   );
                 })}
