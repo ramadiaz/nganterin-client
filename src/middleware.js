@@ -21,6 +21,7 @@ export async function middleware(request) {
           "X-Authorization": API_KEY,
           Authorization: `Bearer ${token}`,
         },
+        cache: 'no-store'
       });
       const data = await response.json();
       if (

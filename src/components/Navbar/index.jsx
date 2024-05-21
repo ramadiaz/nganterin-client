@@ -12,10 +12,6 @@ import {
   DropdownMenu,
   Avatar,
   Button,
-  useDisclosure,
-  Modal,
-  ModalBody,
-  ModalHeader,
 } from "@nextui-org/react";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
