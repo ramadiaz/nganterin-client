@@ -9,9 +9,6 @@ import {
   CardBody,
   Input,
   Button,
-  Autocomplete,
-  AutocompleteItem,
-  DatePicker,
 } from "@nextui-org/react";
 import { MagnifyingGlass, Path } from "@phosphor-icons/react";
 import { Carousel } from "react-responsive-carousel";
@@ -35,7 +32,6 @@ export default function Home() {
   const [selectedTab, setSelectedTab] = useState("Hotels & Homes");
   const [departureAirport, setDepartureAirport] = useState("");
   const [arrivalAirport, setArrivalAirport] = useState("");
-  const [passenger, setPassenger] = useState(1);
   const [flightDate, setFlightDate] = useState(parseDate("2024-04-04"));
 
   const today = new Date();
@@ -73,7 +69,7 @@ export default function Home() {
   const handleHotelSearch = (e) => {
     e.preventDefault();
     router.push(
-      `/hotel?search=${hotelKeyword}&dateStart=${hotelDate.start}&dateEnd=${hotelDate.end}`
+      `/search-result/hotel?search=${hotelKeyword}&dateStart=${hotelDate.start}&dateEnd=${hotelDate.end}`
     );
   };
 
@@ -83,19 +79,6 @@ export default function Home() {
       `/flight?date=${flightDate}&departure=${departureAirport}&arrival=${arrivalAirport}`
     );
   };
-
-  const airport = [
-    { name: "Bandara Internasional Soekarno-Hatta", code: "CGK" },
-    { name: "Bandara Internasional Ngurah Rai", code: "DPS" },
-    { name: "Bandara Internasional Juanda", code: "SUB" },
-    { name: "Bandara Internasional Sultan Hasanuddin", code: "UPG" },
-    { name: "Bandara Internasional Adisutjipto", code: "JOG" },
-    { name: "Bandara Internasional Adi Soemarmo", code: "SOC" },
-    { name: "Bandara Internasional Kualanamu", code: "KNO" },
-    { name: "Bandara Internasional Sultan Aji Muhammad Sulaiman", code: "BPN" },
-    { name: "Bandara Internasional El Tari", code: "KOE" },
-    { name: "Bandara Internasional Minangkabau", code: "PDG" },
-  ];
 
   const promotions = [
     {
@@ -123,8 +106,6 @@ export default function Home() {
   useEffect(() => {
     AOS.init({ duration: 1200 });
   });
-
-  const passangerTotal = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   return (
     <div className="">

@@ -32,7 +32,6 @@ export default function NavbarComponent() {
 
   const { push } = useRouter();
   const isPartner = Cookies.get("user_partner_id");
-  console.log({isPartner})
 
   useEffect(() => {
     const handleScroll = () => {
@@ -66,13 +65,10 @@ export default function NavbarComponent() {
 
         if (res.ok) {
           const userInfo = await res.json();
-          console.log({ userInfo });
           const token = jwt.sign(userInfo, SECRET_KEY, { expiresIn: "3d" });
 
           Cookies.remove("user_jwt");
           Cookies.set("user_jwt", token, { expires: 3 });
-
-          console.log("JWT:", token);
 
           pushLogin(userInfo);
           getCookies();
@@ -161,10 +157,6 @@ export default function NavbarComponent() {
   useEffect(() => {
     getCookies();
   }, []);
-
-  useEffect(() => {
-    console.log({ userData });
-  }, [userData]);
 
   return (
     <>

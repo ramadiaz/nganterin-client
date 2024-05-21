@@ -186,6 +186,8 @@ const Page = () => {
                       });
                     },
                     onerror: (err) => console.error(err),
+                    onprocessfiles: () => console.log("DONE ALL")
+                    
                   },
                 }}
               />
