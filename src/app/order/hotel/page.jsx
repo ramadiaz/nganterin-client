@@ -4,21 +4,77 @@ import Loading from "@/app/loading";
 import { Button, Checkbox, Input } from "@nextui-org/react";
 import { Sparkle } from "@phosphor-icons/react";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ReactStars from "react-rating-stars-component";
+import Head from "next/head";
+import process from "next/dist/build/webpack/loaders/resolve-url-loader/lib/postcss";
+import Cookies from "js-cookie";
+
+const BASE_API = process.env.NEXT_PUBLIC_BASE_API;
+const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
+const CLIENT_KEY = process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY;
 
 const Page = () => {
+  const user_token = Cookies.get("user_token");
   const [status, setStatus] = useState({
     loading: false,
     forSomeoneElse: true,
   });
+  const [dataSnap, setDataSnap] = useState({})
+
+    useEffect(() => {
+        const midtransScriptUrl = 'https://app.sandbox.midtrans.com/snap/snap.js';
+
+        let scriptTag = document.createElement('script');
+        scriptTag.src = midtransScriptUrl;
+        scriptTag.setAttribute('data-client-key', CLIENT_KEY);
+
+        document.body.appendChild(scriptTag);
+
+        return () => {
+            document.body.removeChild(scriptTag);
+        }
+    }, []);
+
+  const showTransPayments = async () => {
+      const formData = new FormData();
+      formData.append('product_id', '9c12658d-f339-4d6e-8234-b7c9f67636ae')
+      formData.append('overnight_stays', '3')
+      await fetch(`${BASE_API}/checkout`, {
+          method: "POST",
+          headers: {
+              'X-Authorization': API_KEY,
+              'Authorization': `Bearer ${user_token}`,
+          },
+          body: formData
+      }).then( async (res) => {
+          const data = await res.json();
+          await window.snap.pay(data.data.snap_token, {
+              onSuccess: (res) => {
+                  console.log(res)
+              },
+              onPending: (res) => {
+                  console.log(res)
+              },
+              onError: (res) => {
+                  console.log(res)
+              },
+              onClose: () => {
+                  console.log('Closed')
+              }
+          })
+      }).catch((err) => {
+          console.log(err)
+      })
+ }
+
   return (
     <>
-      <div className="bg-white min-h-screen text-neutral-700">
-        {status.loading ? (
-          <Loading />
-        ) : (
-          <div className="w-3/5 mx-auto flex flex-row gap-4 pt-12 transition-all duration-500">
+        <div className="bg-white min-h-screen text-neutral-700">
+            {status.loading ? (
+                <Loading/>
+            ) : (
+                <div className="w-3/5 mx-auto flex flex-row gap-4 pt-12 transition-all duration-500">
             <div className="basis-2/3">
               <div className="border rounded-lg border-neutral-300 p-4 shadow-sm shadow-black/50 transition-all duration-500">
                 <h2 className="font-semibold">Let us know who you are!</h2>
@@ -148,7 +204,7 @@ const Page = () => {
                 <h3 className="text-red-500 text-right text-sm mt-8">
                   Hurry! Our last room for your dates at this price
                 </h3>
-                <Button color="primary" size="lg">
+                <Button color="primary" size="lg" onClick={showTransPayments}>
                   Payment
                 </Button>
               </div>
