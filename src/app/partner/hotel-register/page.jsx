@@ -13,14 +13,16 @@ import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 
 import { FilePond, File, registerPlugin } from "react-filepond";
-
 import "filepond/dist/filepond.min.css";
-
 import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
+
+import AOS from "aos";
+import "aos/dist/aos.css";
+
 import Image from "next/image";
 
-import { Bounce, ToastContainer, toast } from "react-toastify";
+import { Bounce, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 registerPlugin(FilePondPluginImagePreview);
@@ -32,7 +34,7 @@ const Page = () => {
   const user_token = Cookies.get("user_token");
   const [files, setFiles] = useState([]);
 
-  const [uploadedImages, setUploadedImages] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [inputData, setInputData] = useState({
     name: "",
     description: "",
@@ -63,8 +65,13 @@ const Page = () => {
     console.log(inputData);
   }, [inputData]);
 
+  useEffect(() => {
+    AOS.init({ duration: 1200 });
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     const formData = new FormData();
     Object.keys(inputData).forEach((key) => {
@@ -128,13 +135,15 @@ const Page = () => {
         theme: "light",
         transition: Bounce,
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <>
       <div className="w-4/5 mx-auto">
-        <div className="w-full mt-14 p-8 flex flex-row bg-white text-neutral-700 rounded-lg shadow-lg shadow-neutral-500/30 gap-4">
+        <div className="w-full mt-14 p-8 flex flex-row bg-white text-neutral-700 rounded-lg shadow-lg shadow-neutral-500/30 gap-4" data-aos="fade-up">
           <div className="basis-1/2">
             <div>
               <h2 className="text-lg font-semibold">Hotel Register</h2>
@@ -373,7 +382,12 @@ const Page = () => {
                 />
               </div>
               <div className="flex justify-end">
-                <Button type="submit" color="primary" size="lg">
+                <Button
+                  type="submit"
+                  color="primary"
+                  size="lg"
+                  isLoading={isLoading}
+                >
                   Create
                 </Button>
               </div>
@@ -381,7 +395,6 @@ const Page = () => {
           </div>
         </div>
       </div>
-      <ToastContainer/>
     </>
   );
 };

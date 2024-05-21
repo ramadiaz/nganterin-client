@@ -4,6 +4,7 @@ import { Providers } from "./providers";
 import NavbarComponent from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import { ToastContainer } from "react-toastify";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -12,7 +13,7 @@ export const metadata = {
   description: "Flight and Hotel Reservations Services",
 };
 
-const CLIENT_ID = process.env.GOOGLE_CLIENT_ID
+const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 
 export default function RootLayout({ children }) {
   return (
@@ -27,9 +28,9 @@ export default function RootLayout({ children }) {
             </div>
             <div className="min-h-screen">{children}</div>
             <Footer />
+            <ToastContainer />
           </Providers>
         </GoogleOAuthProvider>
-        
       </body>
     </html>
   );

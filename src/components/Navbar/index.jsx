@@ -31,6 +31,8 @@ export default function NavbarComponent() {
   const [userData, setUserData] = useState("");
 
   const { push } = useRouter();
+  const isPartner = Cookies.get("user_partner_id");
+  console.log({isPartner})
 
   useEffect(() => {
     const handleScroll = () => {
@@ -109,24 +111,24 @@ export default function NavbarComponent() {
         Cookies.remove("user_partner_id");
         Cookies.set("user_partner_id", data.data.partner_id, { expires: 3 });
 
-          const response = await fetch(`${BASE_API}/profile`, {
-            headers: {
-              "X-Authorization": API_KEY,
-              Authorization: `Bearer ${data.token}`,
-            },
-          });
-          const user_data = await response.json();
-          if (
-            !user_data.data.gender ||
-            !user_data.data.phone_number ||
-            !user_data.data.country ||
-            !user_data.data.province ||
-            !user_data.data.city ||
-            !user_data.data.zip_code ||
-            !user_data.data.complete_address
-          ) {
-            push("/register")
-          }
+        const response = await fetch(`${BASE_API}/profile`, {
+          headers: {
+            "X-Authorization": API_KEY,
+            Authorization: `Bearer ${data.token}`,
+          },
+        });
+        const user_data = await response.json();
+        if (
+          !user_data.data.gender ||
+          !user_data.data.phone_number ||
+          !user_data.data.country ||
+          !user_data.data.province ||
+          !user_data.data.city ||
+          !user_data.data.zip_code ||
+          !user_data.data.complete_address
+        ) {
+          push("/register");
+        }
       }
     } catch (err) {
       console.error(err);
@@ -141,7 +143,7 @@ export default function NavbarComponent() {
 
     setUserData("");
 
-    push("/")
+    push("/");
   };
 
   const getCookies = () => {
@@ -238,6 +240,13 @@ export default function NavbarComponent() {
                 <DropdownItem key="settings" as={Link} href="/profile">
                   My Profile
                 </DropdownItem>
+                {isPartner != "null" ? (
+                  <DropdownItem key="team_settings" as={Link} href="/partner/hotel-register">New Hotels</DropdownItem>
+                ) : (
+                  <DropdownItem key="team_settings" as={Link} href="/register/partner">
+                    Become Our Partner
+                  </DropdownItem>
+                )}
                 <DropdownItem key="team_settings">Order History</DropdownItem>
                 <DropdownItem key="help_and_feedback" as={Link} href="/help">
                   Help & Feedback

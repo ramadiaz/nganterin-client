@@ -8,6 +8,8 @@ import { FileUploader } from "react-drag-drop-files";
 
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { useRouter } from "next/navigation";
+import Redirecting from "@/app/redirecting";
 
 const fileTypes = ["PDF"];
 
@@ -25,7 +27,9 @@ const Page = () => {
     mou_file: "",
   });
 
-  const [isLoading, setIsLoading] = useState(true);
+  const { push } = useRouter();
+
+  const [isRedirecting, setIsRedirecting] = useState(false);
   const [isUploading, setIsUploading] = useState({
     legality: false,
     mou: false,
@@ -116,8 +120,11 @@ const Page = () => {
         body: formData,
       });
       if (response.ok) {
+        setIsRedirecting(true);
         const data = await response.json();
-        console.log({ data });
+        Cookies.remove("user_partner_id");
+        Cookies.set("user_partner_id", data.data.partner_id);
+        push("/partner/hotel-register");
       }
     } catch (err) {
       console.error(err);
@@ -129,133 +136,139 @@ const Page = () => {
   }, []);
 
   return (
-    <div className="text-neutral-700 pt-12">
-      <div className="w-3/5 mx-auto" data-aos="fade-up">
-        <div className="flex flex-row gap-4 items-center justify-center">
-          <h1 className="text-4xl font-semibold">
-            Let's Partner with Nganterin!
-          </h1>
-          <LinkIcon size={64} className="animate-pulse" />
-        </div>
-        <div className="mt-14 p-8 bg-white rounded-lg shadow-lg shadow-neutral-600/50">
-          <div>
-            <h2 className="text-lg">Tell us about your company!</h2>
+    <>
+      <div className="text-neutral-700 pt-12">
+        <div className="w-3/5 mx-auto" data-aos="fade-up">
+          <div className="flex flex-row gap-4 items-center justify-center">
+            <h1 className="text-4xl font-semibold">
+              Let's Partner with Nganterin!
+            </h1>
+            <LinkIcon size={64} className="animate-pulse" />
           </div>
-          <form onSubmit={handleRegister} className="flex flex-col gap-8 mt-4">
+          <div className="mt-14 p-8 bg-white rounded-lg shadow-lg shadow-neutral-600/50">
             <div>
-              <Input
-                name="company_name"
-                value={inputData.company_name}
-                onChange={handleInputChange}
-                required
-                type="text"
-                variant="bordered"
-                label="Your company name"
-              />
+              <h2 className="text-lg">Tell us about your company!</h2>
             </div>
-            <div className="flex flex-row gap-4">
-              <div className="basis-1/2 flex flex-row gap-4">
+            <form
+              onSubmit={handleRegister}
+              className="flex flex-col gap-8 mt-4"
+            >
+              <div>
                 <Input
-                  name="owner"
-                  value={inputData.owner}
+                  name="company_name"
+                  value={inputData.company_name}
                   onChange={handleInputChange}
                   required
                   type="text"
                   variant="bordered"
-                  label="Owner name"
+                  label="Your company name"
                 />
-                <Input
-                  name="company_field"
-                  value={inputData.company_field}
+              </div>
+              <div className="flex flex-row gap-4">
+                <div className="basis-1/2 flex flex-row gap-4">
+                  <Input
+                    name="owner"
+                    value={inputData.owner}
+                    onChange={handleInputChange}
+                    required
+                    type="text"
+                    variant="bordered"
+                    label="Owner name"
+                  />
+                  <Input
+                    name="company_field"
+                    value={inputData.company_field}
+                    onChange={handleInputChange}
+                    required
+                    type="text"
+                    variant="bordered"
+                    label="Company Field"
+                  />
+                </div>
+                <div className="basis-1/2">
+                  <Input
+                    name="company_email"
+                    value={inputData.company_email}
+                    onChange={handleInputChange}
+                    required
+                    type="email"
+                    variant="bordered"
+                    label="Company Email"
+                  />
+                </div>
+              </div>
+              <div>
+                <Textarea
+                  name="company_address"
+                  value={inputData.company_address}
                   onChange={handleInputChange}
                   required
+                  variant="bordered"
                   type="text"
-                  variant="bordered"
-                  label="Company Field"
+                  label="Company Address"
+                  disableAutosize
+                  classNames={{
+                    input: "resize-y min-h-[40px]",
+                  }}
                 />
               </div>
-              <div className="basis-1/2">
-                <Input
-                  name="company_email"
-                  value={inputData.company_email}
-                  onChange={handleInputChange}
-                  required
-                  type="email"
-                  variant="bordered"
-                  label="Company Email"
-                />
+              <div className="flex flex-row gap-4">
+                <div className="flex flex-col gap-2">
+                  <h3 className="opacity-90 text-sm mx-2">
+                    Upload legality file
+                  </h3>
+                  <FileUploader
+                    required={true}
+                    handleChange={handleLegalityChange}
+                    name="file"
+                    multiple={false}
+                    types={fileTypes}
+                    children={
+                      <div className="border-2 border-neutral-300/60 hover:border-neutral-400 flex justify-center items-center h-24 rounded-xl w-64">
+                        <h3 className="opacity-80 text-sm">
+                          {isUploading.legality
+                            ? "Uploading..."
+                            : legalityFile
+                            ? "Uploaded"
+                            : "Drop .pdf file here!"}
+                        </h3>
+                      </div>
+                    }
+                  />
+                </div>
+                <div className="flex flex-col gap-2">
+                  <h3 className="opacity-90 text-sm mx-2">Upload MOU file</h3>
+                  <FileUploader
+                    required={true}
+                    handleChange={handleMOUChange}
+                    name="file"
+                    multiple={false}
+                    types={fileTypes}
+                    children={
+                      <div className="border-2 border-neutral-300/60 hover:border-neutral-400 flex justify-center items-center h-24 rounded-xl w-64">
+                        <h3 className="opacity-80 text-sm">
+                          {isUploading.mou
+                            ? "Uploading..."
+                            : mouFile
+                            ? "Uploaded"
+                            : "Drop .pdf file here!"}
+                        </h3>
+                      </div>
+                    }
+                  />
+                </div>
               </div>
-            </div>
-            <div>
-              <Textarea
-                name="company_address"
-                value={inputData.company_address}
-                onChange={handleInputChange}
-                required
-                variant="bordered"
-                type="text"
-                label="Company Address"
-                disableAutosize
-                classNames={{
-                  input: "resize-y min-h-[40px]",
-                }}
-              />
-            </div>
-            <div className="flex flex-row gap-4">
-              <div className="flex flex-col gap-2">
-                <h3 className="opacity-90 text-sm mx-2">
-                  Upload legality file
-                </h3>
-                <FileUploader
-                  required={true}
-                  handleChange={handleLegalityChange}
-                  name="file"
-                  multiple={false}
-                  types={fileTypes}
-                  children={
-                    <div className="border-2 border-neutral-300/60 hover:border-neutral-400 flex justify-center items-center h-24 rounded-xl w-64">
-                      <h3 className="opacity-80 text-sm">
-                        {isUploading.legality
-                          ? "Uploading..."
-                          : legalityFile
-                          ? "Uploaded"
-                          : "Drop .pdf file here!"}
-                      </h3>
-                    </div>
-                  }
-                />
+              <div className="flex justify-end">
+                <Button type="submit" className="bg-sky-600 text-white">
+                  Register
+                </Button>
               </div>
-              <div className="flex flex-col gap-2">
-                <h3 className="opacity-90 text-sm mx-2">Upload MOU file</h3>
-                <FileUploader
-                  required={true}
-                  handleChange={handleMOUChange}
-                  name="file"
-                  multiple={false}
-                  types={fileTypes}
-                  children={
-                    <div className="border-2 border-neutral-300/60 hover:border-neutral-400 flex justify-center items-center h-24 rounded-xl w-64">
-                      <h3 className="opacity-80 text-sm">
-                        {isUploading.mou
-                          ? "Uploading..."
-                          : mouFile
-                          ? "Uploaded"
-                          : "Drop .pdf file here!"}
-                      </h3>
-                    </div>
-                  }
-                />
-              </div>
-            </div>
-            <div className="flex justify-end">
-              <Button type="submit" className="bg-sky-600 text-white">
-                Register
-              </Button>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
+      {isRedirecting && <Redirecting />}
+    </>
   );
 };
 
