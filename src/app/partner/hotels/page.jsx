@@ -11,7 +11,6 @@ import {
 } from "@nextui-org/react";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
-import { FileUploader } from "react-drag-drop-files";
 
 import { FilePond, File, registerPlugin } from "react-filepond";
 
@@ -20,6 +19,9 @@ import "filepond/dist/filepond.min.css";
 import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 import Image from "next/image";
+
+import { Bounce, ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 registerPlugin(FilePondPluginImagePreview);
 
@@ -89,9 +91,43 @@ const Page = () => {
 
       if (response.ok) {
         console.log("success");
+        toast.success("Create Hotel Success!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+      } else {
+        toast.error("Create Hotel Failed", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
       }
     } catch (err) {
       console.error(err);
+      toast.error("Create Hotel Failed", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     }
   };
 
@@ -187,18 +223,26 @@ const Page = () => {
                   label="Smoke Allowed"
                   name="smoking_allowed"
                   value={inputData.smoking_allowed}
-                  onChange={(event) =>{
-                    console.log({event})
+                  onChange={(event) => {
+                    console.log({ event });
                     setInputData((prevData) => ({
                       ...prevData,
                       smoking_allowed: event.target.value,
-                    }))}
-                  }
+                    }));
+                  }}
                 >
-                  <SelectItem className="text-neutral-700" value={"0"} key={`0`}>
+                  <SelectItem
+                    className="text-neutral-700"
+                    value={"0"}
+                    key={`0`}
+                  >
                     No
                   </SelectItem>
-                  <SelectItem className="text-neutral-700" value={"1"} key={`1`}>
+                  <SelectItem
+                    className="text-neutral-700"
+                    value={"1"}
+                    key={`1`}
+                  >
                     yes
                   </SelectItem>
                 </Select>
@@ -337,6 +381,7 @@ const Page = () => {
           </div>
         </div>
       </div>
+      <ToastContainer/>
     </>
   );
 };
