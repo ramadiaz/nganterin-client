@@ -192,12 +192,12 @@ const Page = () => {
                 }}
               />
             </div>
-            <Image
+            {/* <Image
               src={`/images/troll.jpg`}
               height={500}
               width={500}
               alt="troll"
-            />
+            /> */}
           </div>
           <div className="basis-1/2">
             <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
