@@ -35,7 +35,9 @@ const Page = () => {
     mou: false,
   });
   const user_token = Cookies.get("user_token");
-  console.log({ user_token });
+  if (!user_token) {
+    push("/");
+  }
 
   const [legalityFile, setLegalityFile] = useState(null);
   const [mouFile, setMOUFile] = useState(null);

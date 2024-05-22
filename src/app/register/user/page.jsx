@@ -17,6 +17,7 @@ const BASE_API = process.env.NEXT_PUBLIC_BASE_API;
 const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
 
 const Page = () => {
+  const { push } = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [isRedirecting, setIsRedirecting] = useState(false);
   const [inputData, setInputData] = useState({
@@ -31,7 +32,9 @@ const Page = () => {
 
   const user_token = Cookies.get("user_token");
 
-  const { push } = useRouter();
+  if (!user_token) {
+    push("/");
+  }
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
