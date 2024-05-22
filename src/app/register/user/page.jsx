@@ -30,6 +30,20 @@ const Page = () => {
     complete_address: "",
   });
 
+  const [isAnyFieldEmpty, setIsAnyFieldEmpty] = useState(false);
+  useEffect(() => {
+    const checkIfAnyFieldIsEmpty = () => {
+      for (let key in inputData) {
+        if (inputData[key] === null || inputData[key] === "") {
+          return true;
+        }
+      }
+      return false;
+    };
+
+    setIsAnyFieldEmpty(checkIfAnyFieldIsEmpty());
+  }, [inputData]);
+
   const user_token = Cookies.get("user_token");
 
   if (!user_token) {
@@ -124,6 +138,7 @@ const Page = () => {
             <form className="flex flex-col gap-8" onSubmit={handleSubmit}>
               <div className="flex flex-row gap-4">
                 <Select
+                  required
                   color="default"
                   variant="bordered"
                   label="Select your gender"
@@ -154,6 +169,7 @@ const Page = () => {
                   </SelectItem>
                 </Select>
                 <Input
+                  required
                   name="number"
                   value={inputData.number}
                   variant="bordered"
@@ -164,6 +180,7 @@ const Page = () => {
               </div>
               <div className="flex flex-row gap-4">
                 <Input
+                  required
                   name="province"
                   value={inputData.province}
                   variant="bordered"
@@ -172,6 +189,7 @@ const Page = () => {
                   onChange={handleInputChange}
                 />
                 <Input
+                  required
                   name="city"
                   value={inputData.city}
                   variant="bordered"
@@ -180,6 +198,7 @@ const Page = () => {
                   onChange={handleInputChange}
                 />
                 <Input
+                  required
                   name="zip_code"
                   value={inputData.zip_code}
                   variant="bordered"
@@ -188,6 +207,7 @@ const Page = () => {
                   onChange={handleInputChange}
                 />
                 <Input
+                  required
                   name="country"
                   value={inputData.country}
                   variant="bordered"
@@ -198,6 +218,7 @@ const Page = () => {
               </div>
               <div className="flex flex-row gap-4">
                 <Textarea
+                  required
                   name="complete_address"
                   value={inputData.complete_address}
                   variant="bordered"
@@ -212,6 +233,7 @@ const Page = () => {
               </div>
               <div className="flex justify-end">
                 <Button
+                  disabled={isAnyFieldEmpty}
                   type="submit"
                   className="bg-sky-600 text-white"
                   isLoading={isLoading}
