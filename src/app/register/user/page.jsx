@@ -17,7 +17,7 @@ const BASE_API = process.env.NEXT_PUBLIC_BASE_API;
 const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
 
 const Page = () => {
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
   const [isRedirecting, setIsRedirecting] = useState(false);
   const [inputData, setInputData] = useState({
     gender: "",
@@ -42,7 +42,7 @@ const Page = () => {
   };
 
   const handleSubmit = async (e) => {
-    setIsLoading(true)
+    setIsLoading(true);
     console.log({ inputData });
     console.log({ user_token });
     e.preventDefault();
@@ -80,7 +80,7 @@ const Page = () => {
         setIsRedirecting(true);
         console.log("send data success", await response.json());
         console.log("send data success", await response2.json());
-        push("/");
+        location.replace("/");
       } else {
         toast.success("Send register data failed!", {
           position: "top-right",
@@ -96,8 +96,8 @@ const Page = () => {
       }
     } catch (err) {
       console.error(err);
-    } finally{
-      setIsLoading(false)
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -208,7 +208,11 @@ const Page = () => {
                 />
               </div>
               <div className="flex justify-end">
-                <Button type="submit" className="bg-sky-600 text-white" isLoading={isLoading}>
+                <Button
+                  type="submit"
+                  className="bg-sky-600 text-white"
+                  isLoading={isLoading}
+                >
                   Register
                 </Button>
               </div>

@@ -10,20 +10,20 @@ const withLogin = (WrappedComponent) => {
     const { push } = useRouter();
     const [isAuthenticating, setIsAuthenticating] = useState(true);
 
-    useEffect(() => {
-      const checkAuthentication = async () => {
-        setIsAuthenticating(true);
-        const token = Cookies.get("user_jwt");
-        
-        if (!token) {
-          push("/");
-          setIsAuthenticating(false);
-          return;
-        }
-
+    const checkAuthentication = async () => {
+      setIsAuthenticating(true);
+      const token = Cookies.get("user_jwt");
+      
+      if (!token) {
+        push("/");
         setIsAuthenticating(false);
-      };
+        return;
+      }
 
+      setIsAuthenticating(false);
+    };
+
+    useEffect(() => {
       checkAuthentication();
     }, []);
 

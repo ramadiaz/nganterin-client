@@ -27,7 +27,7 @@ const Page = ({ params: id }) => {
   const [isAuthenticating, setIsAuthenticating] = useState(false);
   const [userData, setUserData] = useState("");
 
-  const { push } = useRouter();
+  const { push, refresh } = useRouter();
 
   const googleLogin = useGoogleLogin({
     flow: "implicit",
@@ -103,6 +103,8 @@ const Page = ({ params: id }) => {
           !user_data.data.complete_address
         ) {
           push("/register/user");
+        } else{
+          location.reload()
         }
       }
     } catch (err) {

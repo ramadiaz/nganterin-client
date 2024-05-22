@@ -124,6 +124,8 @@ export default function NavbarComponent() {
           !user_data.data.complete_address
         ) {
           push("/register/user");
+        } else {
+          location.reload();
         }
       }
     } catch (err) {
@@ -139,7 +141,7 @@ export default function NavbarComponent() {
 
     setUserData("");
 
-    push("/");
+    location.replace("/");
   };
 
   const getCookies = () => {
@@ -233,9 +235,19 @@ export default function NavbarComponent() {
                   My Profile
                 </DropdownItem>
                 {isPartner != "null" ? (
-                  <DropdownItem key="team_settings" as={Link} href="/partner/hotel-register">New Hotels</DropdownItem>
+                  <DropdownItem
+                    key="team_settings"
+                    as={Link}
+                    href="/partner/hotel-register"
+                  >
+                    New Hotels
+                  </DropdownItem>
                 ) : (
-                  <DropdownItem key="team_settings" as={Link} href="/register/partner">
+                  <DropdownItem
+                    key="team_settings"
+                    as={Link}
+                    href="/register/partner"
+                  >
                     Become Our Partner
                   </DropdownItem>
                 )}
