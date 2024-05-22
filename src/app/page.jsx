@@ -24,6 +24,7 @@ import { DateRangePicker } from "@nextui-org/react";
 import { parseDate } from "@internationalized/date";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function Home() {
   const router = useRouter();
@@ -227,7 +228,7 @@ export default function Home() {
             </h1>
             <div className="flex flex-row justify-center gap-4">
               <div className="flex flex-col justify-center items-center gap-3 ">
-                <div className="overflow-hidden ">
+                <Link href={`/search-result/hotel?search=jakarta&dateStart=${hotelDate.start}&dateEnd=${hotelDate.end}`} className="overflow-hidden ">
                   <Image
                     src={`/images/destinations/1_8691_02.jpg`}
                     width={300}
@@ -235,14 +236,14 @@ export default function Home() {
                     alt="destination 1"
                     className="hover:scale-125 transition-all duration-500"
                   />
-                </div>
+                </Link>
                 <div className="flex flex-col items-center">
                   <h3>Jakarta</h3>
                   <h4 className="text-xs opacity-80">32,920 acommodations</h4>
                 </div>
               </div>
               <div className="flex flex-col justify-center items-center gap-3 ">
-                <div className="overflow-hidden ">
+                <Link href={`/search-result/hotel?search=bali&dateStart=${hotelDate.start}&dateEnd=${hotelDate.end}`} className="overflow-hidden ">
                   <Image
                     src={`/images/destinations/1_17193_02.jpg`}
                     width={300}
@@ -250,14 +251,14 @@ export default function Home() {
                     alt="destination 1"
                     className="hover:scale-125 transition-all duration-500"
                   />
-                </div>
+                </Link>
                 <div className="flex flex-col items-center">
                   <h3>Bali</h3>
                   <h4 className="text-xs opacity-80">32,920 acommodations</h4>
                 </div>
               </div>
               <div className="flex flex-col justify-center items-center gap-3 ">
-                <div className="overflow-hidden ">
+                <Link href={`/search-result/hotel?search=bandung&dateStart=${hotelDate.start}&dateEnd=${hotelDate.end}`} className="overflow-hidden ">
                   <Image
                     src={`/images/destinations/1_18943_02.jpg`}
                     width={300}
@@ -265,7 +266,7 @@ export default function Home() {
                     alt="destination 1"
                     className="hover:scale-125 transition-all duration-500"
                   />
-                </div>
+                </Link>
                 <div className="flex flex-col items-center">
                   <h3>Bandung</h3>
                   <h4 className="text-xs opacity-80">32,920 acommodations</h4>

@@ -252,6 +252,9 @@ export default function NavbarComponent() {
                   </DropdownItem>
                 )}
                 {/* <DropdownItem key="team_settings">Order History</DropdownItem> */}
+                <DropdownItem key="order_history" as={Link} href="/order/history">
+                  Booking History
+                </DropdownItem>
                 <DropdownItem key="help_and_feedback" as={Link} href="/help">
                   Help & Feedback
                 </DropdownItem>

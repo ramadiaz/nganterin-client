@@ -57,16 +57,16 @@ const Page = () => {
         <div className="bg-orange-100 pt-14">
           <div className="flex flex-row gap-4 w-4/5 mx-auto justify-center">
             <div className="">
-              <div className="bg-background/50 shadow shadow-black/30 text-neutral-700 hover:shadow-lg hover:shadow-black/30 transition-all duration-500 rounded-2xl py-4 px-8">
+              <div className="bg-background/50 shadow shadow-black/30 text-neutral-700 hover:shadow-lg hover:shadow-black/30 transition-all duration-500 rounded-2xl p-4">
                 <div className="flex flex-row gap-1">
                   <Input
-                    variant="bordered"
                     placeholder="Search"
+                    variant="faded"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                   />
                   <Button
-                    color="primary"
+                    className="bg-sky-700"
                     isIconOnly
                     onClick={() =>
                       router.push(
@@ -74,7 +74,7 @@ const Page = () => {
                       )
                     }
                   >
-                    <MagnifyingGlass size={24} />
+                    <MagnifyingGlass size={24} color="#fff"/>
                   </Button>
                 </div>
               </div>
