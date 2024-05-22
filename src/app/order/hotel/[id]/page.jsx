@@ -66,6 +66,7 @@ const Page = ({ params: id }) => {
           },
           onClose: () => {
             console.log("Closed");
+            setStatus((prev) => ({ ...prev, isPayment: false }))
           },
         });
       })
