@@ -14,103 +14,106 @@ const BASE_API = process.env.NEXT_PUBLIC_BASE_API;
 const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
 const CLIENT_KEY = process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY;
 
-const Page = ({params: id}) => {
+const Page = ({ params: id }) => {
   const user_token = Cookies.get("user_token");
   const [status, setStatus] = useState({
     loading: true,
     forSomeoneElse: true,
+    isPayment: false,
   });
-  const [dataSnap, setDataSnap] = useState({})
+  const [dataSnap, setDataSnap] = useState({});
   const [detail, setDetail] = useState("");
   const [images, setImages] = useState([]);
   const [facilities, setFacilities] = useState([]);
 
-    useEffect(() => {
-        const midtransScriptUrl = 'https://app.sandbox.midtrans.com/snap/snap.js';
+  useEffect(() => {
+    const midtransScriptUrl = "https://app.sandbox.midtrans.com/snap/snap.js";
 
-        let scriptTag = document.createElement('script');
-        scriptTag.src = midtransScriptUrl;
-        scriptTag.setAttribute('data-client-key', CLIENT_KEY);
+    let scriptTag = document.createElement("script");
+    scriptTag.src = midtransScriptUrl;
+    scriptTag.setAttribute("data-client-key", CLIENT_KEY);
 
-        document.body.appendChild(scriptTag);
+    document.body.appendChild(scriptTag);
 
-        return () => {
-            document.body.removeChild(scriptTag);
-        }
-    }, []);
+    return () => {
+      document.body.removeChild(scriptTag);
+    };
+  }, []);
 
   const showTransPayments = async () => {
-      const formData = new FormData();
-      formData.append('product_id', id.id)
-      formData.append('overnight_stays', '1')
-      await fetch(`${BASE_API}/checkout`, {
-          method: "POST",
-          headers: {
-              'X-Authorization': API_KEY,
-              'Authorization': `Bearer ${user_token}`,
-          },
-          body: formData
-      }).then( async (res) => {
-          const data = await res.json();
-          await window.snap.pay(data.data.snap_token, {
-              onSuccess: (res) => {
-                  console.log(res)
-              },
-              onPending: (res) => {
-                  console.log(res)
-              },
-              onError: (res) => {
-                  console.log(res)
-              },
-              onClose: () => {
-                  console.log('Closed')
-              }
-          })
-      }).catch((err) => {
-          console.log(err)
-      })
- }
-
- const fetchData = async () => {
-  try {
-    const response = await fetch(`${BASE_API}/hotels/${id.id}`, {
-      method: "GET",
+    const formData = new FormData();
+    formData.append("product_id", id.id);
+    formData.append("overnight_stays", "1");
+    await fetch(`${BASE_API}/checkout`, {
+      method: "POST",
       headers: {
         "X-Authorization": API_KEY,
         Authorization: `Bearer ${user_token}`,
       },
-    });
-    if (response.ok) {
-      const data = await response.json();
-      console.log(data)
-      setDetail(data.data);
+      body: formData,
+    })
+      .then(async (res) => {
+        const data = await res.json();
+        await window.snap.pay(data.data.snap_token, {
+          onSuccess: (res) => {
+            console.log(res);
+          },
+          onPending: (res) => {
+            console.log(res);
+          },
+          onError: (res) => {
+            console.log(res);
+          },
+          onClose: () => {
+            console.log("Closed");
+          },
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
-      const images_array = data.data.hotel_photos;
-      const images_decoded = JSON.parse(images_array);
-      console.log(images_decoded)
-      setImages(images_decoded);
-      setFacilities(JSON.parse(data.data.facilities))
+  const fetchData = async () => {
+    try {
+      const response = await fetch(`${BASE_API}/hotels/${id.id}`, {
+        method: "GET",
+        headers: {
+          "X-Authorization": API_KEY,
+          Authorization: `Bearer ${user_token}`,
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+        setDetail(data.data);
 
-      setStatus({loading: false})
+        const images_array = data.data.hotel_photos;
+        const images_decoded = JSON.parse(images_array);
+        console.log(images_decoded);
+        setImages(images_decoded);
+        setFacilities(JSON.parse(data.data.facilities));
+
+        setStatus({ loading: false });
+      }
+    } catch (err) {
+      console.error(err);
     }
-  } catch (err) {
-    console.error(err);
-  }
-};
+  };
 
-useEffect(() => {
-  fetchData();
-}, []);
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <>
-        <div className="bg-white min-h-screen text-neutral-700">
-            {status.loading ? (
-                <Loading/>
-            ) : (
-            <div className="w-2/5 mx-auto flex flex-col justify-center pt-12 transition-all duration-500">
+      <div className="bg-white min-h-screen text-neutral-700">
+        {status.loading ? (
+          <Loading />
+        ) : (
+          <div className="w-2/5 mx-auto flex flex-col justify-center pt-12 transition-all duration-500">
             <div className="basis-2/3">
-            <div className="border rounded-lg border-neutral-300 p-4 shadow-sm shadow-black/50">
+              <div className="border rounded-lg border-neutral-300 p-4 shadow-sm shadow-black/50">
                 <div className="flex flex-row gap-4">
                   <Image
                     src={images[0]}
@@ -151,7 +154,9 @@ useEffect(() => {
                 <div className="pt-4 border-b border-neutral-500/50 pb-4">
                   <div className="flex flex-row justify-between px-2 py-1 text-medium">
                     <h3 className="font-semibold">Price</h3>
-                    <h3 className="font-semibold">Rp {parseInt(detail.overnight_prices).toLocaleString()}</h3>
+                    <h3 className="font-semibold">
+                      Rp {parseInt(detail.overnight_prices).toLocaleString()}
+                    </h3>
                   </div>
                 </div>
                 <div className="pt-4">
@@ -171,7 +176,16 @@ useEffect(() => {
                 <h3 className="text-red-500 text-right text-sm mt-8">
                   Hurry! Our last room for your dates at this price
                 </h3>
-                <Button color="primary" size="lg" onClick={showTransPayments}>
+                <Button
+                  color="primary"
+                  size="lg"
+                  onPress={() =>{
+                    setStatus((prev) => ({ ...prev, isPayment: true }))
+                    showTransPayments()
+                  }
+                  }
+                  isLoading={status.isPayment}
+                >
                   Checkout
                 </Button>
               </div>
