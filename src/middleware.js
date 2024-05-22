@@ -8,7 +8,9 @@ export async function middleware(request) {
   const cookies = parse(request.headers.get("cookie") || "");
   const token = cookies.user_token;
 
-  const loginPath = new URL("/register", request.url);
+  console.log(cookies)
+
+  const loginPath = new URL("/register/user", request.url);
   const currentPath = new URL(request.url);
 
   console.log(currentPath.pathname);

@@ -34,7 +34,7 @@ const registered = (WrappedComponent) => {
             !data.data.zip_code ||
             !data.data.complete_address
           ) {
-            push("/register");
+            push("/register/user");
           }
         } catch (err) {
           console.error(err);

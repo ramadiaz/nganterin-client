@@ -123,7 +123,7 @@ export default function NavbarComponent() {
           !user_data.data.zip_code ||
           !user_data.data.complete_address
         ) {
-          push("/register");
+          push("/register/user");
         }
       }
     } catch (err) {
@@ -239,7 +239,7 @@ export default function NavbarComponent() {
                     Become Our Partner
                   </DropdownItem>
                 )}
-                <DropdownItem key="team_settings">Order History</DropdownItem>
+                {/* <DropdownItem key="team_settings">Order History</DropdownItem> */}
                 <DropdownItem key="help_and_feedback" as={Link} href="/help">
                   Help & Feedback
                 </DropdownItem>
