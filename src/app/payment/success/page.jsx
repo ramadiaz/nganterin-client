@@ -1,6 +1,7 @@
 'use client'
 
 import Cookies from "js-cookie";
+import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 
 const BASE_API = process.env.NEXT_PUBLIC_BASE_API;
