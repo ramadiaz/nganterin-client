@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { Card, CardBody, Image, Button, Input } from "@nextui-org/react";
+import { Card, CardBody, Button, Input, Image } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import Loading from "@/app/loading";
@@ -80,7 +80,7 @@ const Page = () => {
               </div>
             </div>
             {result.length != 0 && (
-              <div className="flex flex-col gap-4 justify-center items-center">
+              <div className="grid grid-cols-2 gap-4 justify-center items-center">
                 {result.map((item) => {
                   const image_array = item.hotel_photos;
                   const imageUrl = JSON.parse(image_array);
