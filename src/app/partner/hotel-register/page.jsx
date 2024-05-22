@@ -151,7 +151,7 @@ const Page = () => {
                 Please fill out all the fields
               </h4>
             </div>
-            <div className="my-8">
+            <div className="my-8 border-2 border-neutral-500/20 rounded-xl p-4">
               <h2 className="opacity-90 mb-4">
                 Upload your hotel pictures here!
               </h2>

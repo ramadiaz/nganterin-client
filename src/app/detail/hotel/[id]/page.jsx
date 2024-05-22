@@ -1,14 +1,19 @@
 "use client";
 
+import Authenticating from "@/app/authenticating";
 import Loading from "@/app/loading";
 import { Button, ButtonGroup } from "@nextui-org/react";
 import { Check } from "@phosphor-icons/react/dist/ssr";
-import { data } from "autoprefixer";
+import { useGoogleLogin } from "@react-oauth/google";
 import Cookies from "js-cookie";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
+import jwt from "jsonwebtoken";
+
+const SECRET_KEY = process.env.NEXT_PUBLIC_JWT_SECRET;
 const BASE_API = process.env.NEXT_PUBLIC_BASE_API;
 const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
 
@@ -17,8 +22,111 @@ const Page = ({ params: id }) => {
   const [detail, setDetail] = useState("");
   const [images, setImages] = useState([]);
   const [facilities, setFacilities] = useState([]);
-  const user_token = Cookies.get('user_token')
-  console.log(id.id)
+  const user_token = Cookies.get("user_token");
+
+  const [isAuthenticating, setIsAuthenticating] = useState(false);
+  const [userData, setUserData] = useState("");
+
+  const { push } = useRouter();
+
+  const googleLogin = useGoogleLogin({
+    flow: "implicit",
+    onSuccess: async (tokenResponse) => {
+      setIsAuthenticating(true);
+      try {
+        const res = await fetch(
+          "https://www.googleapis.com/oauth2/v3/userinfo",
+          {
+            headers: {
+              Authorization: `Bearer ${tokenResponse.access_token}`,
+            },
+          }
+        );
+
+        if (res.ok) {
+          const userInfo = await res.json();
+          const token = jwt.sign(userInfo, SECRET_KEY, { expiresIn: "3d" });
+
+          Cookies.remove("user_jwt");
+          Cookies.set("user_jwt", token, { expires: 3 });
+
+          pushLogin(userInfo);
+          getCookies();
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    },
+  });
+
+  const pushLogin = async (data) => {
+    console.log("AKU DIPANGGIL NIH KAK")
+    const formData = new FormData();
+    console.log({ data });
+    formData.append("name", data.name);
+    formData.append("email", data.email);
+    formData.append("profile_picture", data.picture);
+
+    try {
+      const res = await fetch(`${BASE_API}/auth/login/oauth/google`, {
+        headers: {
+          "X-Authorization": API_KEY,
+        },
+        method: "POST",
+        body: formData,
+        cache: "no-store",
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+
+        Cookies.remove("user_token");
+        Cookies.set("user_token", data.token, { expires: 3 });
+
+        Cookies.remove("user_partner_id");
+        Cookies.set("user_partner_id", data.data.partner_id, { expires: 3 });
+
+        const response = await fetch(`${BASE_API}/profile`, {
+          headers: {
+            "X-Authorization": API_KEY,
+            Authorization: `Bearer ${data.token}`,
+          },
+        });
+        const user_data = await response.json();
+        if (
+          !user_data.data.gender ||
+          !user_data.data.phone_number ||
+          !user_data.data.country ||
+          !user_data.data.province ||
+          !user_data.data.city ||
+          !user_data.data.zip_code ||
+          !user_data.data.complete_address
+        ) {
+          push("/register/user");
+        }
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsAuthenticating(false);
+    }
+  };
+
+  const getCookies = () => {
+    try {
+      const token = Cookies.get("user_jwt");
+      if (token) {
+        var decoded = jwt.verify(token, SECRET_KEY);
+        setUserData(decoded);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    getCookies();
+  }, []);
 
   const fetchData = async () => {
     try {
@@ -31,16 +139,16 @@ const Page = ({ params: id }) => {
       });
       if (response.ok) {
         const data = await response.json();
-        console.log(data)
+        console.log(data);
         setDetail(data.data);
 
         const images_array = data.data.hotel_photos;
         const images_decoded = JSON.parse(images_array);
-        console.log(images_decoded)
+        console.log(images_decoded);
         setImages(images_decoded);
-        setFacilities(JSON.parse(data.data.facilities))
+        setFacilities(JSON.parse(data.data.facilities));
 
-        setStatus({loading: false})
+        setStatus({ loading: false });
       }
     } catch (err) {
       console.error(err);
@@ -112,16 +220,28 @@ const Page = ({ params: id }) => {
                         Rp. {parseInt(detail.overnight_prices).toLocaleString()}
                       </h2>
                     </div>
-                    <Button
-                      as={Link}
-                      href={`/order/hotel/${id.id}`}
-                      className="uppercase bg-sky-700 text-white"
-                      radius="full"
-                      size="md"
-                      variant="flat"
-                    >
-                      View this deal
-                    </Button>
+                    {userData ? (
+                      <Button
+                        as={Link}
+                        href={`/order/hotel/${id.id}`}
+                        className="uppercase bg-sky-700 text-white"
+                        radius="full"
+                        size="md"
+                        variant="flat"
+                      >
+                        View this deal
+                      </Button>
+                    ) : (
+                      <Button
+                        onClick={() => googleLogin()}
+                        className="uppercase bg-sky-700 text-white"
+                        radius="full"
+                        size="md"
+                        variant="flat"
+                      >
+                        Login to order
+                      </Button>
+                    )}
                   </div>
                 </div>
               </div>
@@ -139,19 +259,18 @@ const Page = ({ params: id }) => {
                     <h3 className="text-xl font-semibold mb-4">
                       {detail.name}
                     </h3>
-                    <h4 className="text-sm">
-                      {detail.description}
-                    </h4>
+                    <h4 className="text-sm">{detail.description}</h4>
                   </div>
                   <div className="rounded-lg border border-neutral-300 p-4">
                     <h2 className="font-semibold">Rooms</h2>
                     <div className="flex flex-wrap font-semibold text-xs gap-2 mt-2">
-                        <h2
-                          className="flex flex-row items-center gap-2 w-max"
-                        >
-                          <Check size={12} weight="bold" />Max Visitor: {detail.max_visitor}
-                          <Check size={12} weight="bold" />Smooking Allowed: {detail.smoking_allowed === '0' ? 'Yes' : 'No'}
-                        </h2>
+                      <h2 className="flex flex-row items-center gap-2 w-max">
+                        <Check size={12} weight="bold" />
+                        Max Visitor: {detail.max_visitor}
+                        <Check size={12} weight="bold" />
+                        Smooking Allowed:{" "}
+                        {detail.smoking_allowed === "0" ? "Yes" : "No"}
+                      </h2>
                     </div>
                   </div>
                   <div className="rounded-lg border border-neutral-300 p-4">
@@ -167,11 +286,10 @@ const Page = ({ params: id }) => {
                           </h2>
                         );
                       })}
-                      <h2
-                            className="flex flex-row items-center gap-2 w-max"
-                          >
-                            <Check size={12} weight="bold" /> Room Size: {detail.room_sizes} m<sup>3</sup>
-                          </h2>
+                      <h2 className="flex flex-row items-center gap-2 w-max">
+                        <Check size={12} weight="bold" /> Room Size:{" "}
+                        {detail.room_sizes} m<sup>3</sup>
+                      </h2>
                     </div>
                   </div>
                 </div>
@@ -204,6 +322,7 @@ const Page = ({ params: id }) => {
           </div>
         )}
       </div>
+      {isAuthenticating && <Authenticating />}
       <div className="bg-gradient-to-b from-white to-orange-50 h-20"></div>
     </>
   );
