@@ -35,7 +35,7 @@ export async function middleware(request) {
         !data.data.zip_code ||
         !data.data.complete_address
       ) {
-        return NextResponse.redirect(loginPath);
+        return NextResponse.next();
       }
     } catch (err) {
       console.error(err);
