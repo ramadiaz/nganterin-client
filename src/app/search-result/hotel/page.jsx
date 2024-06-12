@@ -81,13 +81,13 @@ const Page = () => {
             </div>
             {result.length != 0 && (
               <div className="grid grid-cols-2 gap-4 justify-center items-center">
-                {result.map((item) => {
+                {result.map((item, index) => {
                   const image_array = item.hotel_photos;
                   const imageUrl = JSON.parse(image_array);
                   const price = parseInt(item.overnight_prices);
 
                   return (
-                    <div className="hover:shadow-lg hover:shadow-black/30 transition-all duration-500 rounded-2xl">
+                    <div className="hover:shadow-lg hover:shadow-black/30 transition-all duration-500 rounded-2xl" key={index}>
                       <Card
                         as={Link}
                         href={`/detail/hotel/${item.id}`}

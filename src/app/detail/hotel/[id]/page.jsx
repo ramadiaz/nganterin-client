@@ -2,11 +2,10 @@
 
 import Authenticating from "@/app/authenticating";
 import Loading from "@/app/loading";
-import { Button, ButtonGroup } from "@nextui-org/react";
+import { Button, ButtonGroup, Image } from "@nextui-org/react";
 import { Check } from "@phosphor-icons/react/dist/ssr";
 import { useGoogleLogin } from "@react-oauth/google";
 import Cookies from "js-cookie";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -174,9 +173,9 @@ const Page = ({ params: id }) => {
                 <div className="w-96 h-96 rounded-xl overflow-hidden hover:scale-105 transition-all duration-500">
                   <Image
                     src={images[0]}
-                    width={800}
-                    height={800}
-                    className="w-full h-full overflow-hidden object-cover selector"
+                    width={0}
+                    height={0}
+                    className="w-96 h-96 overflow-hidden object-cover selector"
                     alt="hotel image"
                   />
                 </div>
@@ -189,9 +188,9 @@ const Page = ({ params: id }) => {
                       >
                         <Image
                           src={image}
-                          width={800}
-                          height={800}
-                          className="w-full h-full overflow-hidden object-cover selector"
+                          width={0}
+                          height={0}
+                          className="w-44 h-44 overflow-hidden object-cover selector"
                           alt="hotel image"
                         />
                       </div>
