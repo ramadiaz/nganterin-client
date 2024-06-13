@@ -270,7 +270,7 @@ const Page = ({ params: id }) => {
                         Max Visitor: {detail.max_visitor}
                         <Check size={12} weight="bold" />
                         Smooking Allowed:{" "}
-                        {detail.smoking_allowed === "0" ? "Yes" : "No"}
+                        {!detail.smoking_allowed === "0" ? "Yes" : "No"}
                       </h2>
                     </div>
                   </div>
