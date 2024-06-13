@@ -55,28 +55,26 @@ const Page = () => {
         <Loading />
       ) : (
         <div className="bg-orange-100 pt-14">
-          <div className="flex flex-row gap-4 w-4/5 mx-auto justify-center">
-            <div className="">
-              <div className="bg-background/50 shadow shadow-black/30 text-neutral-700 hover:shadow-lg hover:shadow-black/30 transition-all duration-500 rounded-2xl p-4">
-                <div className="flex flex-row gap-1">
-                  <Input
-                    placeholder="Search"
-                    variant="faded"
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                  />
-                  <Button
-                    className="bg-sky-700"
-                    isIconOnly
-                    onClick={() =>
-                      router.push(
-                        `/search-result/hotel?search=${search}&dateStart=${dateStart}&dateEnd=${dateEnd}`
-                      )
-                    }
-                  >
-                    <MagnifyingGlass size={24} color="#fff"/>
-                  </Button>
-                </div>
+          <div className="relative w-3/5 mx-auto">
+            <div className="sticky top-20 z-40 w-96 mx-auto mb-8 bg-background/50 h-max shadow shadow-black/30 text-neutral-700 hover:shadow-lg hover:shadow-black/30 transition-all duration-500 rounded-2xl p-4">
+              <div className="flex flex-row gap-1">
+                <Input
+                  placeholder="Search"
+                  variant="faded"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                />
+                <Button
+                  className="bg-sky-700"
+                  isIconOnly
+                  onClick={() =>
+                    router.push(
+                      `/search-result/hotel?search=${search}&dateStart=${dateStart}&dateEnd=${dateEnd}`
+                    )
+                  }
+                >
+                  <MagnifyingGlass size={24} color="#fff" />
+                </Button>
               </div>
             </div>
             {result.length != 0 && (
@@ -87,7 +85,10 @@ const Page = () => {
                   const price = parseInt(item.overnight_prices);
 
                   return (
-                    <div className="hover:shadow-lg hover:shadow-black/30 transition-all duration-500 rounded-2xl" key={index}>
+                    <div
+                      className="shadow shadow-black/30 hover:shadow-lg hover:shadow-black/30 transition-all duration-500 rounded-2xl"
+                      key={index}
+                    >
                       <Card
                         as={Link}
                         href={`/detail/hotel/${item.id}`}
