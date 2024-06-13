@@ -5,6 +5,7 @@ import { Button, Checkbox, Input } from "@nextui-org/react";
 import { Sparkle } from "@phosphor-icons/react";
 import Image from "next/image";
 import { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import ReactStars from "react-rating-stars-component";
 import process from "next/dist/build/webpack/loaders/resolve-url-loader/lib/postcss";
 import Cookies from "js-cookie";
