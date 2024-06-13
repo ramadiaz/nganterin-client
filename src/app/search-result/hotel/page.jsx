@@ -49,6 +49,13 @@ const Page = () => {
     fetchData();
   }, [searchValue]);
 
+  const handleSearch = (e) => {
+    e.preventDefault();
+    router.push(
+      `/search-result/hotel?search=${search}&dateStart=${dateStart}&dateEnd=${dateEnd}`
+    );
+  };
+
   return (
     <>
       {isLoading ? (
@@ -57,25 +64,17 @@ const Page = () => {
         <div className="bg-orange-100 pt-14">
           <div className="relative w-3/5 mx-auto">
             <div className="sticky top-20 z-40 w-96 mx-auto mb-8 bg-background/50 h-max shadow shadow-black/30 text-neutral-700 hover:shadow-lg hover:shadow-black/30 transition-all duration-500 rounded-2xl p-4">
-              <div className="flex flex-row gap-1">
+              <form className="flex flex-row gap-1" onSubmit={handleSearch}>
                 <Input
                   placeholder="Search"
                   variant="faded"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                 />
-                <Button
-                  className="bg-sky-700"
-                  isIconOnly
-                  onClick={() =>
-                    router.push(
-                      `/search-result/hotel?search=${search}&dateStart=${dateStart}&dateEnd=${dateEnd}`
-                    )
-                  }
-                >
+                <Button className="bg-sky-700" isIconOnly type="submit">
                   <MagnifyingGlass size={24} color="#fff" />
                 </Button>
-              </div>
+              </form>
             </div>
             {result.length != 0 && (
               <div className="grid grid-cols-2 gap-4 justify-center items-center">
