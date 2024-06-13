@@ -6,9 +6,9 @@ import { Sparkle } from "@phosphor-icons/react";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import ReactStars from "react-rating-stars-component";
-import Head from "next/head";
 import process from "next/dist/build/webpack/loaders/resolve-url-loader/lib/postcss";
 import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
 const BASE_API = process.env.NEXT_PUBLIC_BASE_API;
 const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
@@ -24,9 +24,12 @@ const Page = ({ params: id }) => {
   const [dataSnap, setDataSnap] = useState({});
   const [detail, setDetail] = useState("");
   const [images, setImages] = useState([]);
+  const [userData, setUserData] = useState("");
   const [facilities, setFacilities] = useState([]);
 
-  useEffect(() => {
+  const { push } = useRouter();
+
+  const midTransInit = () => {
     const midtransScriptUrl = "https://app.sandbox.midtrans.com/snap/snap.js";
 
     let scriptTag = document.createElement("script");
@@ -38,7 +41,7 @@ const Page = ({ params: id }) => {
     return () => {
       document.body.removeChild(scriptTag);
     };
-  }, []);
+  };
 
   const showTransPayments = async () => {
     const formData = new FormData();
@@ -68,6 +71,9 @@ const Page = ({ params: id }) => {
           onClose: () => {
             console.log("Closed");
             setStatus((prev) => ({ ...prev, isPayment: false }));
+            push(
+              `/payment/failed?order_id=${data.data.order_id}&transaction_status=failure`
+            );
           },
         });
       })
@@ -103,9 +109,27 @@ const Page = ({ params: id }) => {
     }
   };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const fetchUserData = async () => {
+    try {
+      const response = await fetch(`${BASE_API}/profile`, {
+        method: "GET",
+        headers: {
+          "X-Authorization": API_KEY,
+          Authorization: `Bearer ${user_token}`,
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setUserData(data.data);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useState(fetchData);
+  useState(fetchUserData);
+  useState(midTransInit);
 
   return (
     <>
@@ -124,12 +148,11 @@ const Page = ({ params: id }) => {
                   radius="sm"
                   variant="bordered"
                   size="lg"
-                  placeholder="Kimi no namae waaa"
+                  value={userData.name}
                   className="pt-4"
                   classNames={{
                     label: ["text-sm"],
                   }}
-                  disabled
                 />
                 <Input
                   label="Email*"
@@ -139,22 +162,8 @@ const Page = ({ params: id }) => {
                   radius="sm"
                   variant="bordered"
                   size="lg"
+                  value={userData.email}
                   placeholder="Enter your email"
-                  className="pt-4"
-                  classNames={{
-                    label: ["text-sm"],
-                  }}
-                  disabled
-                />
-                <Input
-                  label="Re-type email*"
-                  type="email"
-                  required
-                  labelPlacement="outside"
-                  radius="sm"
-                  variant="bordered"
-                  size="lg"
-                  placeholder=" "
                   className="pt-4"
                   classNames={{
                     label: ["text-sm"],
@@ -172,12 +181,12 @@ const Page = ({ params: id }) => {
                     radius="sm"
                     variant="bordered"
                     size="lg"
+                    value={userData.phone_number}
                     placeholder=" "
                     className="pt-4"
                     classNames={{
                       label: ["text-sm"],
                     }}
-                    disabled
                   />
                   <Input
                     label="Country/region of residence*"
@@ -186,12 +195,13 @@ const Page = ({ params: id }) => {
                     radius="sm"
                     variant="bordered"
                     size="lg"
+                    value={userData.country}
                     placeholder=" "
                     className="pt-4"
                     classNames={{
                       label: ["text-sm"],
                     }}
-                    disabled
+                    isDisabled
                   />
                 </div>
                 <Checkbox
@@ -221,7 +231,6 @@ const Page = ({ params: id }) => {
                     classNames={{
                       label: ["text-sm"],
                     }}
-                    disabled
                   />
                   <Input
                     label="Country/region of residence*"
@@ -235,7 +244,6 @@ const Page = ({ params: id }) => {
                     classNames={{
                       label: ["text-sm"],
                     }}
-                    disabled
                   />
                 </div>
               </div>
@@ -256,6 +264,7 @@ const Page = ({ params: id }) => {
                     setStatus((prev) => ({ ...prev, isPayment: true }));
                     showTransPayments();
                   }}
+                  isLoading={status.isPa}
                 >
                   Payment
                 </Button>
