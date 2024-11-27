@@ -1,29 +1,22 @@
 "use client";
 
-import Cookies from "js-cookie";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import Loading from "../loading";
+import { BASE_API } from "@/utilities/environtment";
+import fetchWithAuth from "@/utilities/fetchWIthAuth";
 
-const BASE_API = process.env.NEXT_PUBLIC_BASE_API;
-const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
 import AOS from "aos";
 import "aos/dist/aos.css";
 
 const Page = () => {
-  const user_token = Cookies.get("user_token");
-
   const [userData, setUserData] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchData = async () => {
     try {
-      const response = await fetch(`${BASE_API}/profile`, {
+      const response = await fetchWithAuth(`${BASE_API}/profile`, {
         method: "GET",
-        headers: {
-          "X-Authorization": API_KEY,
-          Authorization: `Bearer ${user_token}`,
-        },
       });
       if (response.ok) {
         const data = await response.json();

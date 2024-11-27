@@ -1,16 +1,11 @@
 'use client'
 
-import Cookies from "js-cookie";
-import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
-
-const BASE_API = process.env.NEXT_PUBLIC_BASE_API;
-const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
-const CLIENT_KEY = process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY;
+import { useSearchParams } from "next/navigation";
+import { BASE_API } from "@/utilities/environtment";
+import fetchWithAuth from "@/utilities/fetchWIthAuth";
 
 const Page = () => {
-  const user_token = Cookies.get("user_token");
-
   const order_id = useSearchParams().get("order_id");
   const transaction_status = useSearchParams().get("transaction_status");
 
@@ -19,14 +14,10 @@ const Page = () => {
     formData.append("order_id", order_id);
     formData.append("transaction_status", transaction_status);
     try {
-      const response = await fetch(
+      const response = await fetchWithAuth(
         `${BASE_API}/checkout/payments/update-status`,
         {
           method: "POST",
-          headers: {
-            "X-Authorization": API_KEY,
-            Authorization: `Bearer ${user_token}`,
-          },
           body: formData,
         }
       );

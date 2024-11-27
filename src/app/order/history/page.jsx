@@ -1,28 +1,20 @@
 "use client";
 
 import Loading from "@/app/loading";
-import { Button, Card, CardBody, Image } from "@nextui-org/react";
-import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
-
-const BASE_API = process.env.NEXT_PUBLIC_BASE_API;
-const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
+import fetchWithAuth from "@/utilities/fetchWIthAuth";
+import { BASE_API } from "@/utilities/environtment";
+import { Button, Card, CardBody, Image } from "@nextui-org/react";
 
 const Page = () => {
-  const user_token = Cookies.get("user_token");
-
   const [isLoading, setIsLoading] = useState(true);
   const [history, setHistory] = useState("");
 
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(`${BASE_API}/checkout/history`, {
+      const response = await fetchWithAuth(`${BASE_API}/checkout/history`, {
         method: "GET",
-        headers: {
-          "X-Authorization": API_KEY,
-          Authorization: `Bearer ${user_token}`,
-        },
       });
       if (response.ok) {
         const data = await response.json();

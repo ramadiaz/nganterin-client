@@ -1,20 +1,18 @@
 "use client";
 
-import { Button, Input, Select, SelectItem, Textarea } from "@nextui-org/react";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import Redirecting from "../../redirecting";
+import { BASE_API } from "@/utilities/environtment";
+import fetchWithAuth from "@/utilities/fetchWIthAuth";
+import Cookies from "js-cookie";
 
 import AOS from "aos";
 import "aos/dist/aos.css";
 
+import { Button, Input, Select, SelectItem, Textarea } from "@nextui-org/react";
 import { CompassRose } from "@phosphor-icons/react";
-
-import Cookies from "js-cookie";
-import { useRouter } from "next/navigation";
-import Redirecting from "../../redirecting";
 import { Bounce, toast } from "react-toastify";
-
-const BASE_API = process.env.NEXT_PUBLIC_BASE_API;
-const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
 
 const Page = () => {
   const { push } = useRouter();
@@ -71,12 +69,8 @@ const Page = () => {
       formData1.append("zip_code", inputData.zip_code);
       formData1.append("complete_address", inputData.complete_address);
 
-      const response = await fetch(`${BASE_API}/profile/address`, {
+      const response = await fetchWithAuth(`${BASE_API}/profile/address`, {
         method: "POST",
-        headers: {
-          "X-Authorization": API_KEY,
-          Authorization: `Bearer ${user_token}`,
-        },
         body: formData1,
       });
 
@@ -84,12 +78,8 @@ const Page = () => {
       formData2.append("gender", inputData.gender);
       formData2.append("phone_number", inputData.number);
 
-      const response2 = await fetch(`${BASE_API}/profile/user-detail`, {
+      const response2 = await fetchWithAuth(`${BASE_API}/profile/user-detail`, {
         method: "POST",
-        headers: {
-          "X-Authorization": API_KEY,
-          Authorization: `Bearer ${user_token}`,
-        },
         body: formData2,
       });
 

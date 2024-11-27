@@ -1,5 +1,18 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import fetchWithAuth from "@/utilities/fetchWIthAuth";
+import { BASE_API } from "@/utilities/environtment";
+import Cookies from "js-cookie";
+
+import { FilePond, registerPlugin } from "react-filepond";
+import "filepond/dist/filepond.min.css";
+import FilePondPluginImagePreview from "filepond-plugin-image-preview";
+import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
+
+import AOS from "aos";
+import "aos/dist/aos.css";
+
 import {
   Button,
   Checkbox,
@@ -9,26 +22,10 @@ import {
   SelectItem,
   Textarea,
 } from "@nextui-org/react";
-import Cookies from "js-cookie";
-import { useEffect, useState } from "react";
-
-import { FilePond, File, registerPlugin } from "react-filepond";
-import "filepond/dist/filepond.min.css";
-import FilePondPluginImagePreview from "filepond-plugin-image-preview";
-import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
-
-import AOS from "aos";
-import "aos/dist/aos.css";
-
-import Image from "next/image";
-
 import { Bounce, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 registerPlugin(FilePondPluginImagePreview);
-
-const BASE_API = process.env.NEXT_PUBLIC_BASE_API;
-const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
 
 const Page = () => {
   const user_token = Cookies.get("user_token");
@@ -86,15 +83,13 @@ const Page = () => {
     try {
       console.log(API_KEY);
       console.log(user_token);
-      const response = await fetch(`${BASE_API}/partner/hotels/create`, {
-        method: "POST",
-        headers: {
-          "X-Authorization": API_KEY,
-          Authorization: `Bearer ${user_token}`,
-        },
-        cache: "no-store",
-        body: formData,
-      });
+      const response = await fetchWithAuth(
+        `${BASE_API}/partner/hotels/create`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       if (response.ok) {
         console.log("success");
@@ -143,7 +138,10 @@ const Page = () => {
   return (
     <>
       <div className="w-4/5 mx-auto">
-        <div className="w-full mt-14 p-8 flex flex-row bg-white text-neutral-700 rounded-lg shadow-lg shadow-neutral-500/30 gap-4" data-aos="fade-up">
+        <div
+          className="w-full mt-14 p-8 flex flex-row bg-white text-neutral-700 rounded-lg shadow-lg shadow-neutral-500/30 gap-4"
+          data-aos="fade-up"
+        >
           <div className="basis-1/2">
             <div>
               <h2 className="text-lg font-semibold">Hotel Register</h2>
@@ -170,10 +168,6 @@ const Page = () => {
                 server={{
                   url: `${BASE_API}/files/upload`,
                   process: {
-                    headers: {
-                      "X-Authorization": API_KEY,
-                      Authorization: `Bearer ${user_token}`,
-                    },
                     onload: (res) => {
                       const data = JSON.parse(res);
                       setInputData((prevData) => {
@@ -186,18 +180,11 @@ const Page = () => {
                       });
                     },
                     onerror: (err) => console.error(err),
-                    onprocessfiles: () => console.log("DONE ALL")
-                    
+                    onprocessfiles: () => console.log("DONE ALL"),
                   },
                 }}
               />
             </div>
-            {/* <Image
-              src={`/images/troll.jpg`}
-              height={500}
-              width={500}
-              alt="troll"
-            /> */}
           </div>
           <div className="basis-1/2">
             <form className="flex flex-col gap-4" onSubmit={handleSubmit}>

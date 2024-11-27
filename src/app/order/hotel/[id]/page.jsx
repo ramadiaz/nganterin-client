@@ -1,22 +1,16 @@
 "use client";
 
 import Loading from "@/app/loading";
+import { BASE_API, CLIENT_KEY } from "@/utilities/environtment";
+import fetchWithAuth from "@/utilities/fetchWIthAuth";
+import Image from "next/image";
+import { useState } from "react";
+import ReactStars from "react-rating-stars-component";
+import { useRouter } from "next/navigation";
 import { Button, Checkbox, Input } from "@nextui-org/react";
 import { Sparkle } from "@phosphor-icons/react";
-import Image from "next/image";
-import { useState, useEffect } from "react";
-import { useState, useEffect } from "react";
-import ReactStars from "react-rating-stars-component";
-import process from "next/dist/build/webpack/loaders/resolve-url-loader/lib/postcss";
-import Cookies from "js-cookie";
-import { useRouter } from "next/navigation";
-
-const BASE_API = process.env.NEXT_PUBLIC_BASE_API;
-const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
-const CLIENT_KEY = process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY;
 
 const Page = ({ params: id }) => {
-  const user_token = Cookies.get("user_token");
   const [status, setStatus] = useState({
     loading: true,
     forSomeoneElse: true,
@@ -48,12 +42,8 @@ const Page = ({ params: id }) => {
     const formData = new FormData();
     formData.append("product_id", id.id);
     formData.append("overnight_stays", "1");
-    await fetch(`${BASE_API}/checkout`, {
+    await fetchWithAuth(`${BASE_API}/checkout`, {
       method: "POST",
-      headers: {
-        "X-Authorization": API_KEY,
-        Authorization: `Bearer ${user_token}`,
-      },
       body: formData,
     })
       .then(async (res) => {
@@ -85,12 +75,8 @@ const Page = ({ params: id }) => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch(`${BASE_API}/hotels/${id.id}`, {
+      const response = await fetchWithAuth(`${BASE_API}/hotels/${id.id}`, {
         method: "GET",
-        headers: {
-          "X-Authorization": API_KEY,
-          Authorization: `Bearer ${user_token}`,
-        },
       });
       if (response.ok) {
         const data = await response.json();
@@ -112,12 +98,8 @@ const Page = ({ params: id }) => {
 
   const fetchUserData = async () => {
     try {
-      const response = await fetch(`${BASE_API}/profile`, {
+      const response = await fetchWithAuth(`${BASE_API}/profile`, {
         method: "GET",
-        headers: {
-          "X-Authorization": API_KEY,
-          Authorization: `Bearer ${user_token}`,
-        },
       });
       if (response.ok) {
         const data = await response.json();

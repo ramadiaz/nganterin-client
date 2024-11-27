@@ -1,22 +1,18 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { Card, CardBody, Button, Input, Image } from "@nextui-org/react";
 import { useEffect, useState } from "react";
-import Cookies from "js-cookie";
 import Loading from "@/app/loading";
-import { MagnifyingGlass } from "@phosphor-icons/react";
 import Link from "next/link";
-
-const BASE_API = process.env.NEXT_PUBLIC_BASE_API;
-const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
+import { BASE_API } from "@/utilities/environtment";
+import fetchWithAuth from "@/utilities/fetchWIthAuth";
+import { Card, CardBody, Button, Input, Image } from "@nextui-org/react";
+import { MagnifyingGlass } from "@phosphor-icons/react";
 
 const Page = () => {
   const searchValue = useSearchParams().get("search");
   const dateStart = useSearchParams().get("dateStart");
   const dateEnd = useSearchParams().get("dateEnd");
-
-  const user_token = Cookies.get("user_token");
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(true);
@@ -26,16 +22,14 @@ const Page = () => {
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(`${BASE_API}/hotels?search=${searchValue}`, {
-        method: "GET",
-        headers: {
-          "X-Authorization": API_KEY,
-          Authorization: `Bearer ${user_token}`,
-        },
-      });
+      const response = await fetchWithAuth(
+        `${BASE_API}/hotels?search=${searchValue}`,
+        {
+          method: "GET",
+        }
+      );
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
         setResult(data.data);
       }
     } catch (err) {

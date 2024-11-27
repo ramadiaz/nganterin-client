@@ -2,26 +2,22 @@
 
 import Authenticating from "@/app/authenticating";
 import Loading from "@/app/loading";
-import { Button, ButtonGroup, Image } from "@nextui-org/react";
-import { Check } from "@phosphor-icons/react/dist/ssr";
-import { useGoogleLogin } from "@react-oauth/google";
-import Cookies from "js-cookie";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-
+import { useGoogleLogin } from "@react-oauth/google";
+import Cookies from "js-cookie";
+import fetchWithAuth from "@/utilities/fetchWIthAuth";
+import { BASE_API, SECRET_KEY } from "@/utilities/environtment";
 import jwt from "jsonwebtoken";
-
-const SECRET_KEY = process.env.NEXT_PUBLIC_JWT_SECRET;
-const BASE_API = process.env.NEXT_PUBLIC_BASE_API;
-const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
+import { Button, ButtonGroup, Image } from "@nextui-org/react";
+import { Check } from "@phosphor-icons/react/dist/ssr";
 
 const Page = ({ params: id }) => {
   const [status, setStatus] = useState({ loading: true });
   const [detail, setDetail] = useState("");
   const [images, setImages] = useState([]);
   const [facilities, setFacilities] = useState([]);
-  const user_token = Cookies.get("user_token");
 
   const [isAuthenticating, setIsAuthenticating] = useState(false);
   const [userData, setUserData] = useState("");
@@ -59,7 +55,7 @@ const Page = ({ params: id }) => {
   });
 
   const pushLogin = async (data) => {
-    console.log("AKU DIPANGGIL NIH KAK")
+    console.log("AKU DIPANGGIL NIH KAK");
     const formData = new FormData();
     console.log({ data });
     formData.append("name", data.name);
@@ -67,13 +63,9 @@ const Page = ({ params: id }) => {
     formData.append("profile_picture", data.picture);
 
     try {
-      const res = await fetch(`${BASE_API}/auth/login/oauth/google`, {
-        headers: {
-          "X-Authorization": API_KEY,
-        },
+      const res = await fetchWithAuth(`${BASE_API}/auth/login/oauth/google`, {
         method: "POST",
         body: formData,
-        cache: "no-store",
       });
 
       if (res.ok) {
@@ -85,12 +77,7 @@ const Page = ({ params: id }) => {
         Cookies.remove("user_partner_id");
         Cookies.set("user_partner_id", data.data.partner_id, { expires: 3 });
 
-        const response = await fetch(`${BASE_API}/profile`, {
-          headers: {
-            "X-Authorization": API_KEY,
-            Authorization: `Bearer ${data.token}`,
-          },
-        });
+        const response = await fetchWithAuth(`${BASE_API}/profile`);
         const user_data = await response.json();
         if (
           !user_data.data.gender ||
@@ -102,8 +89,8 @@ const Page = ({ params: id }) => {
           !user_data.data.complete_address
         ) {
           push("/register/user");
-        } else{
-          location.reload()
+        } else {
+          location.reload();
         }
       }
     } catch (err) {
@@ -131,12 +118,8 @@ const Page = ({ params: id }) => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch(`${BASE_API}/hotels/${id.id}`, {
+      const response = await fetchWithAuth(`${BASE_API}/hotels/${id.id}`, {
         method: "GET",
-        headers: {
-          "X-Authorization": API_KEY,
-          Authorization: `Bearer ${user_token}`,
-        },
       });
       if (response.ok) {
         const data = await response.json();

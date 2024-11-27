@@ -1,20 +1,20 @@
 "use client";
 
-import { Button, Input, Textarea } from "@nextui-org/react";
-import { Link as LinkIcon } from "@phosphor-icons/react";
-import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import { FileUploader } from "react-drag-drop-files";
+import { useRouter } from "next/navigation";
+import Redirecting from "@/app/redirecting";
+import Cookies from "js-cookie";
+import { BASE_API } from "@/utilities/environtment";
+import fetchWithAuth from "@/utilities/fetchWIthAuth";
 
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { useRouter } from "next/navigation";
-import Redirecting from "@/app/redirecting";
+
+import { Button, Input, Textarea } from "@nextui-org/react";
+import { Link as LinkIcon } from "@phosphor-icons/react";
 
 const fileTypes = ["PDF"];
-
-const BASE_API = process.env.NEXT_PUBLIC_BASE_API;
-const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
 
 const Page = () => {
   const [inputData, setInputData] = useState({
@@ -66,12 +66,8 @@ const Page = () => {
     const formData = new FormData();
     formData.append("file", file);
     try {
-      const response = await fetch(`${BASE_API}/files/upload`, {
+      const response = await fetchWithAuth(`${BASE_API}/files/upload`, {
         method: "POST",
-        headers: {
-          "X-Authorization": API_KEY,
-          Authorization: `Bearer ${user_token}`,
-        },
         body: formData,
       });
 
@@ -113,12 +109,8 @@ const Page = () => {
     formData.append("legality_file", legalityFile);
     formData.append("mou_file", mouFile);
     try {
-      const response = await fetch(`${BASE_API}/partner/register`, {
+      const response = await fetchWithAuth(`${BASE_API}/partner/register`, {
         method: "POST",
-        headers: {
-          "X-Authorization": API_KEY,
-          Authorization: `Bearer ${user_token}`,
-        },
         body: formData,
       });
       if (response.ok) {
