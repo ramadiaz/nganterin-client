@@ -2,22 +2,20 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Button, Input } from "@nextui-org/react";
+import { Button, Input, Spinner } from "@nextui-org/react";
 import { Eye, EyeSlash } from "@phosphor-icons/react";
 
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { BASE_URL } from "@/utilities/environtment";
 import Cookies from "js-cookie";
-import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
 const Page = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isVisible, setIsVisible] = useState(false);
-
-  const router = useRouter()
+  const [isLoading, setIsLoading] = useState(false)
 
   const toggleVisibility = () => setIsVisible(!isVisible);
   const isButtonDisabled = !email || !password;
@@ -26,7 +24,10 @@ const Page = () => {
     AOS.init({ duration: 1200 });
   }, []);
 
-  const handleLogin = async () => {
+  const handleLogin = async (e) => {
+    e.preventDefault()
+
+    setIsLoading(true)
     try {
       const res = await fetch(BASE_URL + `/auth/login`, {
         method: "POST",
@@ -50,7 +51,7 @@ const Page = () => {
           progress: undefined,
           theme: "colored",
         });
-        router.push('/')
+        location.replace('/')
       } else if (res.status == 403) {
         toast.error("Email lu belum lu verif boyy, lu bukan nabi", {
           position: "top-right",
@@ -109,6 +110,8 @@ const Page = () => {
       }
     } catch (err) {
       console.error(err)
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -119,7 +122,7 @@ const Page = () => {
           <h2 className="text-2xl font-bold text-center text-gray-800">
             Login
           </h2>
-          <form className="space-y-4 text-black">
+          <form className="space-y-4 text-black" onSubmit={handleLogin}>
             <div>
               <label className="block text-sm font-medium text-gray-700">
                 Email
@@ -167,11 +170,14 @@ const Page = () => {
               <Button
                 color="primary"
                 size="lg"
-                onClick={handleLogin}
+                type="submit"
                 className="w-full bg-sky-700"
-                isDisabled={isButtonDisabled}
+                isDisabled={isButtonDisabled || isLoading}
               >
-                Login
+                <div className="flex flex-row gap-2 items-center justify-center">
+                  <Spinner color="white" size="sm" className={isLoading ? "block" : "hidden"} />
+                  Login
+                </div>
               </Button>
             </div>
             <h5 className="flex text-sm text-gray-500 gap-1 justify-center">
