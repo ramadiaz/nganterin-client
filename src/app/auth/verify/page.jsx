@@ -17,7 +17,10 @@ const Page = () => {
         }
 
         try {
-            const res = await fetch(BASE_URL + `/auth/verify?token=${token}`)
+            const res = await fetch(BASE_URL + `/auth/verify?token=${token}`, {
+                method: "POST",
+                cache: "no-store"
+            })
             if (res.ok) {
                 router.push("/auth/verify/verified")
             } else if (res.status == 404) {
