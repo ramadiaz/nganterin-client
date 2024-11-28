@@ -1,7 +1,7 @@
 import Cookies from "js-cookie";
 
 const fetchWithAuth = async (url, options = {}) => {
-  const token = Cookies.get("token");
+  const token = Cookies.get("user_jwt");
 
   if (token) {
     options.headers = {

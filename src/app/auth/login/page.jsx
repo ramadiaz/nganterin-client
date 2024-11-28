@@ -7,11 +7,17 @@ import { Eye, EyeSlash } from "@phosphor-icons/react";
 
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { BASE_URL } from "@/utilities/environtment";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 const Page = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isVisible, setIsVisible] = useState(false);
+
+  const router = useRouter()
 
   const toggleVisibility = () => setIsVisible(!isVisible);
   const isButtonDisabled = !email || !password;
@@ -19,6 +25,92 @@ const Page = () => {
   useEffect(() => {
     AOS.init({ duration: 1200 });
   }, []);
+
+  const handleLogin = async () => {
+    try {
+      const res = await fetch(BASE_URL + `/auth/login`, {
+        method: "POST",
+        cache: "no-store",
+        body: JSON.stringify({
+          email,
+          password
+        })
+      })
+
+      if (res.ok) {
+        const data = await res.json()
+        Cookies.set("user_jwt", data.body)
+        toast.success("Login successful", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+        router.push('/')
+      } else if (res.status == 403) {
+        toast.error("Email lu belum lu verif boyy, lu bukan nabi", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      } else if (res.status == 404) {
+        toast.error("Elu siapa ajgggg, email lu gaada", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      } else if (res.status == 401) {
+        toast.error("Invalid email or password", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      } else if (res.status == 400) {
+        toast.error("Bad Request", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      } else {
+        toast.error("Something went wrong", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      }
+    } catch (err) {
+      console.error(err)
+    }
+  }
 
   return (
     <>
@@ -75,6 +167,7 @@ const Page = () => {
               <Button
                 color="primary"
                 size="lg"
+                onClick={handleLogin}
                 className="w-full bg-sky-700"
                 isDisabled={isButtonDisabled}
               >
@@ -82,7 +175,7 @@ const Page = () => {
               </Button>
             </div>
             <h5 className="flex text-sm text-gray-500 gap-1 justify-center">
-              Don't have an account? 
+              Don't have an account?
               <Link href="/auth/register" className="text-black hover:underline">
                 Register Now
               </Link>
