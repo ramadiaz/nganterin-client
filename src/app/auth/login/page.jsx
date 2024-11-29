@@ -40,7 +40,7 @@ const Page = () => {
 
       if (res.ok) {
         const data = await res.json()
-        Cookies.set("user_jwt", data.body)
+        Cookies.set("user_jwt", data.data)
         toast.success("Login successful", {
           position: "top-right",
           autoClose: 3000,
