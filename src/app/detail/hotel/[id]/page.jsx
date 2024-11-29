@@ -1,120 +1,20 @@
 "use client";
 
-import Authenticating from "@/app/authenticating";
 import Loading from "@/app/loading";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useGoogleLogin } from "@react-oauth/google";
-import Cookies from "js-cookie";
 import fetchWithAuth from "@/utilities/fetchWIthAuth";
-import { BASE_API, SECRET_KEY } from "@/utilities/environtment";
-import jwt from "jsonwebtoken";
+import { BASE_API } from "@/utilities/environtment";
 import { Button, ButtonGroup, Image } from "@nextui-org/react";
 import { Check } from "@phosphor-icons/react/dist/ssr";
+import { GetUserData } from "@/utilities/getUserData";
 
 const Page = ({ params: id }) => {
-  const [status, setStatus] = useState({ loading: true });
+  const [isLoading, setIsLoading] = useState(true);
   const [detail, setDetail] = useState("");
   const [images, setImages] = useState([]);
   const [facilities, setFacilities] = useState([]);
-
-  const [isAuthenticating, setIsAuthenticating] = useState(false);
-  const [userData, setUserData] = useState("");
-
-  const { push, refresh } = useRouter();
-
-  const googleLogin = useGoogleLogin({
-    flow: "implicit",
-    onSuccess: async (tokenResponse) => {
-      setIsAuthenticating(true);
-      try {
-        const res = await fetch(
-          "https://www.googleapis.com/oauth2/v3/userinfo",
-          {
-            headers: {
-              Authorization: `Bearer ${tokenResponse.access_token}`,
-            },
-          }
-        );
-
-        if (res.ok) {
-          const userInfo = await res.json();
-          const token = jwt.sign(userInfo, SECRET_KEY, { expiresIn: "3d" });
-
-          Cookies.remove("user_jwt");
-          Cookies.set("user_jwt", token, { expires: 3 });
-
-          pushLogin(userInfo);
-          getCookies();
-        }
-      } catch (err) {
-        console.error(err);
-      }
-    },
-  });
-
-  const pushLogin = async (data) => {
-    console.log("AKU DIPANGGIL NIH KAK");
-    const formData = new FormData();
-    console.log({ data });
-    formData.append("name", data.name);
-    formData.append("email", data.email);
-    formData.append("profile_picture", data.picture);
-
-    try {
-      const res = await fetchWithAuth(`${BASE_API}/auth/login/oauth/google`, {
-        method: "POST",
-        body: formData,
-      });
-
-      if (res.ok) {
-        const data = await res.json();
-
-        Cookies.remove("user_token");
-        Cookies.set("user_token", data.token, { expires: 3 });
-
-        Cookies.remove("user_partner_id");
-        Cookies.set("user_partner_id", data.data.partner_id, { expires: 3 });
-
-        const response = await fetchWithAuth(`${BASE_API}/profile`);
-        const user_data = await response.json();
-        if (
-          !user_data.data.gender ||
-          !user_data.data.phone_number ||
-          !user_data.data.country ||
-          !user_data.data.province ||
-          !user_data.data.city ||
-          !user_data.data.zip_code ||
-          !user_data.data.complete_address
-        ) {
-          push("/register/user");
-        } else {
-          location.reload();
-        }
-      }
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setIsAuthenticating(false);
-    }
-  };
-
-  const getCookies = () => {
-    try {
-      const token = Cookies.get("user_jwt");
-      if (token) {
-        var decoded = jwt.verify(token, SECRET_KEY);
-        setUserData(decoded);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  useEffect(() => {
-    getCookies();
-  }, []);
+  const user_data = GetUserData()
 
   const fetchData = async () => {
     try {
@@ -123,7 +23,6 @@ const Page = ({ params: id }) => {
       });
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
         setDetail(data.data);
 
         const images_array = data.data.hotel_photos;
@@ -132,7 +31,7 @@ const Page = ({ params: id }) => {
         setImages(images_decoded);
         setFacilities(JSON.parse(data.data.facilities));
 
-        setStatus({ loading: false });
+        setIsLoading(false)
       }
     } catch (err) {
       console.error(err);
@@ -147,7 +46,7 @@ const Page = ({ params: id }) => {
     <>
       <div className="bg-white h-14"></div>
       <div className="min-h-screen text-black bg-white">
-        {status.loading ? (
+        {isLoading ? (
           <Loading />
         ) : (
           <div>
@@ -204,7 +103,7 @@ const Page = ({ params: id }) => {
                         Rp. {parseInt(detail.overnight_prices).toLocaleString()}
                       </h2>
                     </div>
-                    {userData ? (
+                    {user_data.id ? (
                       <Button
                         as={Link}
                         href={`/order/hotel/${id.id}`}
@@ -306,7 +205,6 @@ const Page = ({ params: id }) => {
           </div>
         )}
       </div>
-      {isAuthenticating && <Authenticating />}
       <div className="bg-gradient-to-b from-white to-orange-50 h-20"></div>
     </>
   );
