@@ -3,7 +3,7 @@
 import Loading from "@/app/loading";
 import { useEffect, useState } from "react";
 import fetchWithAuth from "@/utilities/fetchWIthAuth";
-import { BASE_API } from "@/utilities/environtment";
+import { BASE_URL } from "@/utilities/environtment";
 import { Button, Card, CardBody, Image } from "@nextui-org/react";
 
 const Page = () => {
@@ -13,7 +13,7 @@ const Page = () => {
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      const response = await fetchWithAuth(`${BASE_API}/checkout/history`, {
+      const response = await fetchWithAuth(`${BASE_URL}/checkout/history`, {
         method: "GET",
       });
       if (response.ok) {

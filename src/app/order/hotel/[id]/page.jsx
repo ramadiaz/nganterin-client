@@ -1,7 +1,7 @@
 "use client";
 
 import Loading from "@/app/loading";
-import { BASE_API, CLIENT_KEY } from "@/utilities/environtment";
+import { BASE_URL, CLIENT_KEY } from "@/utilities/environtment";
 import fetchWithAuth from "@/utilities/fetchWIthAuth";
 import Image from "next/image";
 import { useState } from "react";
@@ -42,7 +42,7 @@ const Page = ({ params: id }) => {
     const formData = new FormData();
     formData.append("product_id", id.id);
     formData.append("overnight_stays", "1");
-    await fetchWithAuth(`${BASE_API}/checkout`, {
+    await fetchWithAuth(`${BASE_URL}/checkout`, {
       method: "POST",
       body: formData,
     })
@@ -75,7 +75,7 @@ const Page = ({ params: id }) => {
 
   const fetchData = async () => {
     try {
-      const response = await fetchWithAuth(`${BASE_API}/hotels/${id.id}`, {
+      const response = await fetchWithAuth(`${BASE_URL}/hotels/${id.id}`, {
         method: "GET",
       });
       if (response.ok) {
@@ -98,7 +98,7 @@ const Page = ({ params: id }) => {
 
   const fetchUserData = async () => {
     try {
-      const response = await fetchWithAuth(`${BASE_API}/profile`, {
+      const response = await fetchWithAuth(`${BASE_URL}/profile`, {
         method: "GET",
       });
       if (response.ok) {

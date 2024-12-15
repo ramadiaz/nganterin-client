@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import Loading from "../loading";
-import { BASE_API } from "@/utilities/environtment";
+import { BASE_URL } from "@/utilities/environtment";
 import fetchWithAuth from "@/utilities/fetchWIthAuth";
 
 import AOS from "aos";
@@ -15,7 +15,7 @@ const Page = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetchWithAuth(`${BASE_API}/profile`, {
+      const response = await fetchWithAuth(`${BASE_URL}/profile`, {
         method: "GET",
       });
       if (response.ok) {

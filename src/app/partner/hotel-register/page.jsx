@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import fetchWithAuth from "@/utilities/fetchWIthAuth";
-import { BASE_API } from "@/utilities/environtment";
+import { BASE_URL } from "@/utilities/environtment";
 import Cookies from "js-cookie";
 
 import { FilePond, registerPlugin } from "react-filepond";
@@ -84,7 +84,7 @@ const Page = () => {
       console.log(API_KEY);
       console.log(user_token);
       const response = await fetchWithAuth(
-        `${BASE_API}/partner/hotels/create`,
+        `${BASE_URL}/partner/hotels/create`,
         {
           method: "POST",
           body: formData,
@@ -166,7 +166,7 @@ const Page = () => {
                 required
                 labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
                 server={{
-                  url: `${BASE_API}/files/upload`,
+                  url: `${BASE_URL}/files/upload`,
                   process: {
                     onload: (res) => {
                       const data = JSON.parse(res);

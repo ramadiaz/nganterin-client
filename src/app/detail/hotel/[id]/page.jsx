@@ -4,7 +4,7 @@ import Loading from "@/app/loading";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import fetchWithAuth from "@/utilities/fetchWIthAuth";
-import { BASE_API } from "@/utilities/environtment";
+import { BASE_URL } from "@/utilities/environtment";
 import { Button, ButtonGroup, Image } from "@nextui-org/react";
 import { Check } from "@phosphor-icons/react/dist/ssr";
 import { GetUserData } from "@/utilities/getUserData";
@@ -18,7 +18,7 @@ const Page = ({ params: id }) => {
 
   const fetchData = async () => {
     try {
-      const response = await fetchWithAuth(`${BASE_API}/hotels/${id.id}`, {
+      const response = await fetchWithAuth(`${BASE_URL}/hotels/${id.id}`, {
         method: "GET",
       });
       if (response.ok) {

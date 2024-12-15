@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Redirecting from "../../redirecting";
-import { BASE_API } from "@/utilities/environtment";
+import { BASE_URL } from "@/utilities/environtment";
 import fetchWithAuth from "@/utilities/fetchWIthAuth";
 import Cookies from "js-cookie";
 
@@ -69,7 +69,7 @@ const Page = () => {
       formData1.append("zip_code", inputData.zip_code);
       formData1.append("complete_address", inputData.complete_address);
 
-      const response = await fetchWithAuth(`${BASE_API}/profile/address`, {
+      const response = await fetchWithAuth(`${BASE_URL}/profile/address`, {
         method: "POST",
         body: formData1,
       });
@@ -78,7 +78,7 @@ const Page = () => {
       formData2.append("gender", inputData.gender);
       formData2.append("phone_number", inputData.number);
 
-      const response2 = await fetchWithAuth(`${BASE_API}/profile/user-detail`, {
+      const response2 = await fetchWithAuth(`${BASE_URL}/profile/user-detail`, {
         method: "POST",
         body: formData2,
       });
