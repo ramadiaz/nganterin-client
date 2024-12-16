@@ -23,14 +23,15 @@ const Page = () => {
     setIsLoading(true);
     try {
       const response = await fetchWithAuth(
-        `${BASE_API}/hotels?search=${searchValue}`,
+        `${BASE_API}/hotel/search?q=${searchValue}`,
         {
           method: "GET",
         }
       );
       if (response.ok) {
         const data = await response.json();
-        setResult(data.data);
+
+        data.data == null ? setResult([]) : setResult(data.data);
       }
     } catch (err) {
       console.error(err);
@@ -73,9 +74,6 @@ const Page = () => {
             {result.length != 0 && (
               <div className="grid grid-cols-2 gap-4 justify-center items-center">
                 {result.map((item, index) => {
-                  const image_array = item.hotel_photos;
-                  const imageUrl = JSON.parse(image_array);
-                  const price = parseInt(item.overnight_prices);
 
                   return (
                     <div
@@ -97,7 +95,7 @@ const Page = () => {
                                 className="object-cover w-64 h-36"
                                 height={200}
                                 shadow="md"
-                                src={imageUrl[0]}
+                                src={item.hotel_photos[0].url}
                                 width={200}
                               />
                             </div>
@@ -109,11 +107,11 @@ const Page = () => {
                                     {item.name}
                                   </h3>
                                   <p className="text-small text-foreground/80">
-                                    {item.city}, {item.state}
+                                    {item.hotels_location[0].city}, {item.hotels_location[0].state}
                                   </p>
                                   <h1 className="text-large text-right font-medium mt-2">
                                     <span className="text-sm mr-2">from</span>
-                                    <span>Rp. {price.toLocaleString()}</span>
+                                    <span>Rp. {item.pricing_start.toLocaleString()}</span>
                                   </h1>
                                 </div>
                                 <Button

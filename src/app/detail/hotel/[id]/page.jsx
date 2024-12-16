@@ -18,18 +18,15 @@ const Page = ({ params: id }) => {
 
   const fetchData = async () => {
     try {
-      const response = await fetchWithAuth(`${BASE_API}/hotels/${id.id}`, {
+      const response = await fetchWithAuth(`${BASE_API}/hotel/details?id=${id.id}`, {
         method: "GET",
       });
       if (response.ok) {
         const data = await response.json();
         setDetail(data.data);
 
-        const images_array = data.data.hotel_photos;
-        const images_decoded = JSON.parse(images_array);
-        console.log(images_decoded);
-        setImages(images_decoded);
-        setFacilities(JSON.parse(data.data.facilities));
+        setImages(data.data.hotel_photos);
+        setFacilities(data.data.facilities);
 
         setIsLoading(false)
       }
@@ -159,7 +156,7 @@ const Page = ({ params: id }) => {
                   <div className="rounded-lg border border-neutral-300 p-4">
                     <h2 className="font-semibold">Facilites</h2>
                     <div className="flex flex-wrap font-semibold text-xs gap-2 mt-2">
-                      {facilities.map((item, index) => {
+                      {facilities?.map((item, index) => {
                         return (
                           <h2
                             className="flex flex-row items-center gap-2 w-max"
