@@ -4,7 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Loading from "@/app/loading";
 import Link from "next/link";
-import { BASE_URL } from "@/utilities/environtment";
+import { BASE_API } from "@/utilities/environtment";
 import fetchWithAuth from "@/utilities/fetchWIthAuth";
 import { Card, CardBody, Button, Input, Image } from "@nextui-org/react";
 import { MagnifyingGlass } from "@phosphor-icons/react";
@@ -23,7 +23,7 @@ const Page = () => {
     setIsLoading(true);
     try {
       const response = await fetchWithAuth(
-        `${BASE_URL}/hotels?search=${searchValue}`,
+        `${BASE_API}/hotels?search=${searchValue}`,
         {
           method: "GET",
         }

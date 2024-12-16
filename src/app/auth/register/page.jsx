@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import fetchWithAuth from "@/utilities/fetchWIthAuth";
-import { BASE_URL } from "@/utilities/environtment";
+import { BASE_API } from "@/utilities/environtment";
 import { Input, Button, Textarea } from "@nextui-org/react";
 import { Eye, EyeSlash, Link as LinkIcon } from "@phosphor-icons/react";
 import { toast, ToastContainer } from "react-toastify";
@@ -45,7 +45,7 @@ const Page = () => {
     setIsLoading(true); 
 
     try {
-      const response = await fetchWithAuth(`${BASE_URL}/auth/register`, {
+      const response = await fetchWithAuth(`${BASE_API}/auth/register`, {
         method: "POST",
         body: JSON.stringify(inputData),
       });

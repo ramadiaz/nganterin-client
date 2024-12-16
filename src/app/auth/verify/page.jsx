@@ -2,7 +2,7 @@
 
 import Loading from "@/app/loading";
 
-const { BASE_URL } = require("@/utilities/environtment");
+const { BASE_API } = require("@/utilities/environtment");
 const { useSearchParams, useRouter } = require("next/navigation");
 const { useEffect } = require("react");
 
@@ -17,7 +17,7 @@ const Page = () => {
         }
 
         try {
-            const res = await fetch(BASE_URL + `/auth/verify?token=${token}`, {
+            const res = await fetch(BASE_API + `/auth/verify?token=${token}`, {
                 method: "POST",
                 cache: "no-store"
             })

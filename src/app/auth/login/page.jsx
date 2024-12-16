@@ -7,7 +7,7 @@ import { Eye, EyeSlash } from "@phosphor-icons/react";
 
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { BASE_URL } from "@/utilities/environtment";
+import { BASE_API } from "@/utilities/environtment";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
 
@@ -29,7 +29,7 @@ const Page = () => {
 
     setIsLoading(true)
     try {
-      const res = await fetch(BASE_URL + `/auth/login`, {
+      const res = await fetch(BASE_API + `/auth/login`, {
         method: "POST",
         cache: "no-store",
         body: JSON.stringify({

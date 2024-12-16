@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import { BASE_URL } from "@/utilities/environtment";
+import { BASE_API } from "@/utilities/environtment";
 import fetchWithAuth from "@/utilities/fetchWIthAuth";
 
 const Page = () => {
@@ -15,7 +15,7 @@ const Page = () => {
     formData.append("transaction_status", transaction_status);
     try {
       const response = await fetchWithAuth(
-        `${BASE_URL}/checkout/payments/update-status`,
+        `${BASE_API}/checkout/payments/update-status`,
         {
           method: "POST",
           body: formData,

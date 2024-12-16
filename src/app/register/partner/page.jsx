@@ -5,7 +5,7 @@ import { FileUploader } from "react-drag-drop-files";
 import { useRouter } from "next/navigation";
 import Redirecting from "@/app/redirecting";
 import Cookies from "js-cookie";
-import { BASE_URL } from "@/utilities/environtment";
+import { BASE_API } from "@/utilities/environtment";
 import fetchWithAuth from "@/utilities/fetchWIthAuth";
 
 import AOS from "aos";
@@ -66,7 +66,7 @@ const Page = () => {
     const formData = new FormData();
     formData.append("file", file);
     try {
-      const response = await fetchWithAuth(`${BASE_URL}/files/upload`, {
+      const response = await fetchWithAuth(`${BASE_API}/files/upload`, {
         method: "POST",
         body: formData,
       });
@@ -109,7 +109,7 @@ const Page = () => {
     formData.append("legality_file", legalityFile);
     formData.append("mou_file", mouFile);
     try {
-      const response = await fetchWithAuth(`${BASE_URL}/partner/register`, {
+      const response = await fetchWithAuth(`${BASE_API}/partner/register`, {
         method: "POST",
         body: formData,
       });
