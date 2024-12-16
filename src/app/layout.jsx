@@ -5,6 +5,7 @@ import NavbarComponent from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { ToastContainer } from "react-toastify";
+import MaintenanceModal from "@/components/MaintenanceModal";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,14 +20,17 @@ export default function RootLayout({ children }) {
       <body
         className={`${inter.className}, text-white bg-orange-50 min-h-screen`}
       >
-          <Providers>
-            <div className="sticky top-0 w-full z-50">
-              <NavbarComponent />
-            </div>
-            <div className="min-h-screen">{children}</div>
-            <Footer />
-            <ToastContainer />
-          </Providers>
+        <Providers>
+          <div className="sticky top-0 w-full z-50">
+            <NavbarComponent />
+          </div>
+          <div className="min-h-screen">
+            {children}
+            <MaintenanceModal />
+          </div>
+          <Footer />
+          <ToastContainer />
+        </Providers>
       </body>
     </html>
   );
