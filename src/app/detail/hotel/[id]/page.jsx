@@ -51,7 +51,7 @@ const Page = ({ params: id }) => {
               <div className="flex flex-row gap-4 items-center w-max mx-auto mb-8 select-none">
                 <div className="w-96 h-96 rounded-xl overflow-hidden hover:scale-105 transition-all duration-500">
                   <Image
-                    src={images[0]}
+                    src={images[0].url}
                     width={0}
                     height={0}
                     className="w-96 h-96 overflow-hidden object-cover selector"
@@ -66,7 +66,7 @@ const Page = ({ params: id }) => {
                         key={index}
                       >
                         <Image
-                          src={image}
+                          src={image.url}
                           width={0}
                           height={0}
                           className="w-44 h-44 overflow-hidden object-cover selector"
@@ -97,7 +97,7 @@ const Page = ({ params: id }) => {
                     <div className="flex fleex-row items-center gap-2">
                       <h3 className="text-xs">from</h3>
                       <h2 className="text-red-500 font-semibold text-xl">
-                        Rp. {parseInt(detail.overnight_prices).toLocaleString()}
+                        Rp. {detail.pricing_start.toLocaleString()}
                       </h2>
                     </div>
                     {user_data.id ? (
@@ -113,7 +113,8 @@ const Page = ({ params: id }) => {
                       </Button>
                     ) : (
                       <Button
-                        onClick={() => googleLogin()}
+                        as={Link}
+                        href="/auth/login"
                         className="uppercase bg-sky-700 text-white"
                         radius="full"
                         size="md"

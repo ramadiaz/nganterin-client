@@ -2,12 +2,17 @@
 const nextConfig = {
   images: {
     unoptimized: true,
-
     remotePatterns: [
       {
-        hostname: "lh3.googleusercontent.com",
+        hostname: "drive.google.com"
       },
-    ],
+      {
+        hostname: "lh3.googleusercontent.com"
+      },
+      {
+        hostname: "avatars.githubusercontent.com"
+      },
+    ]
   },
 };
 
