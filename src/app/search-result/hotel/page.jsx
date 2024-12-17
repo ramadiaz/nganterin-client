@@ -107,7 +107,7 @@ const Page = () => {
                                     {item.name}
                                   </h3>
                                   <p className="text-small text-foreground/80">
-                                    {item.hotels_location[0].city}, {item.hotels_location[0].state}
+                                    {item.hotels_location.city}, {item.hotels_location.state}
                                   </p>
                                   <h1 className="text-large text-right font-medium mt-2">
                                     <span className="text-sm mr-2">from</span>
