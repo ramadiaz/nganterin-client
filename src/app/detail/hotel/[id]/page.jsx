@@ -13,7 +13,6 @@ const Page = ({ params: id }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [detail, setDetail] = useState("");
   const [images, setImages] = useState([]);
-  const [facilities, setFacilities] = useState([]);
   const user_data = GetUserData()
 
   const fetchData = async () => {
@@ -24,9 +23,7 @@ const Page = ({ params: id }) => {
       if (response.ok) {
         const data = await response.json();
         setDetail(data.data);
-
         setImages(data.data.hotel_photos);
-        setFacilities(data.data.facilities);
 
         setIsLoading(false)
       }
@@ -143,8 +140,23 @@ const Page = ({ params: id }) => {
                     <h4 className="text-sm">{detail.description}</h4>
                   </div>
                   <div className="rounded-lg border border-neutral-300 p-4">
-                    <h2 className="font-semibold">Rooms</h2>
+                    <h2 className="font-semibold">Facilites</h2>
                     <div className="flex flex-wrap font-semibold text-xs gap-2 mt-2">
+                      {detail.hotel_facilities?.map((item, index) => {
+                        return (
+                          <h2
+                            className="flex flex-row items-center gap-2 w-max"
+                            key={index}
+                          >
+                            <Check size={12} weight="bold" /> {item.facility}
+                          </h2>
+                        );
+                      })}
+                    </div>
+                  </div>
+                  <div className="rounded-lg border border-neutral-300 p-4">
+                    <h2 className="font-semibold">Rooms</h2>
+                    {/* <div className="flex flex-wrap font-semibold text-xs gap-2 mt-2">
                       <h2 className="flex flex-row items-center gap-2 w-max">
                         <Check size={12} weight="bold" />
                         Max Visitor: {detail.max_visitor}
@@ -152,25 +164,40 @@ const Page = ({ params: id }) => {
                         Smooking Allowed:{" "}
                         {!detail.smoking_allowed === "0" ? "Yes" : "No"}
                       </h2>
-                    </div>
-                  </div>
-                  <div className="rounded-lg border border-neutral-300 p-4">
-                    <h2 className="font-semibold">Facilites</h2>
-                    <div className="flex flex-wrap font-semibold text-xs gap-2 mt-2">
-                      {facilities?.map((item, index) => {
+                    </div> */}
+                    <div className="space-y-2 mt-2">
+                      {detail.hotel_rooms.map((item, index) => {
                         return (
-                          <h2
-                            className="flex flex-row items-center gap-2 w-max"
-                            key={index}
-                          >
-                            <Check size={12} weight="bold" /> {item}
-                          </h2>
-                        );
+                          <div className={`flex flex-row gap-2 ${index < detail.hotel_rooms.length - 1 && "pb-2 mb-2 border-b border-neutral-300"}`} key={index}>
+                            <Image
+                              src={item.hotel_room_photos[0].url}
+                              width={0}
+                              height={0}
+                              className="w-28 h-28 overflow-hidden object-cover selector"
+                              alt="hotel image"
+                            />
+                            <div className="flex-grow flex flex-col">
+                              <h2 className="font-semibold">{item.type}</h2>
+                              <h3 className="text-xs">Bed Type: {item.bed_type}</h3>
+                              <div className="flex flex-wrap items-center font-semibold text-xs gap-2 mt-2">
+                                <Check size={12} weight="bold" />
+                                Max Visitor: {item.max_visitor}
+                                <Check size={12} weight="bold" />
+                                Smooking Allowed:{" "}
+                                {item.smoking_allowed ? "Yes" : "No"}
+                              </div>
+                              <div className="flex-grow flex flex-row justify-end items-end gap-1">
+                                <h2 className="font-semibold">
+                                  IDR {item.overnight_price.toLocaleString("id-ID")}
+                                </h2>
+                                <h3 className="text-xs">
+                                   /night
+                                </h3>
+                              </div>
+                            </div>
+                          </div>
+                        )
                       })}
-                      <h2 className="flex flex-row items-center gap-2 w-max">
-                        <Check size={12} weight="bold" /> Room Size:{" "}
-                        {detail.room_sizes} m<sup>3</sup>
-                      </h2>
                     </div>
                   </div>
                 </div>
@@ -202,7 +229,7 @@ const Page = ({ params: id }) => {
             </div>
           </div>
         )}
-      </div>
+      </div >
       <div className="bg-gradient-to-b from-white to-orange-50 h-20"></div>
     </>
   );
