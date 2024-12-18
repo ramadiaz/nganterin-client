@@ -8,6 +8,7 @@ import { BASE_API } from "@/utilities/environtment";
 import { Button, ButtonGroup, Image } from "@nextui-org/react";
 import { Check } from "@phosphor-icons/react/dist/ssr";
 import { GetUserData } from "@/utilities/getUserData";
+import { MoneyWavy } from "@phosphor-icons/react";
 
 const Page = ({ params: id }) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -48,7 +49,7 @@ const Page = ({ params: id }) => {
               <div className="flex flex-row gap-4 items-center w-max mx-auto mb-8 select-none">
                 <div className="w-96 h-96 rounded-xl overflow-hidden hover:scale-105 transition-all duration-500">
                   <Image
-                    src={images[0].url}
+                    src={images[0].url + "=w600"}
                     width={0}
                     height={0}
                     className="w-96 h-96 overflow-hidden object-cover selector"
@@ -63,7 +64,7 @@ const Page = ({ params: id }) => {
                         key={index}
                       >
                         <Image
-                          src={image.url}
+                          src={image.url + "=w300"}
                           width={0}
                           height={0}
                           className="w-44 h-44 overflow-hidden object-cover selector"
@@ -80,7 +81,7 @@ const Page = ({ params: id }) => {
                     <Button className="text-sm" size="lg" variant="light">
                       Overview
                     </Button>
-                    <Button className="text-sm" size="lg" variant="light">
+                    <Button className="text-sm" size="lg" variant="light" as={Link} href="#rooms">
                       Rooms
                     </Button>
                     <Button className="text-sm" size="lg" variant="light">
@@ -154,45 +155,43 @@ const Page = ({ params: id }) => {
                       })}
                     </div>
                   </div>
-                  <div className="rounded-lg border border-neutral-300 p-4">
-                    <h2 className="font-semibold">Rooms</h2>
-                    {/* <div className="flex flex-wrap font-semibold text-xs gap-2 mt-2">
-                      <h2 className="flex flex-row items-center gap-2 w-max">
-                        <Check size={12} weight="bold" />
-                        Max Visitor: {detail.max_visitor}
-                        <Check size={12} weight="bold" />
-                        Smooking Allowed:{" "}
-                        {!detail.smoking_allowed === "0" ? "Yes" : "No"}
-                      </h2>
-                    </div> */}
-                    <div className="space-y-2 mt-2">
+                  <div className="rounded-lg border border-neutral-300 p-4" id="rooms">
+                    <h2 className="font-semibold">{detail.hotel_rooms.length} Types of Rooms</h2>
+                    <div className="flex flex-row gap-2 items-center">
+                      <h3 className="text-xs opacity-90">Prices do not include taxes & fees</h3>
+                      <MoneyWavy size={18} />
+                    </div>
+                    <div className="space-y-2 mt-4">
                       {detail.hotel_rooms.map((item, index) => {
                         return (
                           <div className={`flex flex-row gap-2 ${index < detail.hotel_rooms.length - 1 && "pb-2 mb-2 border-b border-neutral-300"}`} key={index}>
                             <Image
-                              src={item.hotel_room_photos[0].url}
+                              src={item.hotel_room_photos[0].url + "=w200"}
                               width={0}
                               height={0}
                               className="w-28 h-28 overflow-hidden object-cover selector"
                               alt="hotel image"
                             />
                             <div className="flex-grow flex flex-col">
-                              <h2 className="font-semibold">{item.type}</h2>
-                              <h3 className="text-xs">Bed Type: {item.bed_type}</h3>
-                              <div className="flex flex-wrap items-center font-semibold text-xs gap-2 mt-2">
-                                <Check size={12} weight="bold" />
-                                Max Visitor: {item.max_visitor}
-                                <Check size={12} weight="bold" />
-                                Smooking Allowed:{" "}
-                                {item.smoking_allowed ? "Yes" : "No"}
+                              <div>
+                                <h2 className="font-semibold">{item.type}</h2>
+                                <h3 className="text-xs">Bed Type: {item.bed_type}</h3>
+                                <div className="flex flex-wrap items-center font-semibold text-xs gap-2 mt-2">
+                                  <Check size={12} weight="bold" />
+                                  Max Visitor: {item.max_visitor}
+                                  <Check size={12} weight="bold" />
+                                  Smooking Allowed:{" "}
+                                  {item.smoking_allowed ? "Yes" : "No"}
+                                </div>
                               </div>
                               <div className="flex-grow flex flex-row justify-end items-end gap-1">
                                 <h2 className="font-semibold">
                                   IDR {item.overnight_price.toLocaleString("id-ID")}
                                 </h2>
-                                <h3 className="text-xs">
-                                   /night
+                                <h3 className="text-xs mr-3">
+                                  /night
                                 </h3>
+                                <Button size="sm" variant="bordered" radius="full" className="text-xs">BOOK</Button>
                               </div>
                             </div>
                           </div>

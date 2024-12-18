@@ -2,7 +2,6 @@
 const nextConfig = {
   reactStrictMode: false,
   images: {
-    unoptimized: true,
     remotePatterns: [
       {
         hostname: "drive.google.com"

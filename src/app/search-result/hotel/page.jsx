@@ -95,11 +95,10 @@ const Page = () => {
                                 className="object-cover w-64 h-36"
                                 height={200}
                                 shadow="md"
-                                src={item.hotel_photos[0].url}
+                                src={item.hotel_photos[0].url + "=w300"}
                                 width={200}
                               />
                             </div>
-
                             <div className="flex flex-col col-span-6 md:col-span-8">
                               <div className="flex justify-between items-start">
                                 <div className="flex flex-col gap-0 w-full">
