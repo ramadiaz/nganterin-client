@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import Authenticating from "../authenticating";
+import { GetUserData } from "@/utilities/getUserData";
 
 const withLogin = (WrappedComponent) => {
   const AuthRoute = (props) => {
@@ -12,9 +12,9 @@ const withLogin = (WrappedComponent) => {
 
     const checkAuthentication = async () => {
       setIsAuthenticating(true);
-      const token = Cookies.get("user_jwt");
+      const user_data = GetUserData()
       
-      if (!token) {
+      if (!user_data.id) {
         push("/");
         setIsAuthenticating(false);
         return;

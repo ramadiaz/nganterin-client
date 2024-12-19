@@ -1,14 +1,15 @@
+
 "use client";
 
 import Loading from "@/app/loading";
-import { BASE_API, CLIENT_KEY } from "@/utilities/environtment";
+import { BASE_API } from "@/utilities/environtment";
 import fetchWithAuth from "@/utilities/fetchWIthAuth";
-import Image from "next/image";
 import { useState } from "react";
 import ReactStars from "react-rating-stars-component";
-import { useRouter } from "next/navigation";
-import { Button, Checkbox, Input } from "@nextui-org/react";
+import { Button, Checkbox, Image, Input } from "@nextui-org/react";
 import { Sparkle } from "@phosphor-icons/react";
+import { GetUserData } from "@/utilities/getUserData";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const Page = ({ params: id }) => {
   const [status, setStatus] = useState({
@@ -16,79 +17,32 @@ const Page = ({ params: id }) => {
     forSomeoneElse: true,
     isPayment: false,
   });
-  const [dataSnap, setDataSnap] = useState({});
-  const [detail, setDetail] = useState("");
+  const [detail, setDetail] = useState({});
+  const [roomDetail, setRoomDetail] = useState({});
   const [images, setImages] = useState([]);
-  const [userData, setUserData] = useState("");
-  const [facilities, setFacilities] = useState([]);
-
-  const { push } = useRouter();
-
-  const midTransInit = () => {
-    const midtransScriptUrl = "https://app.sandbox.midtrans.com/snap/snap.js";
-
-    let scriptTag = document.createElement("script");
-    scriptTag.src = midtransScriptUrl;
-    scriptTag.setAttribute("data-client-key", CLIENT_KEY);
-
-    document.body.appendChild(scriptTag);
-
-    return () => {
-      document.body.removeChild(scriptTag);
-    };
-  };
-
-  const showTransPayments = async () => {
-    const formData = new FormData();
-    formData.append("product_id", id.id);
-    formData.append("overnight_stays", "1");
-    await fetchWithAuth(`${BASE_API}/checkout`, {
-      method: "POST",
-      body: formData,
-    })
-      .then(async (res) => {
-        const data = await res.json();
-        console.log("data midtrans: ", { data });
-        await window.snap.pay(data.data.snap_token, {
-          onSuccess: (res) => {
-            console.log(res);
-          },
-          onPending: (res) => {
-            console.log(res);
-          },
-          onError: (res) => {
-            console.log(res);
-          },
-          onClose: () => {
-            console.log("Closed");
-            setStatus((prev) => ({ ...prev, isPayment: false }));
-            push(
-              `/payment/failed?order_id=${data.data.order_id}&transaction_status=failure`
-            );
-          },
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  const room_id = useSearchParams().get("rooms");
+  const user_data = GetUserData()
+  const router = useRouter()
 
   const fetchData = async () => {
     try {
-      const response = await fetchWithAuth(`${BASE_API}/hotels/${id.id}`, {
+      const response = await fetchWithAuth(`${BASE_API}/hotel/details?id=${id.id}`, {
         method: "GET",
       });
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
         setDetail(data.data);
+        setImages(data.data.hotel_photos);
 
-        const images_array = data.data.hotel_photos;
-        const images_decoded = JSON.parse(images_array);
-        console.log(images_decoded);
-        setImages(images_decoded);
-        setFacilities(JSON.parse(data.data.facilities));
+        console.log(data.data.hotel_rooms)
 
+        const hotelRoom = data.data.hotel_rooms.find(room => room.id == room_id);
+
+        if (!hotelRoom) {
+          router.push(`/detail/hotel/${id.id}`)
+        }
+
+        setRoomDetail(hotelRoom)
         setStatus({ loading: false });
       }
     } catch (err) {
@@ -96,23 +50,7 @@ const Page = ({ params: id }) => {
     }
   };
 
-  const fetchUserData = async () => {
-    try {
-      const response = await fetchWithAuth(`${BASE_API}/profile`, {
-        method: "GET",
-      });
-      if (response.ok) {
-        const data = await response.json();
-        setUserData(data.data);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
   useState(fetchData);
-  useState(fetchUserData);
-  useState(midTransInit);
 
   return (
     <>
@@ -131,7 +69,7 @@ const Page = ({ params: id }) => {
                   radius="sm"
                   variant="bordered"
                   size="lg"
-                  value={userData.name}
+                  value={user_data.name}
                   className="pt-4"
                   classNames={{
                     label: ["text-sm"],
@@ -145,7 +83,7 @@ const Page = ({ params: id }) => {
                   radius="sm"
                   variant="bordered"
                   size="lg"
-                  value={userData.email}
+                  value={user_data.email}
                   placeholder="Enter your email"
                   className="pt-4"
                   classNames={{
@@ -164,7 +102,7 @@ const Page = ({ params: id }) => {
                     radius="sm"
                     variant="bordered"
                     size="lg"
-                    value={userData.phone_number}
+                    value={user_data.phone_number}
                     placeholder=" "
                     className="pt-4"
                     classNames={{
@@ -178,7 +116,7 @@ const Page = ({ params: id }) => {
                     radius="sm"
                     variant="bordered"
                     size="lg"
-                    value={userData.country}
+                    value={user_data.country}
                     placeholder=" "
                     className="pt-4"
                     classNames={{
@@ -199,9 +137,8 @@ const Page = ({ params: id }) => {
                   Make this booking for someone else
                 </Checkbox>
                 <div
-                  className={`border rounded-lg border-neutral-300 p-4 mt-4 ${
-                    status.forSomeoneElse ? "h-52" : "h-0 opacity-0"
-                  } transition-all duration-500`}
+                  className={`border rounded-lg border-neutral-300 p-4 mt-4 ${status.forSomeoneElse ? "h-52" : "h-0 opacity-0"
+                    } transition-all duration-500`}
                 >
                   <Input
                     label="Full name*"
@@ -245,7 +182,6 @@ const Page = ({ params: id }) => {
                   size="lg"
                   onPress={() => {
                     setStatus((prev) => ({ ...prev, isPayment: true }));
-                    showTransPayments();
                   }}
                   isLoading={status.isPa}
                 >
@@ -257,10 +193,11 @@ const Page = ({ params: id }) => {
               <div className="border rounded-lg border-neutral-300 p-4 shadow-sm shadow-black/50">
                 <div className="flex flex-row gap-4">
                   <Image
-                    src={images[0]}
+                    src={images[0].url}
                     height={200}
                     width={200}
                     className="object-cover w-20 h-32"
+                    referrerPolicy="no-referrer"
                   />
                   <div className="flex flex-col gap-2">
                     <div className="flex flex-wrap gap-2">
@@ -272,7 +209,7 @@ const Page = ({ params: id }) => {
                       </div>
                     </div>
                     <div>
-                      <h2 className="uppercase text-xl">Choska Residence</h2>
+                      <h2 className="uppercase text-xl">{detail.name}</h2>
                       <ReactStars
                         count={5}
                         size={24}
@@ -300,7 +237,7 @@ const Page = ({ params: id }) => {
                     <h3 className="text-red-600 line-through">
                       Rp{" "}
                       {(
-                        parseInt(detail.overnight_prices) + 300000
+                        roomDetail.overnight_price + 300000
                       ).toLocaleString()}
                     </h3>
                   </div>
@@ -309,7 +246,7 @@ const Page = ({ params: id }) => {
                     <h3 className="text-red-600 line-through">
                       Rp{" "}
                       {(
-                        parseInt(detail.overnight_prices) + 100000
+                        roomDetail.overnight_price + 100000
                       ).toLocaleString()}
                     </h3>
                   </div>
@@ -320,7 +257,7 @@ const Page = ({ params: id }) => {
                   <div className="flex flex-row justify-between px-2 py-1">
                     <h3>Room price (1 room x 1 night)</h3>
                     <h3 className="">
-                      Rp {parseInt(detail.overnight_prices).toLocaleString()}
+                      Rp {roomDetail.overnight_price.toLocaleString()}
                     </h3>
                   </div>
                   <div className="flex flex-row justify-between px-2 py-1">
@@ -332,7 +269,7 @@ const Page = ({ params: id }) => {
                   <div className="flex flex-row justify-between px-2 py-1 text-medium">
                     <h3 className="font-semibold">Price</h3>
                     <h3 className="font-semibold">
-                      Rp {parseInt(detail.overnight_prices).toLocaleString()}
+                      Rp {parseInt(roomDetail.overnight_price).toLocaleString()}
                     </h3>
                   </div>
                 </div>

@@ -9,12 +9,14 @@ import { Button, ButtonGroup, Image } from "@nextui-org/react";
 import { Check } from "@phosphor-icons/react/dist/ssr";
 import { GetUserData } from "@/utilities/getUserData";
 import { MoneyWavy } from "@phosphor-icons/react";
+import { useRouter } from "next/navigation";
 
 const Page = ({ params: id }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [detail, setDetail] = useState("");
   const [images, setImages] = useState([]);
   const user_data = GetUserData()
+  const router = useRouter()
 
   const fetchData = async () => {
     try {
@@ -36,6 +38,14 @@ const Page = ({ params: id }) => {
   useEffect(() => {
     fetchData();
   }, []);
+
+  const handleBooking = (room_id) => {
+    if (user_data.id) { 
+      router.push(`/order/hotel/${id.id}?rooms=${room_id}`)
+    } else {
+      router.push('/auth/login')
+    }
+  }
 
   return (
     <>
@@ -194,7 +204,7 @@ const Page = ({ params: id }) => {
                                 <h3 className="text-xs mr-3">
                                   /night
                                 </h3>
-                                <Button size="sm" variant="bordered" radius="full" className="text-xs">BOOK</Button>
+                                <Button size="sm" variant="bordered" radius="full" className="text-xs" onClick={() => handleBooking(item.id)}>BOOK</Button>
                               </div>
                             </div>
                           </div>
