@@ -10,6 +10,7 @@ import { Check } from "@phosphor-icons/react/dist/ssr";
 import { GetUserData } from "@/utilities/getUserData";
 import { MoneyWavy } from "@phosphor-icons/react";
 import { useRouter } from "next/navigation";
+import { parseDate } from "@internationalized/date";
 
 const Page = ({ params: id }) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -17,6 +18,25 @@ const Page = ({ params: id }) => {
   const [images, setImages] = useState([]);
   const user_data = GetUserData()
   const router = useRouter()
+
+  const today = new Date();
+  const threeDaysLater = new Date(today);
+  threeDaysLater.setDate(today.getDate() + 3);
+
+  function formatDate(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
+
+  const startDate = formatDate(today);
+  const endDate = formatDate(threeDaysLater);
+
+  const [bookingDate, setBookingDate] = useState({
+    check_in_date: parseDate(startDate),
+    check_out_date: parseDate(endDate),
+  })
 
   const fetchData = async () => {
     try {
@@ -40,8 +60,16 @@ const Page = ({ params: id }) => {
   }, []);
 
   const handleBooking = (room_id) => {
-    if (user_data.id) { 
-      router.push(`/order/hotel/${id.id}?rooms=${room_id}`)
+    const jsonString = JSON.stringify({
+      check_in_date: bookingDate.check_in_date,
+      check_out_date: bookingDate.check_out_date,
+      room_id: room_id,
+      hotel_id: id.id
+    });
+    const data = btoa(jsonString)
+
+    if (user_data.id) {
+      router.push(`/order/hotel/${id.id}?secdat=${data}`)
     } else {
       router.push('/auth/login')
     }

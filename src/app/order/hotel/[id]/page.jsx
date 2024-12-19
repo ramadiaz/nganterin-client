@@ -4,7 +4,7 @@
 import Loading from "@/app/loading";
 import { BASE_API } from "@/utilities/environtment";
 import fetchWithAuth from "@/utilities/fetchWIthAuth";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ReactStars from "react-rating-stars-component";
 import { Button, Checkbox, Image, Input } from "@nextui-org/react";
 import { Sparkle } from "@phosphor-icons/react";
@@ -14,17 +14,24 @@ import { useRouter, useSearchParams } from "next/navigation";
 const Page = ({ params: id }) => {
   const [status, setStatus] = useState({
     loading: true,
-    forSomeoneElse: true,
-    isPayment: false,
   });
   const [detail, setDetail] = useState({});
   const [roomDetail, setRoomDetail] = useState({});
   const [images, setImages] = useState([]);
-  const room_id = useSearchParams().get("rooms");
+  const secdat = useSearchParams().get("secdat");
   const user_data = GetUserData()
   const router = useRouter()
 
-  const fetchData = async () => {
+  const [inputData, setInputData] = useState({
+    hotel_id: id.id,
+    room_id: null,
+    check_in_date: "",
+    check_out_date: "",
+    special_request: "",
+    is_for_someone_else: false
+  })
+
+  const fetchData = async (room_id) => {
     try {
       const response = await fetchWithAuth(`${BASE_API}/hotel/details?id=${id.id}`, {
         method: "GET",
@@ -34,8 +41,6 @@ const Page = ({ params: id }) => {
         setDetail(data.data);
         setImages(data.data.hotel_photos);
 
-        console.log(data.data.hotel_rooms)
-
         const hotelRoom = data.data.hotel_rooms.find(room => room.id == room_id);
 
         if (!hotelRoom) {
@@ -43,6 +48,7 @@ const Page = ({ params: id }) => {
         }
 
         setRoomDetail(hotelRoom)
+
         setStatus({ loading: false });
       }
     } catch (err) {
@@ -50,7 +56,27 @@ const Page = ({ params: id }) => {
     }
   };
 
-  useState(fetchData);
+  useEffect(() => {
+    const parseSecdat = async () => {
+      try {
+        const jsonString = atob(secdat)
+        const data = JSON.parse(jsonString);
+        if (data) {
+          fetchData(data.room_id)
+          setInputData({
+            ...inputData,
+            room_id: data.room_id,
+            check_in_date: data.check_in_date,
+            check_out_date: data.check_out_date,
+          })
+        }
+      } catch (err) {
+        router.push(`/detail/hotel/${id.id}`)
+      }
+    }
+
+    parseSecdat()
+  }, [])
 
   return (
     <>
@@ -74,6 +100,7 @@ const Page = ({ params: id }) => {
                   classNames={{
                     label: ["text-sm"],
                   }}
+                  isDisabled
                 />
                 <Input
                   label="Email*"
@@ -89,6 +116,7 @@ const Page = ({ params: id }) => {
                   classNames={{
                     label: ["text-sm"],
                   }}
+                  isDisabled
                 />
                 <h3 className="mt-4 text-sm opacity-90">
                   If you enter your email address and do not complete your
@@ -108,6 +136,7 @@ const Page = ({ params: id }) => {
                     classNames={{
                       label: ["text-sm"],
                     }}
+                    isDisabled
                   />
                   <Input
                     label="Country/region of residence*"
@@ -126,10 +155,10 @@ const Page = ({ params: id }) => {
                   />
                 </div>
                 <Checkbox
-                  value={status.forSomeoneElse}
-                  defaultSelected={status.forSomeoneElse}
+                  value={inputData.is_for_someone_else}
+                  defaultSelected={inputData.is_for_someone_else}
                   onChange={(e) =>
-                    setStatus({ ...status, forSomeoneElse: e.target.checked })
+                    setInputData({ ...inputData, is_for_someone_else: e.target.checked })
                   }
                   size="sm"
                   className="pt-8"
@@ -137,7 +166,7 @@ const Page = ({ params: id }) => {
                   Make this booking for someone else
                 </Checkbox>
                 <div
-                  className={`border rounded-lg border-neutral-300 p-4 mt-4 ${status.forSomeoneElse ? "h-52" : "h-0 opacity-0"
+                  className={`border rounded-lg border-neutral-300 p-4 mt-4 ${inputData.is_for_someone_else ? "h-52" : "h-0 opacity-0"
                     } transition-all duration-500`}
                 >
                   <Input
@@ -166,6 +195,9 @@ const Page = ({ params: id }) => {
                     }}
                   />
                 </div>
+              </div>
+              <div className="border rounded-lg border-neutral-300 p-4 shadow-sm shadow-black/50 transition-all duration-500 mt-4">
+                <h2 className="font-semibold">Let us know who you are!</h2>
               </div>
               <div className="border rounded-lg border-neutral-300 p-4 shadow-sm shadow-black/50 transition-all duration-500 mt-4">
                 <h3 className="text-sm">

@@ -19,6 +19,7 @@
     "@react-oauth/google": "^0.12.1",
     "aos": "^2.3.4",
     "cookie": "^0.6.0",
+    "crypto-js": "^4.2.0",
     "date-fns": "^3.3.1",
     "filepond-plugin-image-preview": "^4.6.12",
     "framer-motion": "^11.1.9",
