@@ -49,11 +49,12 @@ const Page = ({ params: id }) => {
               <div className="flex flex-row gap-4 items-center w-max mx-auto mb-8 select-none">
                 <div className="w-96 h-96 rounded-xl overflow-hidden hover:scale-105 transition-all duration-500">
                   <Image
-                    src={images[0].url + "=w600"}
+                    src={images[0].url}
                     width={0}
                     height={0}
                     className="w-96 h-96 overflow-hidden object-cover selector"
                     alt="hotel image"
+                    referrerPolicy="no-referrer"
                   />
                 </div>
                 <div className="grid grid-cols-3 gap-4 justify-between">
@@ -64,11 +65,12 @@ const Page = ({ params: id }) => {
                         key={index}
                       >
                         <Image
-                          src={image.url + "=w300"}
+                          src={image.url}
                           width={0}
                           height={0}
                           className="w-44 h-44 overflow-hidden object-cover selector"
                           alt="hotel image"
+                          referrerPolicy="no-referrer"
                         />
                       </div>
                     );
@@ -171,6 +173,7 @@ const Page = ({ params: id }) => {
                               height={0}
                               className="w-28 h-28 overflow-hidden object-cover selector"
                               alt="hotel image"
+                              referrerPolicy="no-referrer"
                             />
                             <div className="flex-grow flex flex-col">
                               <div>

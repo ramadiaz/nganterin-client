@@ -97,6 +97,7 @@ const Page = () => {
                                 shadow="md"
                                 src={item.hotel_photos[0].url + "=w300"}
                                 width={200}
+                                referrerPolicy="no-referrer"
                               />
                             </div>
                             <div className="flex flex-col col-span-6 md:col-span-8">
