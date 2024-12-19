@@ -3,7 +3,6 @@ import "./globals.css";
 import { Providers } from "./providers";
 import NavbarComponent from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { GoogleOAuthProvider } from "@react-oauth/google";
 import { ToastContainer } from "react-toastify";
 import MaintenanceModal from "@/components/MaintenanceModal";
 

@@ -34,8 +34,8 @@ const Page = ({ params: id }) => {
   const endDate = formatDate(threeDaysLater);
 
   const [bookingDate, setBookingDate] = useState({
-    check_in_date: parseDate(startDate),
-    check_out_date: parseDate(endDate),
+    check_in_date: startDate,
+    check_out_date: endDate,
   })
 
   const fetchData = async () => {

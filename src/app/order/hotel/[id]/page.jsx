@@ -2,7 +2,7 @@
 "use client";
 
 import Loading from "@/app/loading";
-import { BASE_API } from "@/utilities/environtment";
+import { BASE_API, MIDTRANS_CLIENT_KEY, MIDTRANS_SNAP_SCRIPT } from "@/utilities/environtment";
 import fetchWithAuth from "@/utilities/fetchWIthAuth";
 import { useEffect, useState } from "react";
 import ReactStars from "react-rating-stars-component";
@@ -10,6 +10,7 @@ import { Button, Checkbox, Image, Input } from "@nextui-org/react";
 import { Sparkle } from "@phosphor-icons/react";
 import { GetUserData } from "@/utilities/getUserData";
 import { useRouter, useSearchParams } from "next/navigation";
+import { toast } from "react-toastify";
 
 const Page = ({ params: id }) => {
   const [status, setStatus] = useState({
@@ -56,6 +57,38 @@ const Page = ({ params: id }) => {
     }
   };
 
+  const handlePayment = async () => {
+    try {
+      const res = await fetchWithAuth(BASE_API + "/order/hotel/register", {
+        method: "POST",
+        body: JSON.stringify(inputData)
+      })
+
+      if (res.ok) {
+        const data = await res.json()
+
+        window.snap.pay(data.data.token, {
+          onSuccess: async () => {
+            toast('Pembayaran berhasil!');
+          },
+          onPending: (result) => {
+            showWarningToast('Pembayaran tertunda');
+            console.log(result);
+          },
+          onError: (result) => {
+            showErrorToast('Pembayaran gagal');
+            console.log(result);
+          },
+          onClose: () => {
+            showErrorToast('Anda menutup popup tanpa menyelesaikan pembayaran.');
+          },
+        });
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   useEffect(() => {
     const parseSecdat = async () => {
       try {
@@ -76,6 +109,18 @@ const Page = ({ params: id }) => {
     }
 
     parseSecdat()
+
+    const snapScript = MIDTRANS_SNAP_SCRIPT;
+    console.log({snapScript})
+    const script = document.createElement('script');
+    script.src = snapScript;
+    script.setAttribute('data-client-key', MIDTRANS_CLIENT_KEY);
+    script.async = true;
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
   }, [])
 
   return (
@@ -214,6 +259,7 @@ const Page = ({ params: id }) => {
                   size="lg"
                   onPress={() => {
                     setStatus((prev) => ({ ...prev, isPayment: true }));
+                    handlePayment()
                   }}
                   isLoading={status.isPa}
                 >
