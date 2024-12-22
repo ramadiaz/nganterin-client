@@ -70,17 +70,23 @@ const Page = ({ params: id }) => {
         window.snap.pay(data.data.token, {
           onSuccess: async () => {
             toast('Pembayaran berhasil!');
+
+            const jsonString = JSON.stringify(data.data);
+            const secdat = btoa(jsonString)
+
+            router.push(`/payment/hotel?secdat=${secdat}`)
           },
-          onPending: (result) => {
-            showWarningToast('Pembayaran tertunda');
-            console.log(result);
+          onPending: () => {
+            toast.warning('Payment pending');
+            router.push("/order/history/hotel")
           },
-          onError: (result) => {
-            showErrorToast('Pembayaran gagal');
-            console.log(result);
+          onError: () => {
+            toast.error('Payment error');
+            router.push("/order/history/hotel")
           },
           onClose: () => {
-            showErrorToast('Anda menutup popup tanpa menyelesaikan pembayaran.');
+            toast.error('Payment window closed');
+            router.push("/order/history/hotel")
           },
         });
       }
@@ -111,7 +117,7 @@ const Page = ({ params: id }) => {
     parseSecdat()
 
     const snapScript = MIDTRANS_SNAP_SCRIPT;
-    console.log({snapScript})
+    console.log({ snapScript })
     const script = document.createElement('script');
     script.src = snapScript;
     script.setAttribute('data-client-key', MIDTRANS_CLIENT_KEY);
