@@ -108,6 +108,9 @@ export default function NavbarComponent() {
                 />
               </DropdownTrigger>
               <DropdownMenu className="text-black">
+                <DropdownItem as={Link} href="/order/history/hotel">
+                  My Order
+                </DropdownItem>
                 <DropdownItem onClick={handleLogout} color="danger">
                   Log out
                 </DropdownItem>
