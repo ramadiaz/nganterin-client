@@ -24,7 +24,9 @@ const Page = () => {
             });
             if (response.ok) {
                 const data = await response.json();
-                setHistory(data.data);
+                if (data.data) {
+                    setHistory(data.data);
+                }
             }
         } catch (err) {
             toast.error("Failed to fetch Order History Data")
