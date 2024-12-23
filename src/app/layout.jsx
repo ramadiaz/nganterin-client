@@ -3,8 +3,8 @@ import "./globals.css";
 import { Providers } from "./providers";
 import NavbarComponent from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { ToastContainer } from "react-toastify";
 import MaintenanceModal from "@/components/MaintenanceModal";
+import { Toaster } from "sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,9 +26,9 @@ export default function RootLayout({ children }) {
           <div className="min-h-screen">
             {children}
             <MaintenanceModal />
+            <Toaster position="bottom-right" richColors />
           </div>
           <Footer />
-          <ToastContainer />
         </Providers>
       </body>
     </html>

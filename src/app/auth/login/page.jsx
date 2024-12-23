@@ -9,7 +9,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import { BASE_API } from "@/utilities/environtment";
 import Cookies from "js-cookie";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 
 const Page = () => {
   const [email, setEmail] = useState("");

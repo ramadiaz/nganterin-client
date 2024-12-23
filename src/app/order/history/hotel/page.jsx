@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import fetchWithAuth from "@/utilities/fetchWIthAuth";
 import { BASE_API, MIDTRANS_CLIENT_KEY, MIDTRANS_SNAP_SCRIPT } from "@/utilities/environtment";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { Button, ButtonGroup, Image } from "@nextui-org/react";
 import Link from "next/link";
 import { DotsLoading } from "@/components/DotsLoading";

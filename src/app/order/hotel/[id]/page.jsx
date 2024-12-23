@@ -10,7 +10,7 @@ import { Button, Checkbox, Image, Input } from "@nextui-org/react";
 import { Sparkle } from "@phosphor-icons/react";
 import { GetUserData } from "@/utilities/getUserData";
 import { useRouter, useSearchParams } from "next/navigation";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 
 const Page = ({ params: id }) => {
   const [status, setStatus] = useState({

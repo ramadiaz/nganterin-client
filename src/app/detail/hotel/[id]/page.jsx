@@ -11,7 +11,7 @@ import { GetUserData } from "@/utilities/getUserData";
 import { MoneyWavy } from "@phosphor-icons/react";
 import { useRouter } from "next/navigation";
 import { parseDate } from "@internationalized/date";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 
 const Page = ({ params: id }) => {
   const [isLoading, setIsLoading] = useState(true);

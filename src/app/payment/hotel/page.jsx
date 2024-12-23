@@ -8,7 +8,7 @@ import { ArrowsClockwise, ClockCounterClockwise, Ticket } from "@phosphor-icons/
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react"
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 
 const Page = () => {
     const secdat = useSearchParams().get("secdat");
