@@ -15,6 +15,7 @@ import { toast } from "react-toastify";
 const Page = ({ params: id }) => {
   const [status, setStatus] = useState({
     loading: true,
+    paying: false
   });
   const [detail, setDetail] = useState({});
   const [roomDetail, setRoomDetail] = useState({});
@@ -29,7 +30,10 @@ const Page = ({ params: id }) => {
     check_in_date: "",
     check_out_date: "",
     special_request: "",
-    is_for_someone_else: false
+    days: 0,
+    is_for_someone_else: false,
+    someone_name: "",
+    someone_region: ""
   })
 
   const fetchData = async (room_id) => {
@@ -50,14 +54,16 @@ const Page = ({ params: id }) => {
 
         setRoomDetail(hotelRoom)
 
-        setStatus({ loading: false });
+        setStatus((prev) => ({ ...prev, loading: false }));
       }
     } catch (err) {
+      toast.error("Something went wrong")
       console.error(err);
     }
   };
 
   const handlePayment = async () => {
+    setStatus((prev) => ({ ...prev, paying: true }));
     try {
       const res = await fetchWithAuth(BASE_API + "/order/hotel/register", {
         method: "POST",
@@ -89,9 +95,14 @@ const Page = ({ params: id }) => {
             router.push("/order/history/hotel")
           },
         });
+      } else if (res.status == 400) {
+        toast.error("Bad request")
       }
     } catch (err) {
+      toast.error("Something went wrong")
       console.error(err);
+    } finally {
+      setStatus((prev) => ({ ...prev, paying: false }));
     }
   }
 
@@ -107,9 +118,12 @@ const Page = ({ params: id }) => {
             room_id: data.room_id,
             check_in_date: data.check_in_date,
             check_out_date: data.check_out_date,
+            days: data.days
           })
         }
       } catch (err) {
+        toast.error("Something went wrong")
+        console.error(err)
         router.push(`/detail/hotel/${id.id}`)
       }
     }
@@ -227,6 +241,8 @@ const Page = ({ params: id }) => {
                     radius="sm"
                     variant="bordered"
                     size="lg"
+                    value={inputData.someone_name}
+                    onChange={(e) => setInputData((prevData) => ({ ...prevData, someone_name: e.target.value }))}
                     placeholder="Kimi no namae waaa"
                     classNames={{
                       label: ["text-sm"],
@@ -239,6 +255,8 @@ const Page = ({ params: id }) => {
                     radius="sm"
                     variant="bordered"
                     size="lg"
+                    value={inputData.someone_region}
+                    onChange={(e) => setInputData((prevData) => ({ ...prevData, someone_region: e.target.value }))}
                     placeholder=" "
                     className="pt-4"
                     classNames={{
@@ -264,10 +282,9 @@ const Page = ({ params: id }) => {
                   color="primary"
                   size="lg"
                   onPress={() => {
-                    setStatus((prev) => ({ ...prev, isPayment: true }));
                     handlePayment()
                   }}
-                  isLoading={status.isPa}
+                  isLoading={status.paying}
                 >
                   Payment
                 </Button>
@@ -280,7 +297,7 @@ const Page = ({ params: id }) => {
                     src={images[0].url}
                     height={200}
                     width={200}
-                    className="object-cover w-20 h-32"
+                    className="object-cover min-w-20 h-32"
                     referrerPolicy="no-referrer"
                   />
                   <div className="flex flex-col gap-2">
@@ -299,10 +316,10 @@ const Page = ({ params: id }) => {
                         size={24}
                         activeColor="#ef4444"
                         edit={false}
-                        value={3}
+                        value={4}
                       />
                       <h4 className="text-xs opacity-90">
-                        {detail.complete_address}
+                        {detail.hotels_location.complete_address}
                       </h4>
                       <div className="flex flex-row gap-1 mt-4">
                         <Sparkle size={18} />
@@ -321,7 +338,7 @@ const Page = ({ params: id }) => {
                     <h3 className="text-red-600 line-through">
                       Rp{" "}
                       {(
-                        roomDetail.overnight_price + 300000
+                        inputData.days * roomDetail.overnight_price + 300000
                       ).toLocaleString()}
                     </h3>
                   </div>
@@ -330,18 +347,18 @@ const Page = ({ params: id }) => {
                     <h3 className="text-red-600 line-through">
                       Rp{" "}
                       {(
-                        roomDetail.overnight_price + 100000
+                        inputData.days * roomDetail.overnight_price + 100000
                       ).toLocaleString()}
                     </h3>
                   </div>
                   <div className="flex flex-row justify-between border border-dashed border-green-600 bg-green-200 px-2 py-1">
                     <h3>Instant Discount</h3>
-                    <h3 className="text-green-600">-Rp 100.000</h3>
+                    <h3 className="text-green-600">-Rp 200.000</h3>
                   </div>
                   <div className="flex flex-row justify-between px-2 py-1">
-                    <h3>Room price (1 room x 1 night)</h3>
+                    <h3>Room price (1 room x {inputData.days} night)</h3>
                     <h3 className="">
-                      Rp {roomDetail.overnight_price.toLocaleString()}
+                      Rp {(inputData.days * roomDetail.overnight_price).toLocaleString()}
                     </h3>
                   </div>
                   <div className="flex flex-row justify-between px-2 py-1">
@@ -353,7 +370,7 @@ const Page = ({ params: id }) => {
                   <div className="flex flex-row justify-between px-2 py-1 text-medium">
                     <h3 className="font-semibold">Price</h3>
                     <h3 className="font-semibold">
-                      Rp {parseInt(roomDetail.overnight_price).toLocaleString()}
+                      Rp {(inputData.days * roomDetail.overnight_price).toLocaleString()}
                     </h3>
                   </div>
                 </div>

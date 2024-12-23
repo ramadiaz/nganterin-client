@@ -5,12 +5,13 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import fetchWithAuth from "@/utilities/fetchWIthAuth";
 import { BASE_API } from "@/utilities/environtment";
-import { Button, ButtonGroup, Image } from "@nextui-org/react";
+import { Button, ButtonGroup, DateRangePicker, Image } from "@nextui-org/react";
 import { Check } from "@phosphor-icons/react/dist/ssr";
 import { GetUserData } from "@/utilities/getUserData";
 import { MoneyWavy } from "@phosphor-icons/react";
 import { useRouter } from "next/navigation";
 import { parseDate } from "@internationalized/date";
+import { toast } from "react-toastify";
 
 const Page = ({ params: id }) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -34,8 +35,8 @@ const Page = ({ params: id }) => {
   const endDate = formatDate(threeDaysLater);
 
   const [bookingDate, setBookingDate] = useState({
-    check_in_date: startDate,
-    check_out_date: endDate,
+    start: parseDate(startDate),
+    end: parseDate(endDate),
   })
 
   const fetchData = async () => {
@@ -52,6 +53,7 @@ const Page = ({ params: id }) => {
       }
     } catch (err) {
       console.error(err);
+      toast.error("Something went wrong")
     }
   };
 
@@ -61,8 +63,9 @@ const Page = ({ params: id }) => {
 
   const handleBooking = (room_id) => {
     const jsonString = JSON.stringify({
-      check_in_date: bookingDate.check_in_date,
-      check_out_date: bookingDate.check_out_date,
+      check_in_date: bookingDate.start.toString(),
+      check_out_date: bookingDate.end.toString(),
+      days: bookingDate.end.day - bookingDate.start.day,
       room_id: room_id,
       hotel_id: id.id
     });
@@ -141,7 +144,7 @@ const Page = ({ params: id }) => {
                     {user_data.id ? (
                       <Button
                         as={Link}
-                        href={`/order/hotel/${id.id}`}
+                        href={`#rooms`}
                         className="uppercase bg-sky-700 text-white"
                         radius="full"
                         size="md"
@@ -194,6 +197,19 @@ const Page = ({ params: id }) => {
                         );
                       })}
                     </div>
+                  </div>
+                  <div className="rounded-lg border border-neutral-300 p-4 space-y-2" id="select-date">
+                    <h2 className="font-semibold">Reservation Date</h2>
+                    <DateRangePicker
+                      label="Check in - Check out date"
+                      value={bookingDate}
+                      onChange={setBookingDate}
+                      visibleMonths={2}
+                      variant="bordered"
+                      classNames={{
+                        base: ["border-gray-200"],
+                      }}
+                    />
                   </div>
                   <div className="rounded-lg border border-neutral-300 p-4" id="rooms">
                     <h2 className="font-semibold">{detail.hotel_rooms.length} Types of Rooms</h2>
