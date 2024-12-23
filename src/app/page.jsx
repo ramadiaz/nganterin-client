@@ -10,11 +10,9 @@ import {
   Input,
   Button,
 } from "@nextui-org/react";
-import { MagnifyingGlass, Path } from "@phosphor-icons/react";
+import { MagnifyingGlass } from "@phosphor-icons/react";
 import { Carousel } from "react-responsive-carousel";
 
-import "react-date-range/dist/styles.css"; // main style file
-import "react-date-range/dist/theme/default.css"; // theme css file
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 import AOS from "aos";
@@ -46,19 +44,6 @@ export default function Home() {
     start: parseDate(startDate),
     end: parseDate(endDate),
   });
-
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.async = true;
-    script.src = "https://embed.tawk.to/664b0af59a809f19fb32efc5/1huai5kp5";
-    script.charset = "UTF-8";
-    script.setAttribute("crossorigin", "*");
-    document.body.appendChild(script);
-
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
 
   function formatDate(date) {
     const year = date.getFullYear();
