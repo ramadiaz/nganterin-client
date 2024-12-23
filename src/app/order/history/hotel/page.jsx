@@ -8,10 +8,13 @@ import { Button, ButtonGroup, Image } from "@nextui-org/react";
 import Link from "next/link";
 import { DotsLoading } from "@/components/DotsLoading";
 import { ArrowUpRight, PushPin, Ticket } from "@phosphor-icons/react";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [history, setHistory] = useState([]);
+
+    const router = useRouter();
 
     const fetchData = async () => {
         setIsLoading(true);
@@ -51,12 +54,15 @@ const Page = () => {
         paid: "bg-green-300"
     }
 
-    const handleContinuePayment = (snap_token) => {
-        window.snap.pay(snap_token, {
+    const handleContinuePayment = (order_data) => {
+        window.snap.pay(order_data.snap_token, {
             onSuccess: async () => {
                 toast('Payment success!');
 
-                const jsonString = JSON.stringify(data.data);
+                const jsonString = JSON.stringify({
+                    id: order_data.id,
+                    token: order_data.snap_token
+                });
                 const secdat = btoa(jsonString)
 
                 router.push(`/payment/hotel?secdat=${secdat}`)
@@ -152,7 +158,7 @@ const Page = () => {
                                                     </Button>
                                                 </div>
                                             ) : item.payment_status === "pending" && (
-                                                <Button size="sm" variant="bordered" className="text-sm bg-green-300 border-gray-900" onClick={() => handleContinuePayment(item.snap_token)} >
+                                                <Button size="sm" variant="bordered" className="text-sm bg-green-300 border-gray-900" onClick={() => handleContinuePayment(item)} >
                                                     Pay Now! <ArrowUpRight size={22} color="#111827" weight="bold" />
                                                 </Button>
                                             )
