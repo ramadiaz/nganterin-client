@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import fetchWithAuth from "@/utilities/fetchWIthAuth";
 import { BASE_API } from "@/utilities/environtment";
 import { Button, Card, CardBody, Image } from "@nextui-org/react";
+import { toast } from "react-toastify";
 
 const Page = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -13,15 +14,15 @@ const Page = () => {
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      const response = await fetchWithAuth(`${BASE_API}/checkout/history`, {
+      const response = await fetchWithAuth(`${BASE_API}/order/hotel/getall`, {
         method: "GET",
       });
       if (response.ok) {
         const data = await response.json();
-        setHistory(data.data.reverse());
+        setHistory(data.data);
       }
     } catch (err) {
-      console.error(err);
+      toast.error("Failed to fetch Order History Data")
     } finally {
       setIsLoading(false);
     }
@@ -54,15 +55,11 @@ const Page = () => {
                 </div>
                 {history.length != 0 && (
                   <div className="basis-3/5 flex flex-col gap-4 justify-center items-center">
-                    {history.reverse().map((item) => {
+                    {history.map((item, index) => {
                       const date = new Date(item.created_at);
 
-                      const image_array = item.hotel_photos;
-                      const imageUrl = JSON.parse(image_array);
-                      const price = parseInt(item.total_price);
-
                       return (
-                        <div className="hover:shadow-lg hover:shadow-black/30 transition-all duration-500 rounded-2xl">
+                        <div className="hover:shadow-lg hover:shadow-black/30 transition-all duration-500 rounded-2xl" key={index}>
                           <Card
                             isBlurred
                             className="border-none bg-background/50"
@@ -76,7 +73,7 @@ const Page = () => {
                                     className="object-cover w-64 h-36"
                                     height={200}
                                     shadow="md"
-                                    src={imageUrl[0]}
+                                    src={item.hotel_room.hotel_room_photos[0].url}
                                     width={200}
                                   />
                                 </div>
@@ -85,17 +82,17 @@ const Page = () => {
                                   <div className="flex justify-between items-start">
                                     <div className="flex flex-col gap-0 w-full">
                                       <h3 className="font-semibold text-foreground/90">
-                                        {item.hotel_name}
+                                        {item.hotel.name}
                                       </h3>
                                       <p className="text-small text-foreground/80">
-                                        {item.invoice}
+                                        {item.id}
                                       </p>
                                       <p className="text-small text-foreground/80">
                                         {date.toLocaleString()}
                                       </p>
                                       <h1 className="text-large text-right font-medium mt-2">
                                         <span>
-                                          Rp. {price.toLocaleString()}
+                                          Rp. {item.total_price.toLocaleString()}
                                         </span>
                                       </h1>
                                     </div>
