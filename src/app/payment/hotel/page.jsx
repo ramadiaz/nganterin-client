@@ -47,6 +47,7 @@ const Page = () => {
                 }
 
             } catch (err) {
+                console.error(err)
                 router.push(`/order/history/hotel`)
             }
         }
