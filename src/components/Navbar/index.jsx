@@ -60,7 +60,7 @@ export default function NavbarComponent() {
           pathName.endsWith("/") || pathName.endsWith("/about")
             ? `bg-opacity-0 transition-all duration-500 ${isBlurred ? "backdrop-blur-md bg-opacity-50 bg-blue-950/30" : ""
             }`
-            : `bg-sky-700`
+            : `bg-sky-700 border-b-2 border-gray-900`
         }
       >
         <NavbarContent justify="start">
