@@ -285,7 +285,7 @@ const Page = ({ params: id }) => {
                         Cleanliness 8.9
                       </div>
                       <div className="border-2 border-gray-900 bg-emerald-300 text-black/70 text-xs px-2 py-1 rounded-md whitespace-nowrap">
-                        Value for money 9.1
+                        Value for money 9.0
                       </div>
                       <div className="border-2 border-gray-900 bg-emerald-300 text-black/70 text-xs px-2 py-1 rounded-md whitespace-nowrap">
                         Location 9.0
