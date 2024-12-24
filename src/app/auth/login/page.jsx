@@ -41,72 +41,18 @@ const Page = () => {
       if (res.ok) {
         const data = await res.json()
         Cookies.set("user_jwt", data.data)
-        toast.success("Login successful", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
+        toast.success("Login successful");
         location.replace('/')
       } else if (res.status == 403) {
-        toast.error("Email lu belum lu verif boyy, lu bukan nabi", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
+        toast.error("Email lu belum lu verif boyy, lu bukan nabi");
       } else if (res.status == 404) {
-        toast.error("Elu siapa ajgggg, email lu gaada", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
+        toast.error("Elu siapa ajgggg, email lu gaada");
       } else if (res.status == 401) {
-        toast.error("Invalid email or password", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
+        toast.error("Invalid email or password");
       } else if (res.status == 400) {
-        toast.error("Bad Request", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
+        toast.error("Bad Request");
       } else {
-        toast.error("Something went wrong", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
+        toast.error("Something went wrong");
       }
     } catch (err) {
       console.error(err)

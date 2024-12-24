@@ -53,40 +53,13 @@ const Page = () => {
       const userInfo = await response.json();
 
       if (response.ok) {
-        toast.success("Registration successful!", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
+        toast.success("Registration successful!");
         router.push("/auth/login");
       } else {
-        toast.error(userInfo || "Registration failed.", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
+        toast.error(userInfo.error || "Registration failed.");
       }
     } catch (error) {
-      toast.error("An error occurred. Please try again.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
+      toast.error("An error occurred. Please try again.");
     } finally {
       setIsLoading(false);
     }
