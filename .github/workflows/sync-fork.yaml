@@ -1,0 +1,41 @@
+name: Sync Fork
+
+on:
+  schedule:
+    - cron: '*/5 * * * *' # Runs every 5 minutes
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  sync-fork:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Forked Repository
+      uses: actions/checkout@v3
+
+    - name: Setup Git
+      run: |
+        git config user.name "ramadiaz"
+        git config user.email "ramadiaz221@gmail.com"
+        
+    - name: Add Upstream Remote
+      run: |
+        git remote add upstream https://github.com/Nganterin/nganterin-client.git
+        git fetch upstream
+        
+    - name: Reset and Sync with Upstream
+      run: |
+        git fetch upstream
+        git checkout master # Adjust branch name if necessary
+        cp .github/workflows/sync-fork.yml /tmp/sync-fork.yml # Backup workflow file
+        git reset --hard upstream/master
+        cp /tmp/sync-fork.yml .github/workflows/sync-fork.yml # Restore workflow file
+        git add .github/workflows/sync-fork.yml
+        git commit -m "Restore sync workflow"
+        git push origin master --force
+
+    - name: Push Changes to Fork
+      env:
+        TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        git push origin master
