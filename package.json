@@ -23,6 +23,7 @@
     "date-fns": "^3.3.1",
     "filepond-plugin-image-preview": "^4.6.12",
     "framer-motion": "^11.1.9",
+    "fslightbox-react": "^1.7.6",
     "jose": "^5.9.6",
     "js-cookie": "^3.0.5",
     "jsonwebtoken": "^8.5.1",

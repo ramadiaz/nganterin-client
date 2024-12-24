@@ -12,9 +12,11 @@ import { MoneyWavy } from "@phosphor-icons/react";
 import { useRouter } from "next/navigation";
 import { parseDate } from "@internationalized/date";
 import { toast } from "sonner";
+import FsLightbox from "fslightbox-react";
 
 const Page = ({ params: id }) => {
   const [isLoading, setIsLoading] = useState(true);
+  const [isLightBoxOpen, setIsLightBoxOpen] = useState(false)
   const [detail, setDetail] = useState("");
   const [images, setImages] = useState([]);
   const user_data = GetUserData()
@@ -96,6 +98,7 @@ const Page = ({ params: id }) => {
                     className="w-96 h-96 overflow-hidden object-cover selector"
                     alt="hotel image"
                     referrerPolicy="no-referrer"
+                    onClick={() => setIsLightBoxOpen(!isLightBoxOpen)}
                   />
                 </div>
                 <div className="grid grid-cols-3 gap-4 justify-between">
@@ -112,6 +115,7 @@ const Page = ({ params: id }) => {
                           className="w-44 h-44 overflow-hidden object-cover selector"
                           alt="hotel image"
                           referrerPolicy="no-referrer"
+                          onClick={() => setIsLightBoxOpen(!isLightBoxOpen)}
                         />
                       </div>
                     );
@@ -283,6 +287,10 @@ const Page = ({ params: id }) => {
                 </div>
               </div>
             </div>
+            <FsLightbox
+              toggler={isLightBoxOpen}
+              sources={images.map(photo => photo.url)}
+            />
           </div>
         )}
       </div >
