@@ -75,7 +75,7 @@ const Page = ({ params: id }) => {
 
         window.snap.pay(data.data.token, {
           onSuccess: async () => {
-            toast('Payment success!');
+            toast.success('Payment success!');
 
             const jsonString = JSON.stringify(data.data);
             const secdat = btoa(jsonString)

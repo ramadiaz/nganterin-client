@@ -63,7 +63,7 @@ const Page = () => {
     const handleContinuePayment = (order_data) => {
         window.snap.pay(order_data.snap_token, {
             onSuccess: async () => {
-                toast('Payment success!');
+                toast.success('Payment success!');
 
                 const jsonString = JSON.stringify({
                     id: order_data.id,
