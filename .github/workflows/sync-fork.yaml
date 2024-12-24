@@ -27,11 +27,7 @@ jobs:
       run: |
         git fetch upstream
         git checkout master # Adjust branch name if necessary
-        cp .github/workflows/sync-fork.yml /tmp/sync-fork.yml # Backup workflow file
         git reset --hard upstream/master
-        cp /tmp/sync-fork.yml .github/workflows/sync-fork.yml # Restore workflow file
-        git add .github/workflows/sync-fork.yml
-        git commit -m "Restore sync workflow"
         git push origin master --force
 
     - name: Push Changes to Fork
