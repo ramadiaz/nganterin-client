@@ -35,10 +35,10 @@ const Page = ({ params: id }) => {
 
   function calculateDaysBetween(start, end) {
     const startDate = new Date(start.year, start.month - 1, start.day);
-    const endDate = new Date(end.year, end.month - 1, end.day); 
-    const diffInTime = endDate - startDate; 
-    const diffInDays = diffInTime / (1000 * 60 * 60 * 24); 
-    return Math.ceil(diffInDays); 
+    const endDate = new Date(end.year, end.month - 1, end.day);
+    const diffInTime = endDate - startDate;
+    const diffInDays = diffInTime / (1000 * 60 * 60 * 24);
+    return Math.ceil(diffInDays);
   }
 
   const startDate = formatDate(today);
@@ -90,8 +90,8 @@ const Page = ({ params: id }) => {
 
   return (
     <>
-      <div className="bg-white h-14"></div>
-      <div className="min-h-screen text-black bg-white">
+      <div className="h-14"></div>
+      <div className="min-h-screen text-gray-900">
         {isLoading ? (
           <Loading />
         ) : (
@@ -103,7 +103,7 @@ const Page = ({ params: id }) => {
                     src={images[0].url}
                     width={0}
                     height={0}
-                    className="w-96 h-96 overflow-hidden object-cover selector"
+                    className="w-96 h-96 overflow-hidden object-cover selector border-2 border-gray-900"
                     alt="hotel image"
                     referrerPolicy="no-referrer"
                     onClick={() => setIsLightBoxOpen(!isLightBoxOpen)}
@@ -120,7 +120,7 @@ const Page = ({ params: id }) => {
                           src={image.url}
                           width={0}
                           height={0}
-                          className="w-44 h-44 overflow-hidden object-cover selector"
+                          className="w-44 h-44 overflow-hidden object-cover selector border-2 border-gray-900"
                           alt="hotel image"
                           referrerPolicy="no-referrer"
                           onClick={() => setIsLightBoxOpen(!isLightBoxOpen)}
@@ -131,7 +131,7 @@ const Page = ({ params: id }) => {
                 </div>
               </div>
               <div className="w-full">
-                <div className="rounded-lg border border-neutral-300 flex flex-row justify-between">
+                <div className="rounded-lg border-2 border-gray-900 bg-orange-100 flex flex-row justify-between">
                   <ButtonGroup radius="sm">
                     <Button className="text-sm" size="lg" variant="light">
                       Overview
@@ -157,7 +157,7 @@ const Page = ({ params: id }) => {
                       <Button
                         as={Link}
                         href={`#rooms`}
-                        className="uppercase bg-sky-700 text-white"
+                        className="uppercase bg-sky-300 border-2 border-gray-900"
                         radius="full"
                         size="md"
                         variant="flat"
@@ -168,7 +168,7 @@ const Page = ({ params: id }) => {
                       <Button
                         as={Link}
                         href="/auth/login"
-                        className="uppercase bg-sky-700 text-white"
+                        className="uppercase bg-sky-300 border-2 border-gray-900"
                         radius="full"
                         size="md"
                         variant="flat"
@@ -181,12 +181,12 @@ const Page = ({ params: id }) => {
               </div>
               <div className="w-full flex flex-row mt-4 gap-4">
                 <div className="basis-2/3 flex flex-col gap-4">
-                  <div className="rounded-lg border border-neutral-300 p-4">
+                  <div className="rounded-lg border-2 border-gray-900 bg-orange-100 p-4">
                     <div className="flex flex-row gap-2 mb-4 ">
-                      <div className="bg-sky-700 text-white text-xs px-2 py-1 rounded-md">
+                      <div className="bg-sky-700 text-white text-xs px-2 py-1 rounded-md border-2 border-gray-900">
                         Domestic Deal
                       </div>
-                      <div className="bg-red-500 text-white text-xs px-2 py-1 rounded-md">
+                      <div className="bg-red-500 text-white text-xs px-2 py-1 rounded-md border-2 border-gray-900">
                         Best seller
                       </div>
                     </div>
@@ -195,7 +195,7 @@ const Page = ({ params: id }) => {
                     </h3>
                     <h4 className="text-sm">{detail.description}</h4>
                   </div>
-                  <div className="rounded-lg border border-neutral-300 p-4">
+                  <div className="rounded-lg border-2 border-gray-900 bg-orange-100 p-4">
                     <h2 className="font-semibold">Facilites</h2>
                     <div className="flex flex-wrap font-semibold text-xs gap-2 mt-2">
                       {detail.hotel_facilities?.map((item, index) => {
@@ -210,7 +210,7 @@ const Page = ({ params: id }) => {
                       })}
                     </div>
                   </div>
-                  <div className="rounded-lg border border-neutral-300 p-4 space-y-2" id="select-date">
+                  <div className="rounded-lg border-2 border-gray-900 bg-orange-100 p-4 space-y-2" id="select-date">
                     <h2 className="font-semibold">Reservation Date</h2>
                     <DateRangePicker
                       label="Check in - Check out date"
@@ -219,11 +219,11 @@ const Page = ({ params: id }) => {
                       visibleMonths={2}
                       variant="bordered"
                       classNames={{
-                        base: ["border-gray-200"],
+                        inputWrapper: ["border-2", "border-gray-900", "bg-orange-50", "hover:border-gray-800"]
                       }}
                     />
                   </div>
-                  <div className="rounded-lg border border-neutral-300 p-4" id="rooms">
+                  <div className="rounded-lg border-2 border-gray-900 bg-orange-100 p-4" id="rooms">
                     <h2 className="font-semibold">{detail.hotel_rooms.length} Types of Rooms</h2>
                     <div className="flex flex-row gap-2 items-center">
                       <h3 className="text-xs opacity-90">Prices do not include taxes & fees</h3>
@@ -260,7 +260,7 @@ const Page = ({ params: id }) => {
                                 <h3 className="text-xs mr-3">
                                   /night
                                 </h3>
-                                <Button size="sm" variant="bordered" radius="full" className="text-xs" onClick={() => handleBooking(item.id)}>BOOK</Button>
+                                <Button size="sm" variant="bordered" radius="full" className="text-xs border-2 border-gray-900 bg-orange-50" onClick={() => handleBooking(item.id)}>BOOK</Button>
                               </div>
                             </div>
                           </div>
@@ -270,7 +270,7 @@ const Page = ({ params: id }) => {
                   </div>
                 </div>
                 <div className="basis-1/3">
-                  <div className="rounded-lg border border-neutral-300 p-4 flex flex-col gap-2">
+                  <div className="rounded-lg border-2 border-gray-900 bg-orange-100 p-4 flex flex-col gap-2">
                     <div className=" flex flex-col gap-1">
                       <h2 className="text-xl font-semibold">8.9 Excellent</h2>
                       <h4 className="text-xs opacity-90 text-sky-600">
@@ -278,16 +278,16 @@ const Page = ({ params: id }) => {
                       </h4>
                     </div>
                     <div className="flex flex-wrap gap-2">
-                      <div className="bg-emerald-300 text-black/70 text-xs px-2 py-1 rounded-md whitespace-nowrap">
+                      <div className="border-2 border-gray-900 bg-emerald-300 text-black/70 text-xs px-2 py-1 rounded-md whitespace-nowrap">
                         Service 9.2
                       </div>
-                      <div className="bg-emerald-300 text-black/70 text-xs px-2 py-1 rounded-md whitespace-nowrap">
+                      <div className="border-2 border-gray-900 bg-emerald-300 text-black/70 text-xs px-2 py-1 rounded-md whitespace-nowrap">
                         Cleanliness 8.9
                       </div>
-                      <div className="bg-emerald-300 text-black/70 text-xs px-2 py-1 rounded-md whitespace-nowrap">
+                      <div className="border-2 border-gray-900 bg-emerald-300 text-black/70 text-xs px-2 py-1 rounded-md whitespace-nowrap">
                         Value for money 9.0
                       </div>
-                      <div className="bg-emerald-300 text-black/70 text-xs px-2 py-1 rounded-md whitespace-nowrap">
+                      <div className="border-2 border-gray-900 bg-emerald-300 text-black/70 text-xs px-2 py-1 rounded-md whitespace-nowrap">
                         Location 9.0
                       </div>
                     </div>
@@ -302,7 +302,7 @@ const Page = ({ params: id }) => {
           </div>
         )}
       </div >
-      <div className="bg-gradient-to-b from-white to-orange-50 h-20"></div>
+      <div className="h-20"></div>
     </>
   );
 };
