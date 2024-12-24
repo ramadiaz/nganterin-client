@@ -33,6 +33,14 @@ const Page = ({ params: id }) => {
     return `${year}-${month}-${day}`;
   }
 
+  function calculateDaysBetween(start, end) {
+    const startDate = new Date(start.year, start.month - 1, start.day);
+    const endDate = new Date(end.year, end.month - 1, end.day); 
+    const diffInTime = endDate - startDate; 
+    const diffInDays = diffInTime / (1000 * 60 * 60 * 24); 
+    return Math.ceil(diffInDays); 
+  }
+
   const startDate = formatDate(today);
   const endDate = formatDate(threeDaysLater);
 
@@ -67,7 +75,7 @@ const Page = ({ params: id }) => {
     const jsonString = JSON.stringify({
       check_in_date: bookingDate.start.toString(),
       check_out_date: bookingDate.end.toString(),
-      days: bookingDate.end.day - bookingDate.start.day,
+      days: calculateDaysBetween(bookingDate.start, bookingDate.end),
       room_id: room_id,
       hotel_id: id.id
     });
