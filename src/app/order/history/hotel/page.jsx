@@ -52,8 +52,12 @@ const Page = () => {
     }, []);
 
     const paymentStatusColor = {
-        pending: "bg-red-300",
-        paid: "bg-green-300"
+        pending: "bg-yellow-200",
+        paid: "bg-green-300",
+        expire: "bg-red-300",
+        deny: "bg-red-300",
+        cancel: "bg-red-300",
+        failure: "bg-red-300",
     }
 
     const handleContinuePayment = (order_data) => {
