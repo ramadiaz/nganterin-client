@@ -6,7 +6,7 @@ import { BASE_API, MIDTRANS_CLIENT_KEY, MIDTRANS_SNAP_SCRIPT } from "@/utilities
 import fetchWithAuth from "@/utilities/fetchWIthAuth";
 import { useEffect, useState } from "react";
 import ReactStars from "react-rating-stars-component";
-import { Button, Checkbox, Image, Input } from "@nextui-org/react";
+import { Button, Checkbox, Image, Input, Spinner } from "@nextui-org/react";
 import { Sparkle } from "@phosphor-icons/react";
 import { GetUserData } from "@/utilities/getUserData";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -284,9 +284,12 @@ const Page = ({ params: id }) => {
                   onPress={() => {
                     handlePayment()
                   }}
-                  isLoading={status.paying}
+                  isDisabled={status.paying}
                 >
-                  Payment
+                  <div className="flex flex-row gap-2 items-center justify-center">
+                    <Spinner color="white" size="sm" className={status.paying ? "block" : "hidden"} />
+                    Payment
+                  </div>
                 </Button>
               </div>
             </div>
