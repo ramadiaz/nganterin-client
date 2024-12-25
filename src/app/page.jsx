@@ -121,7 +121,7 @@ export default function Home() {
           />
         </div>
       </div>
-      <div className="justify-center items-center flex flex-col gap-4 bg-orange-50 pb-24">
+      <div className="justify-center items-center flex flex-col gap-4 bg-slate-50 pb-24">
         <Card className="w-[700px] -mt-28 overflow-visible">
           <form className="relative">
             <CardBody>
@@ -169,7 +169,7 @@ export default function Home() {
                   <Button
                     size="lg"
                     type="submit"
-                    className="bg-blue-500 text-white w-64 h-16 "
+                    className="bg-gradient-to-r from-sky-500 to-sky-700 text-white w-64 h-16 "
                     onClick={handleHotelSearch}
                   >
                     Search
@@ -181,7 +181,7 @@ export default function Home() {
                 <div className="absolute right-1/2 translate-x-1/2 bottom-0 translate-y-1/2">
                   <Button
                     size="lg"
-                    className="bg-blue-500 text-white w-64 h-16 "
+                    className="bg-gradient-to-r from-sky-500 to-sky-700 text-white w-64 h-16 "
                     onClick={handleFlightSearch}
                   >
                     Search

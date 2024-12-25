@@ -17,7 +17,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${inter.className}, text-white bg-orange-50 min-h-screen`}
+        className={`${inter.className}, text-white bg-slate-50 min-h-screen`}
       >
         <Providers>
           <div className="sticky top-0 w-full z-50">
@@ -28,6 +28,7 @@ export default function RootLayout({ children }) {
             <MaintenanceModal />
             <Toaster position="bottom-right" richColors />
           </div>
+          <div className="h-40"></div>
           <Footer />
         </Providers>
       </body>

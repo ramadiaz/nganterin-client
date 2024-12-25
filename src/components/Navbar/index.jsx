@@ -12,6 +12,7 @@ import {
   DropdownMenu,
   Avatar,
   Button,
+  Image,
 } from "@nextui-org/react";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
@@ -60,13 +61,14 @@ export default function NavbarComponent() {
           pathName.endsWith("/") || pathName.endsWith("/about")
             ? `bg-opacity-0 transition-all duration-500 ${isBlurred ? "backdrop-blur-md bg-opacity-50 bg-blue-950/30" : ""
             }`
-            : `bg-sky-700 border-b-2 border-gray-900`
+            : `bg-slate-50 shadow-lg`
         }
       >
         <NavbarContent justify="start">
           <NavbarBrand className="mr-4">
-            <Link href="/">
-              <p className="hidden sm:block font-bold text-inherit text-2xl text-white">
+            <Link href="/" className="flex flex-row items-center gap-2">
+              <Image src="/logo/favicon.png" width={30} />
+              <p className={`hidden sm:block font-bold text-inherit text-2xl ${!pathName.endsWith("/") && !pathName.endsWith("/about") ? "text-slate-700" : "text-white"}`}>
                 Nganterin
               </p>
             </Link>
@@ -74,19 +76,19 @@ export default function NavbarComponent() {
         </NavbarContent>
 
         <NavbarContent justify="center">
-          <NavbarContent className="hidden sm:flex gap-3">
+          <NavbarContent className={`hidden sm:flex gap-3 ${pathName.endsWith("/") || pathName.endsWith("/about") ? "text-white": "text-gray-900"}`}>
             <NavbarItem isActive={pathName.endsWith("/")}>
-              <Link className="text-white" href="/">
+              <Link href="/">
                 Discover
               </Link>
             </NavbarItem>
             <NavbarItem isActive={pathName.endsWith("/about")}>
-              <Link href="/about" aria-current="page" className="text-white">
+              <Link href="/about">
                 Why Nganterin
               </Link>
             </NavbarItem>
             <NavbarItem isActive={pathName.endsWith("/faq")}>
-              <Link className="text-white" href="/faq">
+              <Link href="/faq">
                 FAQ
               </Link>
             </NavbarItem>
@@ -101,7 +103,7 @@ export default function NavbarComponent() {
                   isBordered
                   as="button"
                   className="transition-transform"
-                  color="secondary"
+                  color="sky-600"
                   name={userData.name}
                   size="sm"
                   src={userData.picture}
@@ -121,7 +123,7 @@ export default function NavbarComponent() {
               <Button variant="flat" className="bg-white text-sky-700" onClick={() => router.push("/auth/login")}>
                 Sign in
               </Button>
-              <Button variant="flat" className="bg-sky-600 text-white" onClick={() => router.push("/auth/register")}>
+              <Button variant="flat" className="bg-gradient-to-r from-sky-500 to-sky-700 text-white" onClick={() => router.push("/auth/register")}>
                 Sign up
               </Button>
             </div>

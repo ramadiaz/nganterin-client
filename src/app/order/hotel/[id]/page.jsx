@@ -5,12 +5,12 @@ import Loading from "@/app/loading";
 import { BASE_API, MIDTRANS_CLIENT_KEY, MIDTRANS_SNAP_SCRIPT } from "@/utilities/environtment";
 import fetchWithAuth from "@/utilities/fetchWIthAuth";
 import { useEffect, useState } from "react";
-import ReactStars from "react-rating-stars-component";
 import { Button, Checkbox, Image, Input, Spinner } from "@nextui-org/react";
 import { Sparkle } from "@phosphor-icons/react";
 import { GetUserData } from "@/utilities/getUserData";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
+import { RatingStars } from "@/components/RatingStars";
 
 const Page = ({ params: id }) => {
   const [status, setStatus] = useState({
@@ -145,13 +145,13 @@ const Page = ({ params: id }) => {
 
   return (
     <>
-      <div className="bg-white min-h-screen text-neutral-700">
+      <div className="min-h-screen text-gray-900">
         {status.loading ? (
           <Loading />
         ) : (
           <div className="w-3/5 mx-auto flex flex-row gap-4 justify-center pt-12 transition-all duration-500">
             <div className="basis-2/3">
-              <div className="border rounded-lg border-neutral-300 p-4 shadow-sm shadow-black/50 transition-all duration-500">
+              <div className="border rounded-lg border-slate-200 bg-white p-4 transition-all duration-500">
                 <h2 className="font-semibold">Let us know who you are!</h2>
                 <Input
                   label="Full name*"
@@ -231,7 +231,7 @@ const Page = ({ params: id }) => {
                   Make this booking for someone else
                 </Checkbox>
                 <div
-                  className={`border rounded-lg border-neutral-300 p-4 mt-4 ${inputData.is_for_someone_else ? "h-52" : "h-0 opacity-0"
+                  className={`border rounded-lg border-slate-200 bg-white p-4 mt-4 ${inputData.is_for_someone_else ? "h-64" : "h-0 opacity-0"
                     } transition-all duration-500`}
                 >
                   <Input
@@ -247,6 +247,8 @@ const Page = ({ params: id }) => {
                     classNames={{
                       label: ["text-sm"],
                     }}
+                    errorMessage="Someone information can't be null"
+                    isInvalid={inputData.is_for_someone_else && inputData.someone_name == ""}
                   />
                   <Input
                     label="Country/region of residence*"
@@ -262,13 +264,12 @@ const Page = ({ params: id }) => {
                     classNames={{
                       label: ["text-sm"],
                     }}
+                    errorMessage="Someone information can't be null"
+                    isInvalid={inputData.is_for_someone_else && inputData.someone_region == ""}
                   />
                 </div>
               </div>
-              <div className="border rounded-lg border-neutral-300 p-4 shadow-sm shadow-black/50 transition-all duration-500 mt-4">
-                <h2 className="font-semibold">Let us know who you are!</h2>
-              </div>
-              <div className="border rounded-lg border-neutral-300 p-4 shadow-sm shadow-black/50 transition-all duration-500 mt-4">
+              <div className="border rounded-lg border-slate-200 bg-white p-4 transition-all duration-500 mt-4">
                 <h3 className="text-sm">
                   By proceeding with this booking, I agree to Nganterin’s{` `}
                   <span className="text-sky-700">Terms of Use</span>
@@ -279,7 +280,7 @@ const Page = ({ params: id }) => {
                   Hurry! Our last room for your dates at this price
                 </h3>
                 <Button
-                  color="primary"
+                  className="bg-gradient-to-r from-sky-500 to-sky-700 text-white"
                   size="lg"
                   onPress={() => {
                     handlePayment()
@@ -294,7 +295,7 @@ const Page = ({ params: id }) => {
               </div>
             </div>
             <div className="basis-1/3 ">
-              <div className="border rounded-lg border-neutral-300 p-4 shadow-sm shadow-black/50">
+              <div className="border rounded-lg border-slate-200 bg-white p-4">
                 <div className="flex flex-row gap-4">
                   <Image
                     src={images[0].url}
@@ -305,22 +306,16 @@ const Page = ({ params: id }) => {
                   />
                   <div className="flex flex-col gap-2">
                     <div className="flex flex-wrap gap-2">
-                      <div className="bg-red-500 text-white px-2 py-1 text-xs">
-                        Top Value
+                      <div className="bg-gradient-to-r from-sky-500 to-sky-700 text-white text-xs px-2 py-1 rounded-md">
+                        Domestic Deal
                       </div>
-                      <div className="bg-red-500 text-white px-2 py-1 text-xs">
-                        Best Seller
+                      <div className="bg-gradient-to-r from-rose-500 to-rose-700 text-white text-xs px-2 py-1 rounded-md">
+                        Best seller
                       </div>
                     </div>
                     <div>
                       <h2 className="uppercase text-xl">{detail.name}</h2>
-                      <ReactStars
-                        count={5}
-                        size={24}
-                        activeColor="#ef4444"
-                        edit={false}
-                        value={4}
-                      />
+                      <RatingStars rating={4} gap={0.5} color="#facc15" />
                       <h4 className="text-xs opacity-90">
                         {detail.hotels_location.complete_address}
                       </h4>
@@ -334,7 +329,7 @@ const Page = ({ params: id }) => {
                   </div>
                 </div>
               </div>
-              <div className="border rounded-lg border-neutral-300 p-4 shadow-sm shadow-black/50 mt-4 text-sm">
+              <div className="border rounded-lg border-slate-200 bg-white p-4 mt-4 text-sm">
                 <div className="border-b border-neutral-500/50 pb-4">
                   <div className="flex flex-row justify-between px-2 py-1">
                     <h3>Original Price</h3>
@@ -390,7 +385,6 @@ const Page = ({ params: id }) => {
           </div>
         )}
       </div>
-      <div className="bg-gradient-to-b from-white to-orange-50 h-24"></div>
     </>
   );
 };

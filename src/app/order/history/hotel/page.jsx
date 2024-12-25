@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import fetchWithAuth from "@/utilities/fetchWIthAuth";
 import { BASE_API, MIDTRANS_CLIENT_KEY, MIDTRANS_SNAP_SCRIPT } from "@/utilities/environtment";
 import { toast } from "sonner";
-import { Button, ButtonGroup, Image } from "@nextui-org/react";
+import { Button, ButtonGroup, Image, Tab, Tabs } from "@nextui-org/react";
 import Link from "next/link";
 import { DotsLoading } from "@/components/DotsLoading";
 import { ArrowUpRight, PushPin, Ticket } from "@phosphor-icons/react";
@@ -52,12 +52,12 @@ const Page = () => {
     }, []);
 
     const paymentStatusColor = {
-        pending: "bg-yellow-200",
-        paid: "bg-green-300",
-        expire: "bg-red-300",
-        deny: "bg-red-300",
-        cancel: "bg-red-300",
-        failure: "bg-red-300",
+        pending: "bg-gradient-to-r from-yellow-500 to-yellow-700",
+        paid: "bg-gradient-to-r from-green-500 to-green-700",
+        expire: "bg-gradient-to-r from-red-500 to-red-700",
+        deny: "bg-gradient-to-r from-red-500 to-red-700",
+        cancel: "bg-gradient-to-r from-red-500 to-red-700",
+        failure: "bg-gradient-to-r from-red-500 to-red-700",
     }
 
     const handleContinuePayment = (order_data) => {
@@ -90,19 +90,15 @@ const Page = () => {
             <div className="w-full max-w-4xl mx-auto text-gray-900 mt-8 space-y-8">
                 <div className="space-y-4">
                     <div className="font-bold flex flex-row gap-2">Your Orders
-                        <div className="rounded-md bg-blue-100 px-2 text-sm border-2 border-gray-900 font-normal w-max">
+                        <div className="rounded-md bg-white border border-slate-200 px-2 text-sm font-normal w-max">
                             {isLoading ? <DotsLoading /> : history.length}
                         </div>
                     </div>
                     <div>
-                        <ButtonGroup radius="sm" size="sm">
-                            <Button className="text-sm bg-white border-gray-900" size="sm" variant="bordered" as={Link} href="/order/history/hotel" isDisabled>
-                                Hotel
-                            </Button>
-                            <Button className="text-sm bg-white border-gray-900 border-l-0" size="sm" variant="bordered" as={Link} href="/order/history/flight">
-                                Flight
-                            </Button>
-                        </ButtonGroup>
+                        <Tabs aria-label="Options" defaultSelectedKey={`hotel`}>
+                            <Tab key="hotel" title="Hotel" as={Link} href="/order/history/hotel"></Tab>
+                            <Tab key="flight" title="Flight"></Tab>
+                        </Tabs>
                     </div>
                 </div>
                 <div className="space-y-2">
@@ -112,7 +108,7 @@ const Page = () => {
                         const check_out_date = new Date(item.check_out_date)
 
                         return (
-                            <div key={index} className="rounded-xl border-2 border-gray-900 bg-orange-100">
+                            <div key={index} className="rounded-xl border border-slate-200 bg-white">
                                 <div className="w-full flex flex-row justify-between items-start text-sm px-8 pt-4">
                                     <div className="flex flex-row items-center justify-start gap-4">
                                         <div>
@@ -131,14 +127,14 @@ const Page = () => {
                                                     #{item.id}
                                                 </span>
                                             </h2>
-                                            <div className={`px-1 rounded-lg border-2 border-gray-900 ${paymentStatusColor[item.payment_status]} uppercase w-max text-2xs`}>{item.payment_status}</div>
+                                            <div className={`px-2 py-1 font-bold rounded-lg text-white ${paymentStatusColor[item.payment_status]} uppercase w-max text-2xs`}>{item.payment_status}</div>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="px-8 py-4 w-full flex flex-row items-start justify-start gap-4">
                                     <Image
                                         alt="Hotel image"
-                                        className="object-cover w-64 h-36 border-2 border-gray-900"
+                                        className="object-cover w-64 h-36"
                                         height={200}
                                         shadow="md"
                                         src={item.hotel_room.hotel_room_photos[0].url}
@@ -153,19 +149,19 @@ const Page = () => {
                                         {
                                             item.payment_status === "paid" ? (
                                                 <div className="flex flex-row items-center gap-2">
-                                                    <Button size="sm" variant="bordered" className="text-sm bg-yellow-200 border-gray-900" as={Link} href="/ticket/hotel">
-                                                        Ticket <Ticket size={22} color="#111827" weight="bold" />
+                                                    <Button size="sm" variant="flat" className="text-sm font-bold text-white bg-gradient-to-r from-sky-500 to-sky-700" as={Link} href="/ticket/hotel">
+                                                        Ticket <Ticket size={22} color="#ffffff" weight="bold" />
                                                     </Button>
                                                     <Button
                                                         onClick={() => window.open(item.hotel.hotels_location.gmaps, '_blank', 'noopener,noreferrer')}
-                                                        size="sm" variant="bordered" className="text-sm bg-blue-200 border-gray-900"
+                                                        size="sm" variant="flat" className="text-sm font-bold text-white bg-gradient-to-r from-yellow-500 to-yellow-700"
                                                     >
-                                                        Maps <PushPin size={22} color="#111827" weight="bold" />
+                                                        Maps <PushPin size={22} color="#ffffff" weight="bold" />
                                                     </Button>
                                                 </div>
                                             ) : item.payment_status === "pending" && (
-                                                <Button size="sm" variant="bordered" className="text-sm bg-green-300 border-gray-900" onClick={() => handleContinuePayment(item)} >
-                                                    Pay Now! <ArrowUpRight size={22} color="#111827" weight="bold" />
+                                                <Button size="sm" variant="flat" className="text-sm font-bold text-white bg-gradient-to-r from-green-500 to-green-700" onClick={() => handleContinuePayment(item)} >
+                                                    Pay Now! <ArrowUpRight size={22} color="#ffffff" weight="bold" />
                                                 </Button>
                                             )
                                         }
