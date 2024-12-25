@@ -22,7 +22,7 @@ const Page = () => {
           </h3>
         </div>
       </div>
-      <div className="bg-orange-100 min-h-screen text-sky-900 py-40">
+      <div className="min-h-screen text-sky-900 py-40">
         <div className="w-3/4 mx-auto flex flex-col gap-40 ">
           <div className="w-full flex flex-row justify-between items-center">
             <div className="w-11/12 lg:w-3/4 xl:w-1/2" data-aos="fade-right">
@@ -90,7 +90,7 @@ const Page = () => {
           </div>
         </div>
       </div>
-      <div className="h-24 bg-gradient-to-b from-orange-100 to-orange-50 from-10%">
+      <div className="h-24">
 
       </div>
     </div>
