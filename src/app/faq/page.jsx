@@ -15,7 +15,7 @@ const Page = () => {
   });
 
   return (
-    <div className="min-h-screen bg-orange-50 py-20">
+    <div className="min-h-screen py-20">
       <div className="w-1/2 mx-auto">
         <div
           className="flex flex-row justify-center items-center gap-4"
