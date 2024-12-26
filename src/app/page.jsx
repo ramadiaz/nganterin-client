@@ -27,11 +27,11 @@ export default function Home() {
   const [flightDate, setFlightDate] = useState(parseDate("2024-04-04"));
 
   const today = new Date();
-  const threeDaysLater = new Date(today);
-  threeDaysLater.setDate(today.getDate() + 3);
+  const nextDay = new Date(today);
+  nextDay.setDate(today.getDate() + 1);
 
   const startDate = formatDate(today);
-  const endDate = formatDate(threeDaysLater);
+  const endDate = formatDate(nextDay);
 
   const [hotelDate, setHotelDate] = useState({
     start: parseDate(startDate),
@@ -163,12 +163,7 @@ export default function Home() {
                     size="lg"
                     type="submit"
                     className="bg-gradient-to-r from-sky-500 to-sky-700 text-white w-64 h-16 "
-                    disabled={
-                      !hotelKeyword ||
-                      hotelKeyword.trim() === "" ||
-                      !hotelDate.start ||
-                      !hotelDate.end
-                    }
+                    disabled={!hotelKeyword || !hotelKeyword.trim() === ""}
                     onClick={handleHotelSearch}
                   >
                     Search
