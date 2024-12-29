@@ -2,14 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { Typewriter } from "react-simple-typewriter";
-import {
-  Card,
-  Tabs,
-  Tab,
-  CardBody,
-  Input,
-  Button,
-} from "@nextui-org/react";
+import { Card, Tabs, Tab, CardBody, Input, Button } from "@nextui-org/react";
 import { MagnifyingGlass } from "@phosphor-icons/react";
 import { Carousel } from "react-responsive-carousel";
 
@@ -34,11 +27,11 @@ export default function Home() {
   const [flightDate, setFlightDate] = useState(parseDate("2024-04-04"));
 
   const today = new Date();
-  const threeDaysLater = new Date(today);
-  threeDaysLater.setDate(today.getDate() + 3);
+  const nextDay = new Date(today);
+  nextDay.setDate(today.getDate() + 1);
 
   const startDate = formatDate(today);
-  const endDate = formatDate(threeDaysLater);
+  const endDate = formatDate(nextDay);
 
   const [hotelDate, setHotelDate] = useState({
     start: parseDate(startDate),
@@ -170,6 +163,7 @@ export default function Home() {
                     size="lg"
                     type="submit"
                     className="bg-gradient-to-r from-sky-500 to-sky-700 text-white w-64 h-16 "
+                    disabled={!hotelKeyword || !hotelKeyword.trim() === ""}
                     onClick={handleHotelSearch}
                   >
                     Search
@@ -213,7 +207,10 @@ export default function Home() {
             </h1>
             <div className="flex flex-row justify-center gap-4">
               <div className="flex flex-col justify-center items-center gap-3 ">
-                <Link href={`/search-result/hotel?search=jakarta&dateStart=${hotelDate.start}&dateEnd=${hotelDate.end}`} className="overflow-hidden ">
+                <Link
+                  href={`/search-result/hotel?search=jakarta&dateStart=${hotelDate.start}&dateEnd=${hotelDate.end}`}
+                  className="overflow-hidden "
+                >
                   <Image
                     src={`/images/destinations/1_8691_02.jpg`}
                     width={300}
@@ -228,7 +225,10 @@ export default function Home() {
                 </div>
               </div>
               <div className="flex flex-col justify-center items-center gap-3 ">
-                <Link href={`/search-result/hotel?search=bali&dateStart=${hotelDate.start}&dateEnd=${hotelDate.end}`} className="overflow-hidden ">
+                <Link
+                  href={`/search-result/hotel?search=bali&dateStart=${hotelDate.start}&dateEnd=${hotelDate.end}`}
+                  className="overflow-hidden "
+                >
                   <Image
                     src={`/images/destinations/1_17193_02.jpg`}
                     width={300}
@@ -243,7 +243,10 @@ export default function Home() {
                 </div>
               </div>
               <div className="flex flex-col justify-center items-center gap-3 ">
-                <Link href={`/search-result/hotel?search=bandung&dateStart=${hotelDate.start}&dateEnd=${hotelDate.end}`} className="overflow-hidden ">
+                <Link
+                  href={`/search-result/hotel?search=bandung&dateStart=${hotelDate.start}&dateEnd=${hotelDate.end}`}
+                  className="overflow-hidden "
+                >
                   <Image
                     src={`/images/destinations/1_18943_02.jpg`}
                     width={300}
