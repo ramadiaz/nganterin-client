@@ -6,11 +6,11 @@ import fetchWithAuth from "@/utilities/fetchWIthAuth";
 import { BASE_API } from "@/utilities/environtment";
 import { Input, Button, Textarea } from "@nextui-org/react";
 import { Eye, EyeSlash, Link as LinkIcon } from "@phosphor-icons/react";
-import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { toast } from "sonner";
 
 const Page = () => {
   const router = useRouter();
@@ -82,7 +82,6 @@ const Page = () => {
 
   return (
     <>
-      <ToastContainer /> {/* Tambahkan ToastContainer */}
       <div
         className="w-3/5 mx-auto text-neutral-700 pt-12 pb-20"
         data-aos="fade-up"
