@@ -132,27 +132,39 @@ export function LogInContainer() {
     }
 
     const googleFormValidation = (data) => {
-        const requiredFields = [
-            "email",
-            "name",
-            "google_sub",
-            "phone_number",
-            "country",
-            "province",
-            "city",
-            "zip_code",
-            "complete_address",
-        ];
-
-        const missingFields = requiredFields.filter((field) => !data[field]);
-
+        const requiredFields = {
+            phone_number: /^\+?[0-9]{10,15}$/, 
+            country: /^[a-zA-Z\s]+$/, 
+            province: /^[a-zA-Z\s]+$/, 
+            city: /^[a-zA-Z\s]+$/, 
+            zip_code: /^\d{5,6}$/, 
+            complete_address: /^.{10,}$/, 
+        };
+    
+        const missingFields = [];
+        const invalidFields = [];
+    
+        for (const [field, regex] of Object.entries(requiredFields)) {
+            if (!data[field]) {
+                missingFields.push(field);
+            } else if (!regex.test(data[field])) {
+                invalidFields.push(field);
+            }
+        }
+    
         if (missingFields.length > 0) {
             toast.error(`Missing fields: ${missingFields.join(", ")}`);
             return false;
         }
-
+    
+        if (invalidFields.length > 0) {
+            toast.error(`Invalid fields: ${invalidFields.join(", ")}`);
+            return false;
+        }
+    
         return true;
     };
+    
 
     const handleGoogleLogin = useGoogleLogin({
         onSuccess: async (tokenResponse) => {
@@ -170,8 +182,6 @@ export function LogInContainer() {
                 if (userInfo.ok) {
                     const data = await userInfo.json()
 
-                    console.log({ data })
-
                     const res = await fetch(BASE_API + "/auth/google/login", {
                         method: "POST",
                         body: JSON.stringify({
@@ -185,10 +195,9 @@ export function LogInContainer() {
 
                     const res_data = await res.json()
                     if (res.ok) {
-                        Cookies.remove("token");
-                        Cookies.set("token", res_data.body, { expires: 7 });
-                        toast.success("Google login successful!");
-                        location.replace("/predict");
+                        Cookies.set("user_jwt", res_data.data)
+                        toast.success("Login successful");
+                        location.replace('/')
                     } else if (res.status === 404) {
                         setTempGoogleData({
                             email: data.email,
@@ -259,7 +268,6 @@ export function LogInContainer() {
                         className=" relative group/btn flex space-x-2 items-center justify-start px-4 w-full text-slate-900 rounded-md h-10 font-medium shadow-input bg-gray-50 dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
                         type="button"
                         onClick={handleGoogleLogin}
-                    // disabled
                     >
                         <IconBrandGoogle className="h-4 w-4 text-neutral-800 dark:text-neutral-300" />
                         <span className="text-neutral-700 dark:text-neutral-300 text-sm">
