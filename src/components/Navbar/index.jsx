@@ -106,7 +106,7 @@ export default function NavbarComponent() {
                   color="sky-600"
                   name={userData.name}
                   size="sm"
-                  src={userData.picture}
+                  src={userData.avatar || "/avatar/default.png"}
                 />
               </DropdownTrigger>
               <DropdownMenu className="text-black">
