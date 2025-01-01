@@ -19,6 +19,7 @@ const Page = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [name, setName] = useState(useSearchParams().get("name") || "");
   const [city, setCity] = useState(useSearchParams().get("city") || "");
   const [result, setResult] = useState([]);
   const [maxVisitor, setMaxVisitor] = useState(useSearchParams().get("minVisitor") || 1)
@@ -51,7 +52,7 @@ const Page = () => {
     setIsLoading(true);
     try {
       const response = await fetchWithAuth(
-        `${BASE_API}/hotel/search?keyword=${search}&city=${city}&dateStart=${hotelDate.start}&dateEnd=${hotelDate.end}&priceStart=${priceRange.min}&priceEnd=${priceRange.max}&minVisitor=${maxVisitor}`,
+        `${BASE_API}/hotel/search?keyword=${search}&city=${city}&dateStart=${hotelDate.start}&dateEnd=${hotelDate.end}&priceStart=${priceRange.min}&priceEnd=${priceRange.max}&minVisitor=${maxVisitor}&name=${name}`,
         {
           method: "GET",
         }
@@ -75,12 +76,12 @@ const Page = () => {
     return () => {
       clearTimeout(handler);
     };
-  }, [search, city, priceRange, maxVisitor]);
+  }, [search, city, priceRange, maxVisitor, name]);
 
   const handleSearch = (e) => {
     e.preventDefault();
     router.push(
-      `/search-result/hotel?keyword=${search}&city=${city}&dateStart=${hotelDate.start}&dateEnd=${hotelDate.end}&priceStart=${priceRange.min}&priceEnd=${priceRange.max}&minVisitor=${maxVisitor}`
+      `/search-result/hotel?keyword=${search}&city=${city}&dateStart=${hotelDate.start}&dateEnd=${hotelDate.end}&priceStart=${priceRange.min}&priceEnd=${priceRange.max}&minVisitor=${maxVisitor}&name=${name}`
     );
   };
 
@@ -100,8 +101,8 @@ const Page = () => {
                     className={{
                       inputWrapper: "border border-gray-950",
                     }}
-                    value={city}
-                    onChange={(e) => setCity(e.target.value)}
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
                     classNames={{
                       inputWrapper: "border-2 border-gray-300",
                     }}
@@ -158,7 +159,7 @@ const Page = () => {
                   }
                 />
               </div>
-              <div className="border-t-2 border-b-2 border-gray p-2  mt-6">
+              <div className="border-t-2 border-gray p-2 mt-6">
                 <form onSubmit={handleSearch}>
                   <h2 className="mt-2 mb-2 font-bold text-black">
                     Search by property name
@@ -171,8 +172,27 @@ const Page = () => {
                       classNames={{
                         inputWrapper: "border-2 border-gray-300",
                       }}
-                      value={search}
-                      onChange={(e) => setSearch(e.target.value)}
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                    />
+                  </div>
+                </form>
+              </div>
+              <div className="border-t-2 border-b-2 border-gray p-2">
+                <form onSubmit={handleSearch}>
+                  <h2 className="mt-2 mb-2 font-bold text-black">
+                    Search by city
+                  </h2>
+                  <div className="mb-4 text-black">
+                    <Input
+                      variant="bordered"
+                      startContent={<MagnifyingGlass size={20} weight="bold" />}
+                      placeholder="e.g. Jakarta"
+                      classNames={{
+                        inputWrapper: "border-2 border-gray-300",
+                      }}
+                      value={city}
+                      onChange={(e) => setCity(e.target.value)}
                     />
                   </div>
                 </form>
