@@ -48,7 +48,7 @@ export default function Home() {
   const handleHotelSearch = (e) => {
     e.preventDefault();
     router.push(
-      `/search-result/hotel?search=${hotelKeyword}&dateStart=${hotelDate.start}&dateEnd=${hotelDate.end}`
+      `/search-result/hotel?keyword=${hotelKeyword}&dateStart=${hotelDate.start}&dateEnd=${hotelDate.end}`
     );
   };
 
@@ -208,7 +208,7 @@ export default function Home() {
             <div className="flex flex-row justify-center gap-4">
               <div className="flex flex-col justify-center items-center gap-3 ">
                 <Link
-                  href={`/search-result/hotel?search=jakarta&dateStart=${hotelDate.start}&dateEnd=${hotelDate.end}`}
+                  href={`/search-result/hotel?city=Jakarta&dateStart=${hotelDate.start}&dateEnd=${hotelDate.end}`}
                   className="overflow-hidden "
                 >
                   <Image
@@ -226,7 +226,7 @@ export default function Home() {
               </div>
               <div className="flex flex-col justify-center items-center gap-3 ">
                 <Link
-                  href={`/search-result/hotel?search=bali&dateStart=${hotelDate.start}&dateEnd=${hotelDate.end}`}
+                  href={`/search-result/hotel?city=Bali&dateStart=${hotelDate.start}&dateEnd=${hotelDate.end}`}
                   className="overflow-hidden "
                 >
                   <Image
@@ -244,7 +244,7 @@ export default function Home() {
               </div>
               <div className="flex flex-col justify-center items-center gap-3 ">
                 <Link
-                  href={`/search-result/hotel?search=bandung&dateStart=${hotelDate.start}&dateEnd=${hotelDate.end}`}
+                  href={`/search-result/hotel?city=Bandung&dateStart=${hotelDate.start}&dateEnd=${hotelDate.end}`}
                   className="overflow-hidden "
                 >
                   <Image

@@ -18,7 +18,7 @@ const Page = () => {
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(true);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState(useSearchParams().get("keyword") || "");
   const [name, setName] = useState(useSearchParams().get("name") || "");
   const [city, setCity] = useState(useSearchParams().get("city") || "");
   const [result, setResult] = useState([]);
