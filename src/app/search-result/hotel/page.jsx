@@ -15,16 +15,15 @@ import ImageHotel from "@/components/ImageHotel";
 import SearchSkeletonList from "@/components/HotelSkeleton";
 
 const Page = () => {
-  const cityValue = useSearchParams().get("city");
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState("");
-  const [city, setCity] = useState(cityValue || "");
+  const [city, setCity] = useState(useSearchParams().get("city") || "");
   const [result, setResult] = useState([]);
-  const [travelerSummary, setTravelerSummary] = useState("2 visitors, 1 room");
+  const [maxVisitor, setMaxVisitor] = useState(useSearchParams().get("minVisitor") || 1)
   const [priceRange, setPriceRange] = useState({
-    min: 0,
+    min: useSearchParams().get("priceStart") || 0,
     max: 5000000,
   });
 
@@ -52,7 +51,7 @@ const Page = () => {
     setIsLoading(true);
     try {
       const response = await fetchWithAuth(
-        `${BASE_API}/hotel/search?q=${search}&city=${city}&dateStart=${hotelDate.start}&dateEnd=${hotelDate.end}&minPrice=${priceRange.min}&maxPrice=${priceRange.max}`,
+        `${BASE_API}/hotel/search?keyword=${search}&city=${city}&dateStart=${hotelDate.start}&dateEnd=${hotelDate.end}&priceStart=${priceRange.min}&priceEnd=${priceRange.max}&minVisitor=${maxVisitor}`,
         {
           method: "GET",
         }
@@ -69,13 +68,19 @@ const Page = () => {
   };
 
   useEffect(() => {
-    fetchData();
-  }, [search, priceRange])
+    const handler = setTimeout(() => {
+      fetchData();
+    }, 500);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [search, city, priceRange, maxVisitor]);
 
   const handleSearch = (e) => {
     e.preventDefault();
     router.push(
-      `/search-result/hotel?search=${search}&dateStart=${hotelDate.start}&dateEnd=${hotelDate.end}`
+      `/search-result/hotel?keyword=${search}&city=${city}&dateStart=${hotelDate.start}&dateEnd=${hotelDate.end}&priceStart=${priceRange.min}&priceEnd=${priceRange.max}&minVisitor=${maxVisitor}`
     );
   };
 
@@ -118,7 +123,7 @@ const Page = () => {
                 </div>
                 <div className="w-80">
                   <RoomTraveller
-                    onSelect={(summary) => setTravelerSummary(summary)}
+                    onChange={setMaxVisitor}
                   />
                 </div>
                 <div className="ml-auto">
@@ -145,11 +150,11 @@ const Page = () => {
                   formatOptions={{ style: "currency", currency: "IDR" }}
                   maxValue={5000000}
                   minValue={0}
-                  step={20.0}
+                  step={100000.0}
                   size="md"
-                  value={priceRange.max}
+                  value={priceRange.min}
                   onChange={(value) =>
-                    setPriceRange((prev) => ({ ...prev, max: value }))
+                    setPriceRange((prev) => ({ ...prev, min: value }))
                   }
                 />
               </div>

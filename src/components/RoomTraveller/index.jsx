@@ -10,7 +10,7 @@ import {
 } from "@nextui-org/react";
 import { Trash, Users } from "@phosphor-icons/react";
 
-const RoomTraveller = ({ onSelect }) => {
+const RoomTraveller = ({ onChange }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [rooms, setRooms] = useState([
     {
@@ -31,8 +31,7 @@ const RoomTraveller = ({ onSelect }) => {
       0
     );
     setSummary(
-      `${totalTravellers} travellers, ${newRooms.length} room${
-        newRooms.length > 1 ? "s" : ""
+      `${totalTravellers} travellers, ${newRooms.length} room${newRooms.length > 1 ? "s" : ""
       }`
     );
   };
@@ -51,7 +50,12 @@ const RoomTraveller = ({ onSelect }) => {
   };
 
   const handleDone = () => {
-    onSelect(summary);
+    const maxVisitors = rooms.reduce((max, room) => {
+      const totalVisitors = room.adults + room.children;
+      return totalVisitors > max ? totalVisitors : max;
+    }, 0);
+
+    onChange(maxVisitors);
     onClose();
   };
 
@@ -195,7 +199,7 @@ const RoomTraveller = ({ onSelect }) => {
         </ModalContent>
       </Modal>
     </div>
-  );w
+  ); w
 };
 
 export default RoomTraveller;
