@@ -25,7 +25,7 @@ const Page = () => {
   const [maxVisitor, setMaxVisitor] = useState(useSearchParams().get("minVisitor") || 1)
   const [priceRange, setPriceRange] = useState({
     min: useSearchParams().get("priceStart") || 0,
-    max: 5000000,
+    max: 64000000,
   });
 
   const today = new Date();
