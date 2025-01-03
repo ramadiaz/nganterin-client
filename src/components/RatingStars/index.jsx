@@ -1,17 +1,20 @@
-import { Star } from "@phosphor-icons/react";
+'use client'
 
-export const RatingStars = ({ gap = 2, rating = 0, size = 20, color = "#2e2e2e" }) => {
-    const elements = [];
+import { Star } from "@phosphor-icons/react"
 
-    for (let i = 0; i < 5; i++) {
-        elements.push(
-            <Star size={size} color={color} weight={i + 1 <= rating ? "fill" : "thin"} key={i} />
-        );
-    }
-
+export const RatingStars = ({ value, onChange, size = 24, color = '#fcd34d', gap = 1, count = 10, description = {} }) => {
     return (
-        <div className={`flex flex-row gap-${gap}`} >
-            {elements}
+        <div className="flex flex-row items-center text-slate-900" style={{ gap: `${gap}px` }}>
+            {
+                Array.from({ length: count }).map((_, index) => {
+                    return (
+                        <Star key={index} size={size} color={color} onClick={() => onChange(index + 1)} weight={value < index + 1 ? 'thin' : 'fill'} className="" />
+                    )
+                })
+            }
+            <p className="ml-2 text-sm font-thin">
+                {description[value]}
+            </p>
         </div>
     )
 }
