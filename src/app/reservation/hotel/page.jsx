@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import { Button, Image, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Tab, Tabs, useDisclosure } from "@nextui-org/react";
 import Link from "next/link";
 import { DotsLoading } from "@/components/DotsLoading";
-import { DoorOpen, PushPin, ShootingStar, SignOut, Star } from "@phosphor-icons/react";
+import { ArrowUpRight, DoorOpen, PushPin, ShootingStar, SignOut, Star } from "@phosphor-icons/react";
 import { useRouter } from "next/navigation";
 import QRCode from "react-qr-code";
 
@@ -47,6 +47,7 @@ const Page = () => {
         Confirmed: "bg-gradient-to-r from-green-500 to-green-700",
         CheckedIn: "bg-gradient-to-r from-yellow-500 to-yellow-700",
         CheckedOut: "bg-gradient-to-r from-red-500 to-red-700",
+        Reviewed: "bg-gradient-to-r from-sky-500 to-sky-700"
     }
 
     const handleOpenTicket = (data) => {
@@ -134,10 +135,19 @@ const Page = () => {
                                                         Check Out <SignOut size={18} color="#ffffff" weight="bold" />
                                                     </Button>
                                                 </div>
-                                            ) : item.hotel_reservation.reservation_status === 'CheckedOut' && (
+                                            ) : item.hotel_reservation.reservation_status === 'CheckedOut' ? (
                                                 <div className="flex flex-row items-center gap-2">
                                                     <Button size="sm" variant="flat" className="text-sm font-bold text-white bg-gradient-to-r from-yellow-500 to-yellow-700" as={Link} href={`/review/hotel?secdat=${btoa(JSON.stringify(item))}`}>
                                                         Review <ShootingStar size={18} color="#ffffff" weight="bold" />
+                                                    </Button>
+                                                    <Button size="sm" variant="flat" className="text-sm font-bold text-white bg-gradient-to-r from-sky-500 to-sky-700" as={Link} href={`/detail/hotel/${item.hotel.id}`}>
+                                                        Book again <ArrowUpRight size={18} color="#ffffff" weight="bold" />
+                                                    </Button>
+                                                </div>
+                                            ) : item.hotel_reservation.reservation_status === 'Reviewed' && (
+                                                <div className="flex flex-row items-center gap-2">
+                                                    <Button size="sm" variant="flat" className="text-sm font-bold text-white bg-gradient-to-r from-sky-500 to-sky-700" as={Link} href={`/detail/hotel/${item.hotel.id}`}>
+                                                        Book again <ArrowUpRight size={18} color="#ffffff" weight="bold" />
                                                     </Button>
                                                 </div>
                                             )
