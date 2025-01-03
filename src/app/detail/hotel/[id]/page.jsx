@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import fetchWithAuth from "@/utilities/fetchWIthAuth";
 import { BASE_API } from "@/utilities/environtment";
-import { Button, ButtonGroup, DateRangePicker, Image } from "@nextui-org/react";
+import { Button, ButtonGroup, DateRangePicker, Image, Progress, User } from "@nextui-org/react";
 import { Check } from "@phosphor-icons/react/dist/ssr";
 import { GetUserData } from "@/utilities/getUserData";
 import { MoneyWavy } from "@phosphor-icons/react";
@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import { parseDate } from "@internationalized/date";
 import { toast } from "sonner";
 import FsLightbox from "fslightbox-react";
+import { RatingStars } from "@/components/RatingStars";
 
 const Page = ({ params: id }) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -284,6 +285,80 @@ const Page = ({ params: id }) => {
                       </div>
                     </div>
                   </div>
+                </div>
+              </div>
+              <div className="p-4 mt-10 space-y-4 w-full">
+                <div className="space-y-2 mx-auto w-max">
+                  <h2 className="text-4xl sm:text-5xl font-superbold text-center">
+                    {detail.review_statistic.average_rating.toFixed(1)}
+                  </h2>
+                  <RatingStars value={detail.review_statistic.average_rating} count={5} gap={5} />
+                </div>
+                <div className="space-y-2 w-full max-w-lg mx-auto">
+                  <div className="flex flex-row items-center gap-2">
+                    <h4 className="w-1/4 text-sm opacity-80">Excelent</h4>
+                    <Progress color="primary" className="w-full" value={detail.review_statistic.percentage_5} />
+                  </div>
+                  <div className="flex flex-row items-center gap-2">
+                    <h4 className="w-1/4 text-sm opacity-80">Very Good</h4>
+                    <Progress color="secondary" className="w-full" value={detail.review_statistic.percentage_4} />
+                  </div>
+                  <div className="flex flex-row items-center gap-2">
+                    <h4 className="w-1/4 text-sm opacity-80">Good</h4>
+                    <Progress color="success" className="w-full" value={detail.review_statistic.percentage_3} />
+                  </div>
+                  <div className="flex flex-row items-center gap-2">
+                    <h4 className="w-1/4 text-sm opacity-80">Not Good</h4>
+                    <Progress color="warning" className="w-full" value={detail.review_statistic.percentage_2} />
+                  </div>
+                  <div className="flex flex-row items-center gap-2">
+                    <h4 className="w-1/4 text-sm opacity-80">So Bad</h4>
+                    <Progress color="danger" className="w-full" value={detail.review_statistic.percentage_1} />
+                  </div>
+                </div>
+              </div>
+              <div className="rounded-lg border border-slate-200 bg-white p-4 flex flex-col gap-2 w-full my-4">
+                <div className=" flex flex-col gap-1">
+                  <h2 className="font-semibold">Hear It from Our Guests</h2>
+                  <h4 className="text-xs opacity-90 text-sky-600 mb-4">
+                    {detail.hotel_reviews?.length || 0} Reviews
+                  </h4>
+
+                  {detail.hotel_reviews?.map((item) => {
+                    return (
+                      <div className="w-full space-y-2 px-6">
+                        <div className="border-t p-4">
+                          <User
+                            avatarProps={{
+                              src: item.user.avatar,
+                            }}
+                            description="Guest"
+                            name={item.user.name}
+                          />
+                          <div className="flex flex-wrap gap-1 my-1">
+                            <div className="bg-gradient-to-r from-emerald-400 to-emerald-500 text-white text-2xs px-2 py-1 rounded-md whitespace-nowrap">
+                              Service {(item.service_quality)}
+                            </div>
+                            <div className="bg-gradient-to-r from-emerald-400 to-emerald-500 text-white text-2xs px-2 py-1 rounded-md whitespace-nowrap">
+                              Cleanliness {(item.cleanliness)}
+                            </div>
+                            <div className="bg-gradient-to-r from-emerald-400 to-emerald-500 text-white text-2xs px-2 py-1 rounded-md whitespace-nowrap">
+                              Value for money {(item.value_for_money)}
+                            </div>
+                            <div className="bg-gradient-to-r from-emerald-400 to-emerald-500 text-white text-2xs px-2 py-1 rounded-md whitespace-nowrap">
+                              Comfort {(item.comfort)}
+                            </div>
+                            <div className="bg-gradient-to-r from-emerald-400 to-emerald-500 text-white text-2xs px-2 py-1 rounded-md whitespace-nowrap">
+                              Facilities {(item.facilities)}
+                            </div>
+                          </div>
+                          <p className="font-normal text-sm">
+                            {item.review}
+                          </p>
+                        </div>
+                      </div>
+                    )
+                  })}
                 </div>
               </div>
             </div>

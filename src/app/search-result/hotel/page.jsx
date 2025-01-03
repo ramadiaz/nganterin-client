@@ -210,6 +210,7 @@ const Page = () => {
                   >
                     <Link
                       href={`/detail/hotel/${item.id}`}
+                      target="_blank"
                       className="block w-full"
                     >
                       <div className="flex flex-row gap-1">
