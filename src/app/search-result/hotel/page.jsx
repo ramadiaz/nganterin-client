@@ -199,7 +199,7 @@ const Page = () => {
               </div>
             </div>
 
-            <div className="w-3/4">
+            <div className="w-3/4 space-y-4">
               {isLoading ? (
                 <SearchSkeletonList />
               ) : (
@@ -227,7 +227,7 @@ const Page = () => {
                                 {item.hotels_location.state}
                               </span>
                             </div>
-                            <RatingStars rating={4} size={16} color = "#2e2e2e" count={5} value={item.average_rating}/>
+                            <RatingStars size={16} color = "#2e2e2e" count={5} value={item.rating.rating}/>
                             <div className="flex flex-wrap text-2xs text-gray-600 gap-1 ">
                               {item.hotel_facilities?.map((facility, index) => {
                                 return (

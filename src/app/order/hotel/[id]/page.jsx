@@ -315,7 +315,7 @@ const Page = ({ params: id }) => {
                     </div>
                     <div>
                       <h2 className="uppercase text-xl">{detail.name}</h2>
-                      <RatingStars rating={4} gap={0.5} color="#facc15" />
+                      <RatingStars value={detail.rating.rating} gap={0.5} count={5} color="#facc15" />
                       <h4 className="text-xs opacity-90">
                         {detail.hotels_location.complete_address}
                       </h4>

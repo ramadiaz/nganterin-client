@@ -261,23 +261,26 @@ const Page = ({ params: id }) => {
                 <div className="basis-1/3">
                   <div className="rounded-lg border border-slate-200 bg-white p-4 flex flex-col gap-2">
                     <div className=" flex flex-col gap-1">
-                      <h2 className="text-xl font-semibold">8.9 Excellent</h2>
+                      <h2 className="text-xl font-semibold">{(detail.rating.rating * 2).toFixed(1)} Excellent</h2>
                       <h4 className="text-xs opacity-90 text-sky-600">
-                        4,222 Reviews
+                        {detail.hotel_reviews?.length || 0} Reviews
                       </h4>
                     </div>
                     <div className="flex flex-wrap gap-2">
                       <div className="bg-gradient-to-r from-emerald-500 to-emerald-700 text-white text-xs px-2 py-1 rounded-md whitespace-nowrap">
-                        Service 9.2
+                        Service {(detail.rating.service_quality * 2).toFixed(1)}
                       </div>
                       <div className="bg-gradient-to-r from-emerald-500 to-emerald-700 text-white text-xs px-2 py-1 rounded-md whitespace-nowrap">
-                        Cleanliness 8.9
+                        Cleanliness {(detail.rating.cleanliness * 2).toFixed(1)}
                       </div>
                       <div className="bg-gradient-to-r from-emerald-500 to-emerald-700 text-white text-xs px-2 py-1 rounded-md whitespace-nowrap">
-                        Value for money 9.0
+                        Value for money {(detail.rating.value_for_money * 2).toFixed(1)}
                       </div>
                       <div className="bg-gradient-to-r from-emerald-500 to-emerald-700 text-white text-xs px-2 py-1 rounded-md whitespace-nowrap">
-                        Location 9.0
+                        Comfort {(detail.rating.comfort * 2).toFixed(1)}
+                      </div>
+                      <div className="bg-gradient-to-r from-emerald-500 to-emerald-700 text-white text-xs px-2 py-1 rounded-md whitespace-nowrap">
+                        Facilities {(detail.rating.facilities * 2).toFixed(1)}
                       </div>
                     </div>
                   </div>
