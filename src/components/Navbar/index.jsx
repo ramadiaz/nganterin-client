@@ -76,7 +76,7 @@ export default function NavbarComponent() {
         </NavbarContent>
 
         <NavbarContent justify="center">
-          <NavbarContent className={`hidden sm:flex gap-3 ${pathName.endsWith("/") || pathName.endsWith("/about") ? "text-white": "text-gray-900"}`}>
+          <NavbarContent className={`hidden sm:flex gap-3 ${pathName.endsWith("/") || pathName.endsWith("/about") ? "text-white" : "text-gray-900"}`}>
             <NavbarItem isActive={pathName.endsWith("/")}>
               <Link href="/">
                 Discover
@@ -110,8 +110,14 @@ export default function NavbarComponent() {
                 />
               </DropdownTrigger>
               <DropdownMenu className="text-black">
+                <DropdownItem key="profile" className="gap-2">
+                  <p className="text-xs font-semibold">Hi! {userData.name}</p>
+                </DropdownItem>
                 <DropdownItem as={Link} href="/order/history/hotel">
                   My Order
+                </DropdownItem>
+                <DropdownItem as={Link} href="/reservation/hotel">
+                  My Reservation
                 </DropdownItem>
                 <DropdownItem onClick={handleLogout} color="danger">
                   Log out

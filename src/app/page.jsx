@@ -162,11 +162,10 @@ export default function Home() {
                   <Button
                     size="lg"
                     type="submit"
-                    className="bg-gradient-to-r from-sky-500 to-sky-700 text-white w-64 h-16 "
-                    disabled={!hotelKeyword || !hotelKeyword.trim() === ""}
+                    className="bg-gradient-to-r from-sky-500 to-sky-700 text-white w-64 h-16"
                     onClick={handleHotelSearch}
                   >
-                    Search
+                    Explore
                   </Button>
                 </div>
               </div>

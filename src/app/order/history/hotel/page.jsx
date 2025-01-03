@@ -149,19 +149,19 @@ const Page = () => {
                                         {
                                             item.payment_status === "paid" ? (
                                                 <div className="flex flex-row items-center gap-2">
-                                                    <Button size="sm" variant="flat" className="text-sm font-bold text-white bg-gradient-to-r from-sky-500 to-sky-700" as={Link} href="/ticket/hotel">
-                                                        Ticket <Ticket size={22} color="#ffffff" weight="bold" />
+                                                    <Button size="sm" variant="flat" className="text-sm font-bold text-white bg-gradient-to-r from-sky-500 to-sky-700" as={Link} href="/reservation/hotel">
+                                                        Ticket <Ticket size={18} color="#ffffff" weight="bold" />
                                                     </Button>
                                                     <Button
                                                         onClick={() => window.open(item.hotel.hotels_location.gmaps, '_blank', 'noopener,noreferrer')}
                                                         size="sm" variant="flat" className="text-sm font-bold text-white bg-gradient-to-r from-yellow-500 to-yellow-700"
                                                     >
-                                                        Maps <PushPin size={22} color="#ffffff" weight="bold" />
+                                                        Maps <PushPin size={18} color="#ffffff" weight="bold" />
                                                     </Button>
                                                 </div>
                                             ) : item.payment_status === "pending" && (
                                                 <Button size="sm" variant="flat" className="text-sm font-bold text-white bg-gradient-to-r from-green-500 to-green-700" onClick={() => handleContinuePayment(item)} >
-                                                    Pay Now! <ArrowUpRight size={22} color="#ffffff" weight="bold" />
+                                                    Pay Now! <ArrowUpRight size={18} color="#ffffff" weight="bold" />
                                                 </Button>
                                             )
                                         }

@@ -78,8 +78,8 @@ const Page = () => {
                 <div className="space-y-2 my-4">
                     <Button className={`w-full ${paymentStatus === "paid" && "hidden"}`} variant="bordered" radius="full" onClick={() => fetchData(orderData.id)} isDisabled={isLoading}>Refresh <ArrowsClockwise size={22} color="#111827" weight="bold" className={isLoading && "animate-spinner-ease-spin"} /></Button>
                     <div className="flex flex-row gap-2">
-                        <Button className="w-full bg-yellow-200 border-gray-900" variant="bordered" radius="full" as={Link} href="/order/history/hotel">My Order <ClockCounterClockwise size={22} color="#111827" weight="bold" /></Button>
-                        <Button className="w-full bg-sky-300 border-gray-900" variant="bordered" radius="full" as={Link} href="/ticket/hotel">My Ticket <Ticket size={22} color="#111827" weight="bold" /></Button>
+                        <Button className="w-full bg-yellow-200 border-gray-900" variant="bordered" radius="full" as={Link} href="/order/history/hotel">My Orders <ClockCounterClockwise size={22} color="#111827" weight="bold" /></Button>
+                        <Button className="w-full bg-sky-300 border-gray-900" variant="bordered" radius="full" as={Link} href="/reservation/hotel">My Reservations <Ticket size={22} color="#111827" weight="bold" /></Button>
                     </div>
                 </div>
             </div>
