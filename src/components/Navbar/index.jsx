@@ -76,19 +76,19 @@ export default function NavbarComponent() {
         </NavbarContent>
 
         <NavbarContent justify="center">
-          <NavbarContent className={`hidden sm:flex gap-3 ${pathName.endsWith("/") || pathName.endsWith("/about") ? "text-white" : "text-gray-900"}`}>
+          <NavbarContent className={`flex gap-3 ${pathName.endsWith("/") || pathName.endsWith("/about") ? "text-white" : "text-gray-900"}`}>
             <NavbarItem isActive={pathName.endsWith("/")}>
-              <Link href="/">
+              <Link href="/" className="text-xs sm:text-medium">
                 Discover
               </Link>
             </NavbarItem>
             <NavbarItem isActive={pathName.endsWith("/about")}>
-              <Link href="/about">
+              <Link href="/about" className="text-xs sm:text-medium">
                 Why Nganterin
               </Link>
             </NavbarItem>
             <NavbarItem isActive={pathName.endsWith("/faq")}>
-              <Link href="/faq">
+              <Link href="/faq" className="text-xs sm:text-medium">
                 FAQ
               </Link>
             </NavbarItem>
@@ -129,7 +129,7 @@ export default function NavbarComponent() {
               <Button variant="flat" className="bg-white text-sky-700" onClick={() => router.push("/auth/login")}>
                 Sign in
               </Button>
-              <Button variant="flat" className="bg-gradient-to-r from-sky-500 to-sky-700 text-white" onClick={() => router.push("/auth/register")}>
+              <Button variant="flat" className="hidden sm:block bg-gradient-to-r from-sky-500 to-sky-700 text-white" onClick={() => router.push("/auth/register")}>
                 Sign up
               </Button>
             </div>
