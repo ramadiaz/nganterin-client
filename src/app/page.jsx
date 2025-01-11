@@ -208,7 +208,7 @@ export default function Home() {
               <div className="flex flex-col justify-center items-center gap-3 ">
                 <Link
                   href={`/search-result/hotel?city=Jakarta&dateStart=${hotelDate.start}&dateEnd=${hotelDate.end}`}
-                  className="overflow-hidden "
+                  className="overflow-hidden rounded-lg shadow-lg shadow-slate-800/50"
                 >
                   <Image
                     src={`/images/destinations/1_8691_02.jpg`}
@@ -226,7 +226,7 @@ export default function Home() {
               <div className="flex flex-col justify-center items-center gap-3 ">
                 <Link
                   href={`/search-result/hotel?city=Bali&dateStart=${hotelDate.start}&dateEnd=${hotelDate.end}`}
-                  className="overflow-hidden "
+                  className="overflow-hidden rounded-lg shadow-lg shadow-slate-800/50"
                 >
                   <Image
                     src={`/images/destinations/1_17193_02.jpg`}
@@ -244,7 +244,7 @@ export default function Home() {
               <div className="flex flex-col justify-center items-center gap-3 ">
                 <Link
                   href={`/search-result/hotel?city=Bandung&dateStart=${hotelDate.start}&dateEnd=${hotelDate.end}`}
-                  className="overflow-hidden "
+                  className="overflow-hidden rounded-lg shadow-lg shadow-slate-800/50"
                 >
                   <Image
                     src={`/images/destinations/1_18943_02.jpg`}
