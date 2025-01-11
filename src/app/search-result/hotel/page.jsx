@@ -206,19 +206,19 @@ const Page = () => {
                 result.map((item, index) => (
                   <div
                     key={index}
-                    className="bg-white rounded-xl shadow-lg hover:shadow-lg hover:shadow-black/30 transition-all duration-250 border-2 border-slate-200"
+                    className="w-full rounded-xl shadow-lg hover:shadow-lg hover:shadow-black/30 transition-all duration-250 border-2 border-slate-200"
                   >
                     <Link
                       href={`/detail/hotel/${item.id}`}
                       target="_blank"
                       className="block w-full"
                     >
-                      <div className="flex flex-row gap-1">
+                      <div className="w-full flex flex-row gap-1">
                         <div className="w-96 space-y-1">
                           <ImageHotel photos={item.hotel_photos} />
                         </div>
-                        <div className="flex p-2 w-full">
-                          <div className="space-y-0.5 w-1/2">
+                        <div className="flex justify-between p-2 w-full">
+                          <div className="space-y-0.5">
                             <h3 className="text-lg font-semibold text-neutral-700">
                               {item.name}
                             </h3>
@@ -243,9 +243,9 @@ const Page = () => {
                             </div>
                           </div>
 
-                          <div className="text-right mr-2 mb w-1/2 mt-auto">
+                          <div className="text-right mr-2 mb mt-auto">
                             <div>
-                              <div className="text-lg font-bold text-black">
+                              <div className="text-lg font-bold text-black whitespace-nowrap">
                                 IDR {item.pricing_start.toLocaleString()}
                                 <span className="text-gray-600 text-xs font-light -mt-1">
                                   /night
