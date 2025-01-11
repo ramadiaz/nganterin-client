@@ -14,22 +14,22 @@ const Page = () => {
   }, []);
 
   return (
-    <div className="mx-auto max-w-5xl w-full mt-20" data-aos="fade-up">
-      <div className="flex flex-row">
-        <div className="w-1/2">
-          <TracingBeam>
+    <div className="mx-auto max-w-5xl w-full sm:mt-20" data-aos="fade-up">
+      <TracingBeam>
+        <div className="flex flex-col-reverse sm:flex-row">
+          <div className="sm:w-1/2 scale-90 sm:scale-100">
             <SignUpContainer />
-          </TracingBeam>
+          </div>
+          <div className="sm:w-1/2 flex items-start mt-14 justify-center h-auto">
+            <Image
+              src="/images/auth-assets/travel-vlogger.png"
+              width={400}
+              alt="hotel image"
+              referrerPolicy="no-referrer"
+            />
+          </div>
         </div>
-        <div className="w-1/2 flex items-start mt-14 justify-center h-auto">
-          <Image
-            src="/images/auth-assets/travel-vlogger.png"
-            width={400}
-            alt="hotel image"
-            referrerPolicy="no-referrer"
-          />
-        </div>
-      </div>
+      </TracingBeam>
     </div>
   );
 };
