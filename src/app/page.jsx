@@ -93,7 +93,7 @@ export default function Home() {
           It's time to vacation 🚀
         </h4>
         <div
-          className="text-center mt-12 text-6xl md:text-7xl lg:text-8xl font-bold"
+          className="text-center mt-12 text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold"
           data-aos="fade-up"
         >
           <h1 className="mb-4">Discover the World's</h1>
