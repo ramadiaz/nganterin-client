@@ -17,6 +17,16 @@
   }
 }
 
+@media only screen and (max-width: 768px) {
+	div[data-slot="calendar"] {
+		--calendar-width: 356px !important;
+	}
+
+	div[data-slot="grid-wrapper"] {
+		@apply flex-col;
+	}
+}
+
 body {
   font-family: "Poppins", sans-serif;
 }

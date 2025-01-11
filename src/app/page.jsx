@@ -114,8 +114,8 @@ export default function Home() {
           />
         </div>
       </div>
-      <div className="justify-center items-center flex flex-col gap-4 bg-slate-50 pb-24">
-        <Card className="w-[700px] -mt-28 overflow-visible">
+      <div className="justify-center items-center flex flex-col gap-4 bg-slate-50 pb-24 mx-4">
+        <Card className="w-full max-w-[700px] -mt-28 overflow-visible">
           <form className="relative">
             <CardBody>
               <div className="flex w-full flex-col">
@@ -204,7 +204,7 @@ export default function Home() {
             <h1 className="text-center text-2xl my-4">
               Top destinations in Indonesia
             </h1>
-            <div className="flex flex-row justify-center gap-4">
+            <div className="flex flex-wrap justify-center gap-4">
               <div className="flex flex-col justify-center items-center gap-3 ">
                 <Link
                   href={`/search-result/hotel?city=Jakarta&dateStart=${hotelDate.start}&dateEnd=${hotelDate.end}`}
@@ -265,15 +265,15 @@ export default function Home() {
             <h1 className="text-center text-2xl my-4">
               Acommodation Promotions
             </h1>
-            <div className="w-max mx-auto rounded-xl overflow-hidden h-max shadow-md shadow-black/50">
+            <div className="w-full max-w-[600px] mx-auto rounded-xl overflow-hidden h-max shadow-md shadow-black/50">
               <Carousel
-                width={600}
                 transitionTime={3}
                 autoPlay
                 interval={3000}
                 showStatus={false}
                 infiniteLoop
                 showThumbs={false}
+                className="w-full"
               >
                 {promotions.map((promo, index) => {
                   return (
