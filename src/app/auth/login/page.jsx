@@ -13,17 +13,18 @@ const Page = () => {
   }, []);
 
   return (
-    <div className="mx-auto max-w-5xl w-full mt-20" data-aos="fade-up">
-      <div className="flex flex-row">
-        <div className="w-1/2 flex items-center justify-center h-auto">
+    <div className="mx-auto max-w-5xl w-full sm:mt-20" data-aos="fade-up">
+      <div className=" flex flex-col sm:flex-row">
+        <div className="sm:w-1/2 flex items-center justify-center h-auto scale-90 sm:scale-100">
           <Image
             src="/images/auth-assets/world-tour.png"
             width={400}
             alt="hotel image"
+            className=""
             referrerPolicy="no-referrer"
           />
         </div>
-        <div className="w-1/2">
+        <div className="sm:w-1/2">
           <LogInContainer />
         </div>
       </div>
