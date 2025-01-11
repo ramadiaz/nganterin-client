@@ -5,9 +5,9 @@ import { useEffect, useState } from "react";
 import Loading from "@/app/loading";
 import { BASE_API } from "@/utilities/environtment";
 import fetchWithAuth from "@/utilities/fetchWIthAuth";
-import { MapPin, MagnifyingGlass } from "@phosphor-icons/react";
+import { MapPin, MagnifyingGlass, Funnel } from "@phosphor-icons/react";
 import Link from "next/link";
-import { Button, DateRangePicker, Input, Slider } from "@nextui-org/react";
+import { Button, DateRangePicker, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Slider, useDisclosure } from "@nextui-org/react";
 import { parseDate } from "@internationalized/date";
 import RoomTraveller from "@/components/RoomTraveller";
 import { RatingStars } from "@/components/RatingStars";
@@ -16,6 +16,7 @@ import SearchSkeletonList from "@/components/HotelSkeleton";
 
 const Page = () => {
   const router = useRouter();
+  const mobileFilter = useDisclosure()
 
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState(useSearchParams().get("keyword") || "");
@@ -88,11 +89,11 @@ const Page = () => {
   return (
     <>
       <div className="min-h-screen pt-6 pb-12 bg-slate-50">
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-6xl mx-auto px-4">
           <div className="mb-10">
             <form onSubmit={handleSearch}>
               <div className="flex text-black items-center font-semibold gap-4">
-                <div className="w-80">
+                <div className="w-full max-w-80">
                   <Input
                     placeholder="Where to?"
                     variant="bordered"
@@ -108,7 +109,7 @@ const Page = () => {
                     }}
                   />
                 </div>
-                <div className="w-80">
+                <div className="w-80 hidden sm:block">
                   <DateRangePicker
                     variant="bordered"
                     visibleMonths={2}
@@ -122,7 +123,7 @@ const Page = () => {
                     }}
                   />
                 </div>
-                <div className="w-80">
+                <div className="w-80 hidden sm:block">
                   <RoomTraveller
                     onChange={setMaxVisitor}
                   />
@@ -137,11 +138,14 @@ const Page = () => {
                   </Button>
                 </div>
               </div>
+              <div className="">
+                <button onClick={() => mobileFilter.onOpen()} className="w-full mt-2 cursor-pointer flex flex-row gap-1 justify-end items-center text-sky-700 sm:hidden text-sm" >Filters <Funnel size={24} color="#0369a1" /></button>
+              </div>
             </form>
           </div>
 
           <div className="flex gap-3">
-            <div className="w-1/4">
+            <div className="hidden sm:block sm:w-1/4">
               <div className=" bg-white rounded-xl p-2 border-2 border-slate-200 ">
                 <h2 className="text-black font-bold">Price per night</h2>
                 <Slider
@@ -199,7 +203,7 @@ const Page = () => {
               </div>
             </div>
 
-            <div className="w-3/4 space-y-4">
+            <div className="w-full sm:w-3/4 space-y-4">
               {isLoading ? (
                 <SearchSkeletonList />
               ) : (
@@ -214,10 +218,10 @@ const Page = () => {
                       className="block w-full"
                     >
                       <div className="w-full flex flex-row gap-1">
-                        <div className="w-96 space-y-1">
+                        <div className="w-64 max-w-96 space-y-1">
                           <ImageHotel photos={item.hotel_photos} />
                         </div>
-                        <div className="flex justify-between p-2 w-full">
+                        <div className="flex flex-wrap gap-4 justify-between p-2 w-full">
                           <div className="space-y-0.5">
                             <h3 className="text-lg font-semibold text-neutral-700">
                               {item.name}
@@ -228,8 +232,8 @@ const Page = () => {
                                 {item.hotels_location.state}
                               </span>
                             </div>
-                            <RatingStars size={16} color = "#2e2e2e" count={5} value={item.rating.rating}/>
-                            <div className="flex flex-wrap text-2xs text-gray-600 gap-1 ">
+                            <RatingStars size={16} color="#2e2e2e" count={5} value={item.rating.rating} />
+                            <div className="hidden sm:flex flex-wrap text-2xs text-gray-600 gap-1 ">
                               {item.hotel_facilities?.map((facility, index) => {
                                 return (
                                   <h2
@@ -243,7 +247,7 @@ const Page = () => {
                             </div>
                           </div>
 
-                          <div className="text-right mr-2 mb mt-auto">
+                          <div className="w-full text-right mr-2 mb mt-auto">
                             <div>
                               <div className="text-lg font-bold text-black whitespace-nowrap">
                                 IDR {item.pricing_start.toLocaleString()}
@@ -272,6 +276,89 @@ const Page = () => {
           </div>
         </div>
       </div>
+      <Modal isOpen={mobileFilter.isOpen} onOpenChange={mobileFilter.onOpenChange} backdrop="blur" radius="sm">
+        <ModalContent className="text-slate-900">
+          {(onClose) => (
+            <>
+              <ModalBody className="pt-8">
+                <h2 className="text-black font-semibold">Vacation time</h2>
+                <DateRangePicker
+                  variant="bordered"
+                  visibleMonths={2}
+                  size="lg"
+                  value={hotelDate}
+                  onChange={setHotelDate}
+                  minValue={parseDate(startDate)}
+                  selectorButtonPlacement={"start"}
+                  classNames={{
+                    inputWrapper: "border-2 border-gray-300",
+                  }}
+                />
+                <h2 className="text-black font-semibold">Vacation time</h2>
+                <RoomTraveller
+                  onChange={setMaxVisitor}
+                />
+                <h2 className="text-black font-semibold">Price per night</h2>
+                <div className=" bg-white rounded-xl p-2 border-2 border-slate-200 ">
+                  <Slider
+                    className="max-w-md text-black mt-2 text-xs"
+                    label="Start from"
+                    defaultValue={0}
+                    formatOptions={{ style: "currency", currency: "IDR" }}
+                    maxValue={5000000}
+                    minValue={0}
+                    step={100000.0}
+                    size="md"
+                    value={priceRange.min}
+                    onChange={(value) =>
+                      setPriceRange((prev) => ({ ...prev, min: value }))
+                    }
+                  />
+                </div>
+                <form onSubmit={handleSearch}>
+                  <h2 className="mt-2 mb-2 font-bold text-black">
+                    Search by property name
+                  </h2>
+                  <div className="text-black">
+                    <Input
+                      variant="bordered"
+                      startContent={<MagnifyingGlass size={20} weight="bold" />}
+                      placeholder="e.g. Marriot"
+                      classNames={{
+                        inputWrapper: "border-2 border-gray-300",
+                      }}
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                    />
+                  </div>
+                </form>
+                <form onSubmit={handleSearch}>
+                  <h2 className="mt-2 mb-2 font-bold text-black">
+                    Search by city
+                  </h2>
+                  <div className="mb-4 text-black">
+                    <Input
+                      variant="bordered"
+                      startContent={<MagnifyingGlass size={20} weight="bold" />}
+                      placeholder="e.g. Jakarta"
+                      classNames={{
+                        inputWrapper: "border-2 border-gray-300",
+                      }}
+                      value={city}
+                      onChange={(e) => setCity(e.target.value)}
+                    />
+                  </div>
+                </form>
+              </ModalBody>
+              <ModalFooter>
+                <Button onClick={onClose} className="bg-gradient-to-r from-sky-500 to-sky-700 text-white">
+                  Close
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
     </>
   );
 };

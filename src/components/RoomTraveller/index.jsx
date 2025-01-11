@@ -60,13 +60,13 @@ const RoomTraveller = ({ onChange }) => {
   };
 
   return (
-    <div>
+    <div className="w-full">
       <Button
         onPress={onOpen}
         variant={"bordered"}
         startContent={<Users size={20} weight="bold" />}
         size="lg"
-        className="w-80 justify-start pl-4 text-left"
+        className="w-full justify-start pl-4 text-left"
       >
         {summary}
       </Button>

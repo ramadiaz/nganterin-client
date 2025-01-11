@@ -3,15 +3,15 @@ import { Skeleton } from "@nextui-org/react";
 
 const SearchSkeleton = () => {
   return (
-    <div className="bg-white rounded-xl border-2 border-slate-200">
-      <div className="flex flex-row gap-1">
+    <div className="bg-white rounded-xl border-2 border-slate-200 w-full">
+      <div className="flex flex-row gap-1 w-full">
         <div className="w-96 space-y-1">
           <Skeleton className="rounded-lg">
             <div className="h-44 rounded-lg bg-default-300"></div>
           </Skeleton>
         </div>
 
-        <div className="flex p-2 w-full">
+        <div className="flex flex-wrap p-2 w-full">
           <div className="space-y-0.5 w-1/2">
             <Skeleton className="w-3/4 rounded-lg mb-1">
               <div className="h-7 w-full rounded-lg bg-default-300"></div>
@@ -22,7 +22,7 @@ const SearchSkeleton = () => {
             </Skeleton>
           </div>
 
-          <div className="text-right mr-2 w-1/2 mt-auto">
+          <div className="text-right mr-2 w-full mt-auto">
             <Skeleton className="w-40 ml-auto rounded-lg mb-1">
               <div className="h-7 rounded-lg bg-default-300"></div>
             </Skeleton>

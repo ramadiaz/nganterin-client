@@ -16,7 +16,7 @@ const ImageHotel = ({ photos }) => {
   };
 
   return (
-    <div className="relative w-full h-44 rounded-l-xl overflow-hidden group">
+    <div className="relative w-full h-44 rounded-l-xl rounded-r-xl overflow-hidden group">
       <div className="w-full h-full transition-all duration-500 ease-in-out">
         <Image
           alt="Hotel Image"
