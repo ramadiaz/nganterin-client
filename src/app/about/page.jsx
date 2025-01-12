@@ -16,15 +16,15 @@ const Page = () => {
           className="flex flex-col justify-center items-center h-full gap-4"
           data-aos="fade-up"
         >
-          <h3 className="text-6xl font-bold">Why Nganterin?</h3>
+          <h3 className="text-5xl sm:text-6xl font-bold text-center ">Why Nganterin?</h3>
           <h3 className="text-sm font-thin">
             Discover your trip and planning with us.
           </h3>
         </div>
       </div>
       <div className="min-h-screen text-sky-900 py-40">
-        <div className="w-3/4 mx-auto flex flex-col gap-40 ">
-          <div className="w-full flex flex-row justify-between items-center">
+        <div className="w-11/12 sm:w-3/4 md:w-1/2 mx-auto flex flex-col gap-40 ">
+          <div className="w-full flex flex-col sm:flex-row gap-4 justify-between items-center">
             <div className="w-11/12 lg:w-3/4 xl:w-1/2" data-aos="fade-right">
               <h2 className="text-2xl">Easy to use</h2>
               <h4 className="border-t border-sky-700 mt-2 text-justify">
@@ -35,20 +35,25 @@ const Page = () => {
                 with your family.
               </h4>
             </div>
-            <Image
-              src={`/images/about-assets/easy.png`}
-              height={200}
-              width={200}
-              data-aos="fade-right"
-            />
+            <div className="w-full flex justify-end">
+              <Image
+                src={`/images/about-assets/easy.png`}
+                height={200}
+                width={200}
+                data-aos="fade-right"
+              />
+            </div>
           </div>
-          <div className="w-full flex flex-row justify-between">
-            <Image
-              src={`/images/about-assets/cheap.png`}
-              height={200}
-              width={200}
-              data-aos="fade-left"
-            />
+          <div className="w-full flex flex-col-reverse sm:flex-row gap-4 justify-between">
+            <div className="w-full flex justify-start">
+              <Image
+                src={`/images/about-assets/cheap.png`}
+                height={200}
+                width={250}
+                data-aos="fade-left"
+                className=""
+              />
+            </div>
             <div
               className="w-11/12 lg:w-3/4 xl:w-1/2 text-right"
               data-aos="fade-left"
@@ -64,7 +69,7 @@ const Page = () => {
               </h4>
             </div>
           </div>
-          <div className="w-full flex flex-row justify-between">
+          <div className="w-full flex flex-col sm:flex-row gap-4 justify-between items-center">
             <div className="w-11/12 lg:w-3/4 xl:w-1/2" data-aos="fade-right">
               <h2 className="text-2xl">Ready 24 Hours</h2>
               <h4 className="border-t border-sky-700 mt-2 text-justify">
@@ -79,11 +84,11 @@ const Page = () => {
                 which is ready 24 hours.
               </h4>
             </div>
-            <div className="scale-75">
+            <div className="scale-75 w-full flex justify-end">
               <Image
                 src={`/images/about-assets/24-hours.png`}
                 height={200}
-                width={250}
+                width={200}
                 data-aos="fade-right"
               />
             </div>
