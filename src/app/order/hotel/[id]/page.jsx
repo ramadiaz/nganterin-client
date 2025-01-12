@@ -333,7 +333,7 @@ const Page = ({ params: id }) => {
                 <div className="border-b border-neutral-500/50 pb-4">
                   <div className="flex flex-row justify-between px-2 py-1">
                     <h3>Original Price</h3>
-                    <h3 className="text-red-600 line-through">
+                    <h3 className="text-rose-600 line-through">
                       Rp{" "}
                       {(
                         inputData.days * roomDetail.overnight_price + 300000
@@ -342,16 +342,16 @@ const Page = ({ params: id }) => {
                   </div>
                   <div className="flex flex-row justify-between px-2 py-1">
                     <h3>Our Price</h3>
-                    <h3 className="text-red-600 line-through">
+                    <h3 className="text-rose-600 line-through">
                       Rp{" "}
                       {(
                         inputData.days * roomDetail.overnight_price + 100000
                       ).toLocaleString()}
                     </h3>
                   </div>
-                  <div className="flex flex-row justify-between border border-dashed border-green-600 bg-green-200 px-2 py-1">
+                  <div className="flex flex-row justify-between border border-dashed border-sky-600 bg-sky-200 px-2 py-1">
                     <h3>Instant Discount</h3>
-                    <h3 className="text-green-600">-Rp 200.000</h3>
+                    <h3 className="text-sky-600">-Rp 200.000</h3>
                   </div>
                   <div className="flex flex-row justify-between px-2 py-1">
                     <h3>Room price (1 room x {inputData.days} night)</h3>
@@ -382,7 +382,7 @@ const Page = ({ params: id }) => {
                 </div>
               </div>
             </div>
-            <div className="sm:hidden fixed bottom-0 left-0 w-full bg-white rounded-t-lg p-4">
+            <div className="sm:hidden fixed bottom-0 left-0 w-full bg-white border rounded-t-lg p-4">
               <div className="space-y-4">
                 <Accordion>
                   <AccordionItem
@@ -402,7 +402,7 @@ const Page = ({ params: id }) => {
                     <div className="pb-4 text-sm">
                       <div className="flex flex-row justify-between px-2 py-1">
                         <h3>Original Price</h3>
-                        <h3 className="text-red-600 line-through">
+                        <h3 className="text-rose-600 line-through">
                           Rp{" "}
                           {(
                             inputData.days * roomDetail.overnight_price + 300000
@@ -411,16 +411,16 @@ const Page = ({ params: id }) => {
                       </div>
                       <div className="flex flex-row justify-between px-2 py-1">
                         <h3>Our Price</h3>
-                        <h3 className="text-red-600 line-through">
+                        <h3 className="text-rose-600 line-through">
                           Rp{" "}
                           {(
                             inputData.days * roomDetail.overnight_price + 100000
                           ).toLocaleString()}
                         </h3>
                       </div>
-                      <div className="flex flex-row justify-between border border-dashed border-green-600 bg-green-200 px-2 py-1">
+                      <div className="flex flex-row justify-between border border-dashed border-sky-600 bg-sky-200 px-2 py-1">
                         <h3>Instant Discount</h3>
-                        <h3 className="text-green-600">-Rp 200.000</h3>
+                        <h3 className="text-sky-600">-Rp 200.000</h3>
                       </div>
                       <div className="flex flex-row justify-between px-2 py-1">
                         <h3>Room price (1 room x {inputData.days} night)</h3>
