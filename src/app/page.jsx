@@ -144,6 +144,7 @@ export default function Home() {
                             value={hotelDate}
                             onChange={setHotelDate}
                             visibleMonths={2}
+                            minValue={parseDate(startDate)}
                             variant="bordered"
                             classNames={{
                               base: ["border-gray-200"],
