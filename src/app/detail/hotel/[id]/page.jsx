@@ -14,6 +14,9 @@ import { parseDate } from "@internationalized/date";
 import { toast } from "sonner";
 import FsLightbox from "fslightbox-react";
 import { RatingStars } from "@/components/RatingStars";
+import { Carousel } from "react-responsive-carousel";
+
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 const Page = ({ params: id }) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -91,14 +94,38 @@ const Page = ({ params: id }) => {
 
   return (
     <>
-      <div className="h-14"></div>
+      <div className="sm:h-14" id="top"></div>
       <div className="min-h-screen text-gray-900">
         {isLoading ? (
           <Loading />
         ) : (
           <div>
-            <div className="w-3/5 mx-auto flex flex-col items-center">
-              <div className="flex flex-row gap-4 items-center w-max mx-auto mb-8 select-none">
+            <div className="sm:w-3/5 mx-auto flex flex-col items-center">
+              <Carousel
+                transitionTime={3}
+                autoPlay
+                interval={3000}
+                showStatus={false}
+                infiniteLoop
+                showThumbs={false}
+                className="w-full block sm:hidden"
+              >
+                {images.map((image, index) => {
+                  return (
+                    <div key={index}>
+                      <Image
+                        radius="none"
+                        src={image.url}
+                        width={400}
+                        height={200}
+                        className="bg-cover"
+                        alt={`hotel image ${index}`}
+                      />
+                    </div>
+                  );
+                })}
+              </Carousel>
+              <div className="hidden sm:flex flex-row gap-4 items-center w-max mx-auto mb-8 select-none">
                 <div className="w-96 h-96 rounded-xl overflow-hidden hover:scale-105 transition-all duration-500">
                   <Image
                     src={images[0].url}
@@ -131,23 +158,23 @@ const Page = ({ params: id }) => {
                   })}
                 </div>
               </div>
-              <div className="w-full">
-                <div className="rounded-lg border border-slate-200 bg-white flex flex-row justify-between">
+              <div className="w-full px-2 sm:px-0 mt-2 sm:mt-0">
+                <div className="rounded-lg border border-slate-200 divide-y divide-slate-200 bg-white flex flex-row justify-center sm:justify-between h-max w-max mx-auto sm:w-full">
                   <ButtonGroup radius="sm">
-                    <Button className="text-sm" size="lg" variant="light">
+                    <Link className="text-sm p-4 hover:bg-slate-800/10 transition-all duration-400 rounded-l-md" href="#top">
                       Overview
-                    </Button>
-                    <Button className="text-sm" size="lg" variant="light" as={Link} href="#rooms">
+                    </Link>
+                    <Link className="text-sm p-4 hover:bg-slate-800/10 transition-all duration-400" href="#rooms">
                       Rooms
-                    </Button>
-                    <Button className="text-sm" size="lg" variant="light">
+                    </Link>
+                    <Link className="text-sm p-4 hover:bg-slate-800/10 transition-all duration-400" href="#facilities">
                       Facilites
-                    </Button>
-                    <Button className="text-sm" size="lg" variant="light">
+                    </Link>
+                    <Link className="text-sm p-4 hover:bg-slate-800/10 transition-all duration-400 rounded-r-md" href="#reviews">
                       Reviews
-                    </Button>
+                    </Link>
                   </ButtonGroup>
-                  <div className="flex flex-row items-center text-black gap-4 mr-8">
+                  <div className="hidden sm:flex flex-row items-center w-full justify-end text-black gap-4 mr-8">
                     <div className="flex flex-row items-center gap-2">
                       <h3 className="text-xs">from</h3>
                       <h2 className="text-red-500 font-semibold text-xl">
@@ -167,7 +194,7 @@ const Page = ({ params: id }) => {
                   </div>
                 </div>
               </div>
-              <div className="w-full flex flex-row mt-4 gap-4">
+              <div className="w-full flex flex-col sm:flex-row mt-4 gap-4 px-2 sm:px-0">
                 <div className="basis-2/3 flex flex-col gap-4">
                   <div className="rounded-lg border border-slate-200 bg-white bg-[url('https://ik.imagekit.io/tvlk/image/imageResource/2023/03/08/1678269700277-fb3bdb104bce257a9f273c868f0fdf56.svg?tr=q-75')]">
                     <div className="bg-gradient-to-tr from-white from-50% to-white/0 p-4">
@@ -185,7 +212,32 @@ const Page = ({ params: id }) => {
                       <h4 className="text-sm">{detail.description}</h4>
                     </div>
                   </div>
-                  <div className="rounded-lg border border-slate-200 bg-white p-4">
+                  <div className="sm:hidden rounded-lg border border-slate-200 bg-white p-4 flex flex-col gap-2">
+                    <div className=" flex flex-col gap-1">
+                      <h2 className="text-xl font-semibold">{(detail.rating.rating * 2).toFixed(1)} Excellent</h2>
+                      <h4 className="text-xs opacity-90 text-sky-600">
+                        {detail.hotel_reviews?.length || 0} Reviews
+                      </h4>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      <div className="bg-gradient-to-r from-emerald-500 to-emerald-700 text-white text-xs px-2 py-1 rounded-md whitespace-nowrap">
+                        Service {(detail.rating.service_quality * 2).toFixed(1)}
+                      </div>
+                      <div className="bg-gradient-to-r from-emerald-500 to-emerald-700 text-white text-xs px-2 py-1 rounded-md whitespace-nowrap">
+                        Cleanliness {(detail.rating.cleanliness * 2).toFixed(1)}
+                      </div>
+                      <div className="bg-gradient-to-r from-emerald-500 to-emerald-700 text-white text-xs px-2 py-1 rounded-md whitespace-nowrap">
+                        Value for money {(detail.rating.value_for_money * 2).toFixed(1)}
+                      </div>
+                      <div className="bg-gradient-to-r from-emerald-500 to-emerald-700 text-white text-xs px-2 py-1 rounded-md whitespace-nowrap">
+                        Comfort {(detail.rating.comfort * 2).toFixed(1)}
+                      </div>
+                      <div className="bg-gradient-to-r from-emerald-500 to-emerald-700 text-white text-xs px-2 py-1 rounded-md whitespace-nowrap">
+                        Facilities {(detail.rating.facilities * 2).toFixed(1)}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="rounded-lg border border-slate-200 bg-white p-4" id="facilities">
                     <h2 className="font-semibold">Facilites</h2>
                     <div className="flex flex-wrap font-semibold text-xs gap-2 mt-2">
                       {detail.hotel_facilities?.map((item, index) => {
@@ -259,7 +311,7 @@ const Page = ({ params: id }) => {
                     </div>
                   </div>
                 </div>
-                <div className="basis-1/3">
+                <div className="basis-1/3 hidden sm:block">
                   <div className="rounded-lg border border-slate-200 bg-white p-4 flex flex-col gap-2">
                     <div className=" flex flex-col gap-1">
                       <h2 className="text-xl font-semibold">{(detail.rating.rating * 2).toFixed(1)} Excellent</h2>
@@ -287,7 +339,7 @@ const Page = ({ params: id }) => {
                   </div>
                 </div>
               </div>
-              <div className="p-4 mt-10 space-y-4 w-full">
+              <div className="p-4 mt-10 space-y-4 w-full" id="reviews">
                 <div className="space-y-2 mx-auto w-max">
                   <h2 className="text-4xl sm:text-5xl font-superbold text-center">
                     {detail.review_statistic.average_rating.toFixed(1)}
@@ -317,48 +369,49 @@ const Page = ({ params: id }) => {
                   </div>
                 </div>
               </div>
-              <div className="rounded-lg border border-slate-200 bg-white p-4 flex flex-col gap-2 w-full my-4">
-                <div className=" flex flex-col gap-1">
-                  <h2 className="font-semibold">Hear It from Our Guests</h2>
-                  <h4 className="text-xs opacity-90 text-sky-600 mb-4">
-                    {detail.hotel_reviews?.length || 0} Reviews
-                  </h4>
-
-                  {detail.hotel_reviews?.map((item) => {
-                    return (
-                      <div className="w-full space-y-2 px-6">
-                        <div className="border-t p-4">
-                          <User
-                            avatarProps={{
-                              src: item.user.avatar,
-                            }}
-                            description="Guest"
-                            name={item.user.name}
-                          />
-                          <div className="flex flex-wrap gap-1 my-1">
-                            <div className="bg-gradient-to-r from-emerald-400 to-emerald-500 text-white text-2xs px-2 py-1 rounded-md whitespace-nowrap">
-                              Service {(item.service_quality)}
+              <div className="px-2 sm:px-0 w-full">
+                <div className="rounded-lg border border-slate-200 bg-white p-4 flex flex-col gap-2 w-full my-4">
+                  <div className=" flex flex-col gap-1">
+                    <h2 className="font-semibold">Hear It from Our Guests</h2>
+                    <h4 className="text-xs opacity-90 text-sky-600 mb-4">
+                      {detail.hotel_reviews?.length || 0} Reviews
+                    </h4>
+                    {detail.hotel_reviews?.map((item) => {
+                      return (
+                        <div className="w-full space-y-2 px-2 sm:px-6">
+                          <div className="border-t p-2 sm:p-4">
+                            <User
+                              avatarProps={{
+                                src: item.user.avatar,
+                              }}
+                              description="Guest"
+                              name={item.user.name}
+                            />
+                            <div className="flex flex-wrap gap-1 my-1">
+                              <div className="bg-gradient-to-r from-emerald-400 to-emerald-500 text-white text-2xs px-2 py-1 rounded-md whitespace-nowrap">
+                                Service {(item.service_quality)}
+                              </div>
+                              <div className="bg-gradient-to-r from-emerald-400 to-emerald-500 text-white text-2xs px-2 py-1 rounded-md whitespace-nowrap">
+                                Cleanliness {(item.cleanliness)}
+                              </div>
+                              <div className="bg-gradient-to-r from-emerald-400 to-emerald-500 text-white text-2xs px-2 py-1 rounded-md whitespace-nowrap">
+                                Value for money {(item.value_for_money)}
+                              </div>
+                              <div className="bg-gradient-to-r from-emerald-400 to-emerald-500 text-white text-2xs px-2 py-1 rounded-md whitespace-nowrap">
+                                Comfort {(item.comfort)}
+                              </div>
+                              <div className="bg-gradient-to-r from-emerald-400 to-emerald-500 text-white text-2xs px-2 py-1 rounded-md whitespace-nowrap">
+                                Facilities {(item.facilities)}
+                              </div>
                             </div>
-                            <div className="bg-gradient-to-r from-emerald-400 to-emerald-500 text-white text-2xs px-2 py-1 rounded-md whitespace-nowrap">
-                              Cleanliness {(item.cleanliness)}
-                            </div>
-                            <div className="bg-gradient-to-r from-emerald-400 to-emerald-500 text-white text-2xs px-2 py-1 rounded-md whitespace-nowrap">
-                              Value for money {(item.value_for_money)}
-                            </div>
-                            <div className="bg-gradient-to-r from-emerald-400 to-emerald-500 text-white text-2xs px-2 py-1 rounded-md whitespace-nowrap">
-                              Comfort {(item.comfort)}
-                            </div>
-                            <div className="bg-gradient-to-r from-emerald-400 to-emerald-500 text-white text-2xs px-2 py-1 rounded-md whitespace-nowrap">
-                              Facilities {(item.facilities)}
-                            </div>
+                            <p className="font-normal text-sm">
+                              {item.review}
+                            </p>
                           </div>
-                          <p className="font-normal text-sm">
-                            {item.review}
-                          </p>
                         </div>
-                      </div>
-                    )
-                  })}
+                      )
+                    })}
+                  </div>
                 </div>
               </div>
             </div>
