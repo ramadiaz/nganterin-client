@@ -99,7 +99,7 @@ const Page = () => {
             {isLoading ? (
                 <Loading />
             ) : (
-                <div className="w-full max-w-4xl mx-auto text-slate-900 mt-8 space-y-4">
+                <div className="w-full max-w-4xl mx-auto text-slate-900 mt-8 space-y-4 px-2 sm:px-0">
                     <div className="flex flex-row gap-4">
                         <Image
                             alt="Hotel image"
@@ -111,7 +111,7 @@ const Page = () => {
                             referrerPolicy="no-referrer"
                         />
                         <div>
-                            <p className="text-xs font-light opacity-70 text-right">{orderData.id}</p>
+                            <p className="text-xs font-light opacity-70 text-right mb-2">{orderData.id}</p>
                             <h2 className="uppercase font-superbold">{orderData.hotel.name}</h2>
                             <h3 className="text-sm font-light opacity-90">{orderData.hotel_room.type} Room Class</h3>
                             <br />
@@ -119,8 +119,8 @@ const Page = () => {
                             <br />
                         </div>
                     </div>
-                    <div className="flex flex-row gap-8">
-                        <div className="w-2/3 space-y-4">
+                    <div className="flex flex-col sm:flex-row gap-8">
+                        <div className="sm:w-2/3 space-y-4">
                             <div className="mt-4 space-y-2">
                                 <h3 className="text-sm opacity-80">Would you like to share any additional comments or feedback about your stay?</h3>
                                 <Textarea
@@ -132,7 +132,7 @@ const Page = () => {
                                         input: "min-h-[80px]",
                                     }} />
                             </div>
-                            <div className="flex flex-row justify-end w-full">
+                            <div className="hidden sm:flex flex-row justify-end w-full">
                                 <Button
                                     className="bg-gradient-to-r from-sky-500 to-sky-700 text-white"
                                     onClick={() => {
@@ -147,7 +147,7 @@ const Page = () => {
                                 </Button>
                             </div>
                         </div>
-                        <div className="w-1/3 space-y-4">
+                        <div className="sm:w-1/3 space-y-4">
                             <div className="space-y-2">
                                 <h3 className="text-xs opacity-80">How clean was the hotel during your stay?</h3>
                                 <RatingStars count={5} value={reviewData.cleanliness} gap={5} onChange={(e) => setReviewData((prev) => ({ ...prev, cleanliness: e }))} color="#fbbf24" description={description} />
@@ -173,6 +173,20 @@ const Page = () => {
                                 <RatingStars count={5} value={reviewData.rating} gap={5} onChange={(e) => setReviewData((prev) => ({ ...prev, rating: e }))} color="#fbbf24" description={description} />
                             </div>
                         </div>
+                        <div className="flex sm:hidden flex-row justify-end w-full">
+                                <Button
+                                    className="bg-gradient-to-r from-sky-500 to-sky-700 text-white"
+                                    onClick={() => {
+                                        handleSubmit()
+                                    }}
+                                    isDisabled={isSending}
+                                >
+                                    <div className="flex flex-row gap-2 items-center justify-center">
+                                        <Spinner color="white" size="sm" className={isSending ? "block" : "hidden"} />
+                                        Submit
+                                    </div>
+                                </Button>
+                            </div>
                     </div>
 
                 </div>
