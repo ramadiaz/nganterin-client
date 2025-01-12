@@ -57,7 +57,7 @@ const Page = () => {
 
     return (
         <>
-            <div className="w-full max-w-4xl mx-auto text-gray-900 mt-8 space-y-8">
+            <div className="w-full max-w-4xl mx-auto text-gray-900 mt-8 space-y-8 px-2 sm:px-0">
                 <div className="space-y-4">
                     <div className="font-bold flex flex-row gap-2">Your Reservations
                         <div className="rounded-md bg-white border border-slate-200 px-2 text-sm font-normal w-max">
@@ -79,25 +79,29 @@ const Page = () => {
 
                         return (
                             <div key={index} className="rounded-xl border border-slate-200 bg-white">
-                                <div className="w-full flex flex-row justify-between items-start text-sm px-8 pt-4">
-                                    <div className="flex flex-row items-center justify-start gap-4">
-                                        <div>
-                                            <h2 className="font-thin opacity-80">Reservation Placed</h2>
-                                            <h3>{created_at.toDateString()}</h3>
+                                <div className="w-full flex flex-col sm:flex-row gap-2 sm:gap-0 justify-between items-start text-xs px-4 sm:px-8 pt-4">
+                                    <div className="w-full flex flex-row items-center justify-between gap-4">
+                                        <div className="w-full flex flex-row items-center justify-start gap-4">
+
+                                            <div>
+                                                <h2 className="font-thin opacity-80">Reservation Placed</h2>
+                                                <h3>{created_at.toDateString()}</h3>
+                                            </div>
+                                            <div>
+                                                <h2 className="font-thin opacity-80">Total Days</h2>
+                                                <h3>{item.total_days.toLocaleString()} Days</h3>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <h2 className="font-thin opacity-80">Total Days</h2>
-                                            <h3>{item.total_days.toLocaleString()} Days</h3>
-                                        </div>
+                                        <div className={`sm:hidden px-2 py-1 font-bold rounded-lg text-white ${paymentStatusColor[item.hotel_reservation.reservation_status]} uppercase w-max text-2xs`}>{item.hotel_reservation.reservation_status}</div>
                                     </div>
                                     <div className="flex flex-row items-center justify-end gap-4">
                                         <div className="flex flex-col items-end">
-                                            <h2 className="">
+                                            <h2 className="whitespace-nowrap">
                                                 <span className="font-mono">
                                                     #{item.id}
                                                 </span>
                                             </h2>
-                                            <div className={`px-2 py-1 font-bold rounded-lg text-white ${paymentStatusColor[item.hotel_reservation.reservation_status]} uppercase w-max text-2xs`}>{item.hotel_reservation.reservation_status}</div>
+                                            <div className={`hidden sm:block px-2 py-1 font-bold rounded-lg text-white ${paymentStatusColor[item.hotel_reservation.reservation_status]} uppercase w-max text-2xs`}>{item.hotel_reservation.reservation_status}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -112,41 +116,41 @@ const Page = () => {
                                         referrerPolicy="no-referrer"
                                     />
                                     <div>
-                                        <Link href={`/detail/hotel/${item.hotel.id}`} className="text-lg font-bold hover:underline">{item.hotel.name}</Link>
-                                        <h2 className="text-sm font-thin opacity-80">{item.hotel_room.type} Room Class</h2>
+                                        <Link href={`/detail/hotel/${item.hotel.id}`} className="text-medium sm:text-lg font-bold hover:underline">{item.hotel.name}</Link>
+                                        <h2 className="text-xs sm:text-sm font-thin opacity-80">{item.hotel_room.type} Room Class</h2>
                                         <br />
-                                        <h2 className="text-sm font-thin opacity-80 mb-2">Booked for {check_in_date.toDateString()} - {check_out_date.toDateString()}</h2>
+                                        <h2 className="text-xs sm:text-sm font-thin opacity-80 mb-2">Booked for {check_in_date.toDateString()} - {check_out_date.toDateString()}</h2>
                                         {
                                             item.hotel_reservation.reservation_status === 'Confirmed' ? (
                                                 <div className="flex flex-row items-center gap-2">
-                                                    <Button size="sm" variant="flat" className="text-sm font-bold text-white bg-gradient-to-r from-sky-500 to-sky-700" onClick={() => handleOpenTicket(item)}>
+                                                    <Button size="sm" variant="flat" className="text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-sky-500 to-sky-700" onClick={() => handleOpenTicket(item)}>
                                                         Check In <DoorOpen size={18} color="#ffffff" weight="bold" />
                                                     </Button>
                                                     <Button
                                                         onClick={() => window.open(item.hotel.hotels_location.gmaps, '_blank', 'noopener,noreferrer')}
-                                                        size="sm" variant="flat" className="text-sm font-bold text-white bg-gradient-to-r from-yellow-500 to-yellow-700"
+                                                        size="sm" variant="flat" className="text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-yellow-500 to-yellow-700"
                                                     >
                                                         Maps <PushPin size={18} color="#ffffff" weight="bold" />
                                                     </Button>
                                                 </div>
                                             ) : item.hotel_reservation.reservation_status === 'CheckedIn' ? (
                                                 <div className="flex flex-row items-center gap-2">
-                                                    <Button size="sm" variant="flat" className="text-sm font-bold text-white bg-gradient-to-r from-sky-500 to-sky-700" onClick={() => handleOpenTicket(item)}>
+                                                    <Button size="sm" variant="flat" className="text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-sky-500 to-sky-700" onClick={() => handleOpenTicket(item)}>
                                                         Check Out <SignOut size={18} color="#ffffff" weight="bold" />
                                                     </Button>
                                                 </div>
                                             ) : item.hotel_reservation.reservation_status === 'CheckedOut' ? (
                                                 <div className="flex flex-row items-center gap-2">
-                                                    <Button size="sm" variant="flat" className="text-sm font-bold text-white bg-gradient-to-r from-yellow-500 to-yellow-700" as={Link} href={`/review/hotel?secdat=${btoa(JSON.stringify(item))}`}>
+                                                    <Button size="sm" variant="flat" className="text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-yellow-500 to-yellow-700" as={Link} href={`/review/hotel?secdat=${btoa(JSON.stringify(item))}`}>
                                                         Review <ShootingStar size={18} color="#ffffff" weight="bold" />
                                                     </Button>
-                                                    <Button size="sm" variant="flat" className="text-sm font-bold text-white bg-gradient-to-r from-sky-500 to-sky-700" as={Link} href={`/detail/hotel/${item.hotel.id}`}>
+                                                    <Button size="sm" variant="flat" className="text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-sky-500 to-sky-700" as={Link} href={`/detail/hotel/${item.hotel.id}`}>
                                                         Book again <ArrowUpRight size={18} color="#ffffff" weight="bold" />
                                                     </Button>
                                                 </div>
                                             ) : item.hotel_reservation.reservation_status === 'Reviewed' && (
                                                 <div className="flex flex-row items-center gap-2">
-                                                    <Button size="sm" variant="flat" className="text-sm font-bold text-white bg-gradient-to-r from-sky-500 to-sky-700" as={Link} href={`/detail/hotel/${item.hotel.id}`}>
+                                                    <Button size="sm" variant="flat" className="text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-sky-500 to-sky-700" as={Link} href={`/detail/hotel/${item.hotel.id}`}>
                                                         Book again <ArrowUpRight size={18} color="#ffffff" weight="bold" />
                                                     </Button>
                                                 </div>
