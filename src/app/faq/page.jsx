@@ -15,15 +15,15 @@ const Page = () => {
   });
 
   return (
-    <div className="min-h-screen py-20">
-      <div className="w-1/2 mx-auto">
+    <div className="min-h-screen py-4 sm:py-8 md:py-20">
+      <div className="w-11/12 sm:w-3/4 md:w-1/2 mx-auto">
         <div
-          className="flex flex-row justify-center items-center gap-4"
+          className="flex flex-wrap justify-center items-center gap-4 pb-8 sm:pb-0"
           data-aos="fade-up"
         >
           <Image src={`/images/faq-assets/faq.png`} width={400} height={400} />
           <div className="flex flex-col gap-2">
-            <h1 className="text-9xl font-extrabold text-sky-700">FAQ</h1>
+            <h1 className="text-6xl sm:text-7xl md:text-9xl font-extrabold text-sky-700 text-center">FAQ</h1>
             <h3 className="text-sky-700">Frequently Asked Questions (?)</h3>
           </div>
         </div>
