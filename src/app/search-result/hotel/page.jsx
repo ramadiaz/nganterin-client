@@ -247,7 +247,7 @@ const Page = () => {
                             </div>
                           </div>
 
-                          <div className="w-full text-right mr-2 mb mt-auto">
+                          <div className="hidden sm:block w-full text-right mr-2 mb mt-auto">
                             <div>
                               <div className="text-lg font-bold text-black whitespace-nowrap">
                                 IDR {item.pricing_start.toLocaleString()}
@@ -266,6 +266,39 @@ const Page = () => {
                               Select Room
                             </Button>
                           </div>
+                        </div>
+                      </div>
+                      <div className="sm:hidden p-2 space-y-2">
+                        <div className="flex flex-wrap text-2xs text-gray-600 gap-1 ">
+                          {item.hotel_facilities?.map((facility, index) => {
+                            return (
+                              <h2
+                                className="flex flex-row items-center w-max px-3 py-1 mt-2  bg-gray-500 text-white rounded-xl"
+                                key={index}
+                              >
+                                {facility.facility}
+                              </h2>
+                            );
+                          })}
+                        </div>
+                        <div className="w-full text-right mr-2 mb mt-auto">
+                          <div>
+                            <div className="text-lg font-bold text-black whitespace-nowrap">
+                              IDR {item.pricing_start.toLocaleString()}
+                              <span className="text-gray-600 text-xs font-light -mt-1">
+                                /night
+                              </span>
+                              <div className="text-gray-600 text-xs font-light -mt-0.5">
+                                (include taxes & fees)
+                              </div>
+                            </div>
+                          </div>
+                          <Button
+                            className="mt-2 text-xs w-24 bg-gradient-to-r from-sky-500 to-sky-700 text-white font-semibold rounded-full"
+                            size="sm"
+                          >
+                            Select Room
+                          </Button>
                         </div>
                       </div>
                     </Link>
