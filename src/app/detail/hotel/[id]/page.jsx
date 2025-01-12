@@ -158,7 +158,7 @@ const Page = ({ params: id }) => {
                   })}
                 </div>
               </div>
-              <div className="w-full px-2 sm:px-0 mt-2 sm:mt-0">
+              <div className="w-full mx-2 sm:mx-0 mt-2 sm:mt-0">
                 <div className="rounded-lg border border-slate-200 divide-y divide-slate-200 bg-white flex flex-row justify-center sm:justify-between h-max w-max mx-auto sm:w-full">
                   <ButtonGroup radius="sm">
                     <Link className="text-sm p-4 hover:bg-slate-800/10 transition-all duration-400 rounded-l-md" href="#top">
