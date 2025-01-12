@@ -27,8 +27,8 @@ const Page = ({ params: id }) => {
   const router = useRouter()
 
   const today = new Date();
-  const threeDaysLater = new Date(today);
-  threeDaysLater.setDate(today.getDate() + 3);
+  const nextDay = new Date(today);
+  nextDay.setDate(today.getDate() + 1);
 
   function formatDate(date) {
     const year = date.getFullYear();
@@ -46,7 +46,7 @@ const Page = ({ params: id }) => {
   }
 
   const startDate = formatDate(today);
-  const endDate = formatDate(threeDaysLater);
+  const endDate = formatDate(nextDay);
 
   const [bookingDate, setBookingDate] = useState({
     start: parseDate(startDate),
@@ -260,6 +260,7 @@ const Page = ({ params: id }) => {
                       onChange={setBookingDate}
                       visibleMonths={2}
                       variant="bordered"
+                      minValue={parseDate(startDate)}
                       classNames={{
                         inputWrapper: ["border", "border-slate-200", "bg-white", "hover:border-slate-200"]
                       }}
