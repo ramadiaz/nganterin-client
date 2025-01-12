@@ -5,7 +5,7 @@ import Loading from "@/app/loading";
 import { BASE_API, MIDTRANS_CLIENT_KEY, MIDTRANS_SNAP_SCRIPT } from "@/utilities/environtment";
 import fetchWithAuth from "@/utilities/fetchWIthAuth";
 import { useEffect, useState } from "react";
-import { Button, Checkbox, Image, Input, Spinner } from "@nextui-org/react";
+import { Accordion, AccordionItem, Button, Checkbox, Image, Input, Spinner } from "@nextui-org/react";
 import { Sparkle } from "@phosphor-icons/react";
 import { GetUserData } from "@/utilities/getUserData";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -149,8 +149,8 @@ const Page = ({ params: id }) => {
         {status.loading ? (
           <Loading />
         ) : (
-          <div className="w-3/5 mx-auto flex flex-row gap-4 justify-center pt-12 transition-all duration-500">
-            <div className="basis-2/3">
+          <div className="sm:w-3/5 mx-auto flex flex-col-reverse sm:flex-row gap-4 justify-center pt-4 sm:pt-12 px-2 sm:px-0 transition-all duration-500">
+            <div className="sm:basis-2/3">
               <div className="border rounded-lg border-slate-200 bg-white p-4 transition-all duration-500">
                 <h2 className="font-semibold">Let us know who you are!</h2>
                 <Input
@@ -183,7 +183,7 @@ const Page = ({ params: id }) => {
                   }}
                   isDisabled
                 />
-                <h3 className="mt-4 text-sm opacity-90">
+                <h3 className="mt-4 mb-6 sm:mb-0 text-xs sm:text-sm opacity-90">
                   If you enter your email address and do not complete your
                   reservation, we may send you reminders to help you resume your
                   booking.
@@ -269,7 +269,7 @@ const Page = ({ params: id }) => {
                   />
                 </div>
               </div>
-              <div className="border rounded-lg border-slate-200 bg-white p-4 transition-all duration-500 mt-4">
+              <div className="border rounded-lg border-slate-200 bg-white p-4 transition-all duration-500 mt-4 hidden sm:block">
                 <h3 className="text-sm">
                   By proceeding with this booking, I agree to Nganterin’s{` `}
                   <span className="text-sky-700">Terms of Use</span>
@@ -294,7 +294,7 @@ const Page = ({ params: id }) => {
                 </Button>
               </div>
             </div>
-            <div className="basis-1/3 ">
+            <div className="sm:basis-1/3 ">
               <div className="border rounded-lg border-slate-200 bg-white p-4">
                 <div className="flex flex-row gap-4">
                   <Image
@@ -329,7 +329,7 @@ const Page = ({ params: id }) => {
                   </div>
                 </div>
               </div>
-              <div className="border rounded-lg border-slate-200 bg-white p-4 mt-4 text-sm">
+              <div className="border rounded-lg border-slate-200 bg-white p-4 mt-4 text-sm hidden sm:block">
                 <div className="border-b border-neutral-500/50 pb-4">
                   <div className="flex flex-row justify-between px-2 py-1">
                     <h3>Original Price</h3>
@@ -379,6 +379,75 @@ const Page = ({ params: id }) => {
                       charge 10%
                     </h3>
                   </div>
+                </div>
+              </div>
+            </div>
+            <div className="sm:hidden fixed bottom-0 left-0 w-full bg-white rounded-t-lg p-4">
+              <div className="space-y-4">
+                <Accordion>
+                  <AccordionItem
+                    key="1"
+                    aria-label="Accordion 1"
+                    title={
+                      <div className="flex flex-row justify-between">
+                        <div className="font-semibold opacity-90">
+                          Price
+                        </div>
+                        <div className="font-semibold">
+                          Rp {(inputData.days * roomDetail.overnight_price).toLocaleString()}
+                        </div>
+                      </div>
+                    }
+                  >
+                    <div className="pb-4 text-sm">
+                      <div className="flex flex-row justify-between px-2 py-1">
+                        <h3>Original Price</h3>
+                        <h3 className="text-red-600 line-through">
+                          Rp{" "}
+                          {(
+                            inputData.days * roomDetail.overnight_price + 300000
+                          ).toLocaleString()}
+                        </h3>
+                      </div>
+                      <div className="flex flex-row justify-between px-2 py-1">
+                        <h3>Our Price</h3>
+                        <h3 className="text-red-600 line-through">
+                          Rp{" "}
+                          {(
+                            inputData.days * roomDetail.overnight_price + 100000
+                          ).toLocaleString()}
+                        </h3>
+                      </div>
+                      <div className="flex flex-row justify-between border border-dashed border-green-600 bg-green-200 px-2 py-1">
+                        <h3>Instant Discount</h3>
+                        <h3 className="text-green-600">-Rp 200.000</h3>
+                      </div>
+                      <div className="flex flex-row justify-between px-2 py-1">
+                        <h3>Room price (1 room x {inputData.days} night)</h3>
+                        <h3 className="">
+                          Rp {(inputData.days * roomDetail.overnight_price).toLocaleString()}
+                        </h3>
+                      </div>
+                      <div className="flex flex-row justify-between px-2 py-1">
+                        <h3>Booking Fees</h3>
+                        <h3 className="font-semibold text-sky-600">FREE</h3>
+                      </div>
+                    </div>
+                  </AccordionItem>
+                </Accordion>
+                <div className="flex justify-end">
+                  <Button
+                    className="bg-gradient-to-r from-sky-500 to-sky-700 text-white w-full"
+                    onPress={() => {
+                      handlePayment()
+                    }}
+                    isDisabled={status.paying}
+                  >
+                    <div className="flex flex-row gap-2 items-center justify-center">
+                      <Spinner color="white" size="sm" className={status.paying ? "block" : "hidden"} />
+                      Payment
+                    </div>
+                  </Button>
                 </div>
               </div>
             </div>
