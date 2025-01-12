@@ -87,7 +87,7 @@ const Page = () => {
 
     return (
         <>
-            <div className="w-full max-w-4xl mx-auto text-gray-900 mt-8 space-y-8">
+            <div className="w-full max-w-4xl mx-auto text-gray-900 mt-8 space-y-8 px-2 sm:px-0">
                 <div className="space-y-4">
                     <div className="font-bold flex flex-row gap-2">Your Orders
                         <div className="rounded-md bg-white border border-slate-200 px-2 text-sm font-normal w-max">
@@ -109,29 +109,32 @@ const Page = () => {
 
                         return (
                             <div key={index} className="rounded-xl border border-slate-200 bg-white">
-                                <div className="w-full flex flex-row justify-between items-start text-sm px-8 pt-4">
-                                    <div className="flex flex-row items-center justify-start gap-4">
-                                        <div>
-                                            <h2 className="font-thin opacity-80">Order Placed</h2>
-                                            <h3>{created_at.toDateString()}</h3>
+                                <div className="w-full flex flex-col sm:flex-row gap-2 sm:gap-0 justify-between items-start text-xs px-4 sm:px-8 pt-4">
+                                    <div className="w-full flex flex-row items-center justify-between gap-4">
+                                        <div className="w-full flex flex-row items-center justify-start gap-4">
+                                            <div>
+                                                <h2 className="font-thin opacity-80">Order Placed</h2>
+                                                <h3>{created_at.toDateString()}</h3>
+                                            </div>
+                                            <div>
+                                                <h2 className="font-thin opacity-80">Total</h2>
+                                                <h3>Rp. {item.total_price.toLocaleString()}</h3>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <h2 className="font-thin opacity-80">Total</h2>
-                                            <h3>Rp. {item.total_price.toLocaleString()}</h3>
-                                        </div>
+                                        <div className={`sm:hidden px-2 py-1 font-bold rounded-lg text-white ${paymentStatusColor[item.payment_status]} uppercase w-max text-2xs`}>{item.payment_status}</div>
                                     </div>
                                     <div className="flex flex-row items-center justify-end gap-4">
                                         <div className="flex flex-col items-end">
-                                            <h2 className="">Order{" "}
+                                            <h2 className="sm:whitespace-nowrap">Order{" "}
                                                 <span className="font-mono">
                                                     #{item.id}
                                                 </span>
                                             </h2>
-                                            <div className={`px-2 py-1 font-bold rounded-lg text-white ${paymentStatusColor[item.payment_status]} uppercase w-max text-2xs`}>{item.payment_status}</div>
+                                            <div className={`hidden sm:block px-2 py-1 font-bold rounded-lg text-white ${paymentStatusColor[item.payment_status]} uppercase w-max text-2xs`}>{item.payment_status}</div>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="px-8 py-4 w-full flex flex-row items-start justify-start gap-4">
+                                <div className="px-4 sm:px-8 py-4 w-full flex flex-row items-start justify-start gap-4">
                                     <Image
                                         alt="Hotel image"
                                         className="object-cover w-64 h-36"
@@ -142,25 +145,25 @@ const Page = () => {
                                         referrerPolicy="no-referrer"
                                     />
                                     <div>
-                                        <Link href={`/detail/hotel/${item.hotel.id}`} className="text-lg font-bold hover:underline">{item.hotel.name}</Link>
-                                        <h2 className="text-sm font-thin opacity-80">{item.hotel_room.type} Room - Rp. {item.hotel_room.overnight_price.toLocaleString()} /night</h2>
+                                        <Link href={`/detail/hotel/${item.hotel.id}`} className="text-medium sm:text-lg font-bold hover:underline">{item.hotel.name}</Link>
+                                        <h2 className="text-xs sm:text-sm font-thin opacity-80">{item.hotel_room.type} Room - Rp. {item.hotel_room.overnight_price.toLocaleString()} /night</h2>
                                         <br />
-                                        <h2 className="text-sm font-thin opacity-80 mb-2">Booked for {check_in_date.toDateString()} - {check_out_date.toDateString()}</h2>
+                                        <h2 className="text-xs sm:text-sm font-thin opacity-80 mb-2">Booked for {check_in_date.toDateString()} - {check_out_date.toDateString()}</h2>
                                         {
                                             item.payment_status === "paid" ? (
                                                 <div className="flex flex-row items-center gap-2">
-                                                    <Button size="sm" variant="flat" className="text-sm font-bold text-white bg-gradient-to-r from-sky-500 to-sky-700" as={Link} href="/reservation/hotel">
+                                                    <Button size="sm" variant="flat" className="text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-sky-500 to-sky-700" as={Link} href="/reservation/hotel">
                                                         Ticket <Ticket size={18} color="#ffffff" weight="bold" />
                                                     </Button>
                                                     <Button
                                                         onClick={() => window.open(item.hotel.hotels_location.gmaps, '_blank', 'noopener,noreferrer')}
-                                                        size="sm" variant="flat" className="text-sm font-bold text-white bg-gradient-to-r from-yellow-500 to-yellow-700"
+                                                        size="sm" variant="flat" className="text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-yellow-500 to-yellow-700"
                                                     >
                                                         Maps <PushPin size={18} color="#ffffff" weight="bold" />
                                                     </Button>
                                                 </div>
                                             ) : item.payment_status === "pending" && (
-                                                <Button size="sm" variant="flat" className="text-sm font-bold text-white bg-gradient-to-r from-green-500 to-green-700" onClick={() => handleContinuePayment(item)} >
+                                                <Button size="sm" variant="flat" className="text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-green-500 to-green-700" onClick={() => handleContinuePayment(item)} >
                                                     Pay Now! <ArrowUpRight size={18} color="#ffffff" weight="bold" />
                                                 </Button>
                                             )
