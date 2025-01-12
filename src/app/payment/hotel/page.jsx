@@ -76,7 +76,7 @@ const Page = () => {
                 <h2 className="text-center text-xl font-bold mt-8">{headlineData[paymentStatus]}</h2>
                 <h3 className="text-center text-sm font-thin whitespace-normal">Transaction Number: {orderData.id}</h3>
                 <div className="space-y-2 my-4">
-                    <Button className={`w-full ${paymentStatus === "paid" && "hidden"}`} variant="bordered" radius="full" onClick={() => fetchData(orderData.id)} isDisabled={isLoading}>Refresh <ArrowsClockwise size={22} color="#fff" weight="bold" className={isLoading && "animate-spinner-ease-spin"} /></Button>
+                    <Button className={`w-full ${paymentStatus === "paid" && "hidden"}`} variant="bordered" onClick={() => fetchData(orderData.id)} isDisabled={isLoading}>Refresh <ArrowsClockwise size={22} color="#000" weight="bold" className={isLoading && "animate-spinner-ease-spin"} /></Button>
                     <div className="flex flex-col sm:flex-row items-center gap-2">
                         <Button className="w-full sm:w-1/2 bg-gradient-to-r from-amber-400 to-amber-600 text-white" as={Link} href="/order/history/hotel">My Orders <ClockCounterClockwise size={22} color="#fff" weight="bold" /></Button>
                         <Button className="w-full sm:w-1/2 bg-gradient-to-r from-sky-500 to-sky-700 text-white" as={Link} href="/reservation/hotel">My Reservations <Ticket size={22} color="#fff" weight="bold" /></Button>
