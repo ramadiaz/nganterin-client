@@ -1,10 +1,9 @@
 'use client'
 
-import { CS_API } from '@/utilities/environtment'
+import { CS_API, CS_WS } from '@/utilities/environtment'
 import { Avatar, Button, Image, Input, Spinner } from '@nextui-org/react'
 import { Headset, PaperPlaneTilt } from '@phosphor-icons/react'
 import { useEffect, useState } from 'react'
-import PhoneInput from 'react-phone-input-2'
 import { toast } from 'sonner'
 
 export const CSBubble = () => {
@@ -48,7 +47,7 @@ const CSWindow = ({ isOpen }) => {
 
     return (
         <div className={`rounded-xl h-[400px] w-[300px] flex flex-col bg-white shadow-lg shadow-neutral-700/50 ${isOpen ? '' : 'hidden'}`}>
-            <div className='bg-sky-600 text-white px-4 py-3 rounded-md font-poppins flex flex-row gap-4 items-center justify-start'>
+            <div className='bg-gradient-to-r from-sky-500 to-sky-700 text-white px-4 py-3 rounded-md font-poppins flex flex-row gap-4 items-center justify-start'>
                 <Avatar src='/avatar/cs.webp' />
                 <div>
                     <p className='text-left font-semibold text-xl'>
@@ -90,23 +89,66 @@ const GettingStartSection = ({ setToken }) => {
 
 const ChatSection = () => {
     const [chats, setChats] = useState([])
+    const [ws, setWs] = useState(null);
+    const [message, setMessage] = useState("");
+
+    useEffect(() => {
+        const token = localStorage.getItem("cs_token");
+        if (!token) return;
+
+        const socket = new WebSocket(`${CS_WS}/ws/chat?token=${token}`);
+
+        socket.onopen = () => {
+            console.log("WebSocket connected");
+            setWs(socket);
+        };
+
+        socket.onmessage = (e) => {
+            try {
+                const data = JSON.parse(e.data);
+                setChats((prev) => [...prev, data]);
+            } catch (err) {
+                console.error("Error parsing WebSocket message:", err);
+            }
+        };
+
+        socket.onerror = (err) => {
+            console.error("WebSocket error:", err);
+        };
+
+        socket.onclose = () => {
+            console.log("WebSocket connection closed");
+        };
+
+        return () => {
+            socket.close();
+        };
+    }, []);
+
+    const sendMessage = (e) => {
+        e.preventDefault();
+        if (!ws || ws.readyState !== WebSocket.OPEN) {
+            toast.error("WebSocket not connected");
+            return;
+        }
+
+        const payload = JSON.stringify({ message });
+        ws.send(payload);
+        setMessage("");
+    };
 
     return (
         <>
-            <div className='flex-grow'>
-                {
-                    chats.map((chat, i) => {
-                        return (
-                            <div key={i}>
-                                {chat}
-                            </div>
-                        )
-                    })
-                }
+            <div className='flex-grow p-4 overflow-y-auto'>
+                {chats.map((chat, i) => (
+                    <div key={i} className="mb-2 p-2 bg-gray-200 rounded-lg">
+                        {chat.message}
+                    </div>
+                ))}
             </div>
-            <form className='px-4 py-3 w-full flex flex-row gap-2'>
-                <Input variant='faded' placeholder='Type your message here' className='text-black' />
-                <Button className='bg-gradient-to-br from-sky-500 to-sky-700' isIconOnly>
+            <form onSubmit={sendMessage} className='px-4 py-3 w-full flex flex-row gap-2'>
+                <Input value={message} onChange={(e) => setMessage(e.target.value)} variant='faded' placeholder='Type your message here' className='text-black' />
+                <Button type='submit' className='bg-gradient-to-br from-sky-500 to-sky-700' isIconOnly>
                     <PaperPlaneTilt size={24} color="#fffceb" />
                 </Button>
             </form>
