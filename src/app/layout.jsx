@@ -5,6 +5,7 @@ import NavbarComponent from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import MaintenanceModal from "@/components/MaintenanceModal";
 import { Toaster } from "sonner";
+import { CSBubble } from "@/components/CSBubble";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,6 +31,7 @@ export default function RootLayout({ children }) {
           </div>
           <div className="h-40"></div>
           <Footer />
+          <CSBubble />
         </Providers>
       </body>
     </html>
