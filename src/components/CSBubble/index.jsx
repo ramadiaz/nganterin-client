@@ -3,8 +3,9 @@
 import { CS_API, CS_WS } from '@/utilities/environtment'
 import { Avatar, Button, Image, Input, Spinner } from '@nextui-org/react'
 import { Headset, PaperPlaneTilt } from '@phosphor-icons/react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
+import CSChats from '../CSChats'
 
 export const CSBubble = () => {
     const [isOpen, setIsOpen] = useState(false)
@@ -39,9 +40,9 @@ const CSWindow = ({ isOpen }) => {
     const [token, setToken] = useState("")
 
     useEffect(() => {
-        const cs_token = localStorage.getItem('cs_token')
-        if (cs_token) {
-            setToken(cs_token)
+        const token = localStorage.getItem('token')
+        if (token) {
+            setToken(token)
         }
     }, [])
 
@@ -86,31 +87,46 @@ const GettingStartSection = ({ setToken }) => {
         </>
     )
 }
-
 const ChatSection = () => {
-    const [chats, setChats] = useState([])
+    const [chats, setChats] = useState([]);
     const [ws, setWs] = useState(null);
     const [message, setMessage] = useState("");
+    const pingInterval = useRef(null);
 
     useEffect(() => {
-        const token = localStorage.getItem("cs_token");
+        const lastChats = localStorage.getItem("chats");
+        if (lastChats) {
+            setChats(JSON.parse(lastChats));
+        }
+
+        const last = localStorage.getItem("last")
+        const token = localStorage.getItem("token");
         if (!token) return;
 
-        const socket = new WebSocket(`${CS_WS}/ws/chat?token=${token}`);
+        const socket = new WebSocket(`${CS_WS}/ws/chat?token=${token}&last=${last}`);
 
         socket.onopen = () => {
             console.log("WebSocket connected");
             setWs(socket);
-        };
 
-        socket.addEventListener('ping', (event) => {
-            socket.pong();
-        });
+            pingInterval.current = setInterval(() => {
+                if (socket.readyState === WebSocket.OPEN) {
+                    socket.send(JSON.stringify({ type: "ping" }));
+                }
+            }, 30000);
+        };
 
         socket.onmessage = (e) => {
             try {
                 const data = JSON.parse(e.data);
-                setChats((prev) => [...prev, data]);
+                localStorage.setItem("last", data.uuid);
+                setChats((prev) => {
+                    localStorage.setItem("chats", JSON.stringify([...prev, data]));
+
+                    return [...prev, data]
+                });
+
+
             } catch (err) {
                 console.error("Error parsing WebSocket message:", err);
             }
@@ -122,10 +138,20 @@ const ChatSection = () => {
 
         socket.onclose = () => {
             console.log("WebSocket connection closed");
+
+            if (pingInterval.current) {
+                clearInterval(pingInterval.current);
+                pingInterval.current = null;
+            }
         };
 
         return () => {
-            socket.close();
+            if (socket.readyState === WebSocket.OPEN) {
+                socket.close();
+            }
+            if (pingInterval.current) {
+                clearInterval(pingInterval.current);
+            }
         };
     }, []);
 
@@ -145,20 +171,24 @@ const ChatSection = () => {
         <>
             <div className='flex-grow p-4 overflow-y-auto'>
                 {chats.map((chat, i) => (
-                    <div key={i} className="mb-2 p-2 bg-gray-200 rounded-lg">
-                        {chat.message}
-                    </div>
+                    <CSChats key={i} data={chat} />
                 ))}
             </div>
             <form onSubmit={sendMessage} className='px-4 py-3 w-full flex flex-row gap-2'>
-                <Input value={message} onChange={(e) => setMessage(e.target.value)} variant='faded' placeholder='Type your message here' className='text-black' />
+                <Input
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    variant='faded'
+                    placeholder='Type your message here'
+                    className='text-black'
+                />
                 <Button type='submit' className='bg-gradient-to-br from-sky-500 to-sky-700' isIconOnly>
                     <PaperPlaneTilt size={24} color="#fffceb" />
                 </Button>
             </form>
         </>
-    )
-}
+    );
+};
 
 const RegisterSection = ({ setToken }) => {
     const [isLoading, setIsLoading] = useState(false)
@@ -184,7 +214,7 @@ const RegisterSection = ({ setToken }) => {
 
             const data = await res.json()
             if (res.ok) {
-                localStorage.setItem('cs_token', data.body)
+                localStorage.setItem('token', data.body)
                 setToken(data.body)
             } else {
                 toast.error(data.error)
