@@ -92,6 +92,16 @@ const ChatSection = () => {
     const [ws, setWs] = useState(null);
     const [message, setMessage] = useState("");
     const pingInterval = useRef(null);
+    const chatContainerRef = useRef(null);
+
+    useEffect(() => {
+        if (chatContainerRef.current) {
+            chatContainerRef.current.scrollTo({
+                top: chatContainerRef.current.scrollHeight,
+                behavior: "smooth",
+            });
+        }
+    }, [chats]);
 
     useEffect(() => {
         const lastChats = localStorage.getItem("chats");
@@ -169,20 +179,20 @@ const ChatSection = () => {
 
     return (
         <>
-            <div className='flex-grow p-4 overflow-y-auto'>
+            <div ref={chatContainerRef} className="flex-grow p-4 overflow-y-auto">
                 {chats.map((chat, i) => (
                     <CSChats key={i} data={chat} />
                 ))}
             </div>
-            <form onSubmit={sendMessage} className='px-4 py-3 w-full flex flex-row gap-2'>
+            <form onSubmit={sendMessage} className="px-4 py-3 w-full flex flex-row gap-2">
                 <Input
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                    variant='faded'
-                    placeholder='Type your message here'
-                    className='text-black'
+                    variant="faded"
+                    placeholder="Type your message here"
+                    className="text-black"
                 />
-                <Button type='submit' className='bg-gradient-to-br from-sky-500 to-sky-700' isIconOnly>
+                <Button type="submit" className="bg-gradient-to-br from-sky-500 to-sky-700" isIconOnly>
                     <PaperPlaneTilt size={24} color="#fffceb" />
                 </Button>
             </form>
