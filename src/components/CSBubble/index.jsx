@@ -103,6 +103,10 @@ const ChatSection = () => {
             setWs(socket);
         };
 
+        socket.addEventListener('ping', (event) => {
+            socket.pong();
+        });
+
         socket.onmessage = (e) => {
             try {
                 const data = JSON.parse(e.data);
